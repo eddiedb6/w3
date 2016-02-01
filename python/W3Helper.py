@@ -1,5 +1,5 @@
 
-def ConstToPHP(const):
+def W3ConstToPHP(const):
     if not isinstance(const, dict):
         return ""
 
@@ -11,15 +11,15 @@ def ConstToPHP(const):
     return constValues;
     
 
-def ValueToPHP(value, indent):
+def W3ValueToPHP(value, indent):
     if isinstance(value, dict):
-        return DictToPHP(value, indent)
+        return W3DictToPHP(value, indent)
     elif isinstance(value, list) or isinstance(value, tuple):
-        return ArrayToPHP(value, indent)
+        return W3ArrayToPHP(value, indent)
     else:
         return "\"" + value + "\""
 
-def ArrayToPHP(value, indent):
+def W3ArrayToPHP(value, indent):
     indentString = "    " * indent
     phpValue = "array (\n"
     index = len(value)
@@ -30,7 +30,7 @@ def ArrayToPHP(value, indent):
         
     for v in value:
         index = index - 1
-        phpValue = phpValue + indentString + ValueToPHP(v, indent + 1)
+        phpValue = phpValue + indentString + W3ValueToPHP(v, indent + 1)
         if index == 0:
             phpValue = phpValue + ")"
         else:
@@ -38,7 +38,7 @@ def ArrayToPHP(value, indent):
 
     return phpValue
 
-def DictToPHP(value, indent):
+def W3DictToPHP(value, indent):
     indentString = "    " * indent
     phpValue = "array (\n"
     index = len(value)
@@ -49,7 +49,7 @@ def DictToPHP(value, indent):
         
     for key in value.keys():
         index = index - 1
-        phpValue = phpValue + indentString + "\"" + key + "\" => " + ValueToPHP(value[key], indent + 1)
+        phpValue = phpValue + indentString + "\"" + key + "\" => " + W3ValueToPHP(value[key], indent + 1)
         if index == 0:
             phpValue = phpValue + ")"
         else:

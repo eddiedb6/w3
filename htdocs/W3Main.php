@@ -5,12 +5,12 @@
 # So any global variable, function or any include could be used here
 #
 
-require "Helper.php";
+require "W3Helper.php";
 
-if (IsEmptyRequest()) {
-    require "Main.html";
+if (W3IsEmptyRequest()) {
+    require "W3Main.html";
 } else {
-    if (!HandleRequest()) {
+    if (!W3HandleRequest()) {
         echo "NOT handled request: " . $_SERVER["REQUEST_URI"];
     }
 }

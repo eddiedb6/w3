@@ -1,6 +1,6 @@
 <?php
 
-function SelectLanguage() {
+function W3SelectLanguage() {
     #############################################
     # User function logic should be added below #
     #############################################

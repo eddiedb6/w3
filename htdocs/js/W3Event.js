@@ -3,7 +3,7 @@
  ************************************/
 
 /* e.g. */
-function GoBack() {
+function W3GoBack() {
     javascript:history.back(-1);
 }
 

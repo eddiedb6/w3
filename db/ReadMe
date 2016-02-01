@@ -1,4 +1,0 @@
-1. Describe DB in metadata/DB.py
-2. Configure path and file in metadata/Def.py
-3. Generate DB scripts:
-      python DBHandler.py

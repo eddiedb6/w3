@@ -1,18 +1,16 @@
 import sys
 sys.path.append("..")
-import Const
+import W3Const
 
-lan = {
+w3API = {
     ###################################
     # User data should be added below #
     ###################################
 
     # e.g. #
-    Const.lanEnglish: {
-        "sidTitle": "E&J's",
-        "sidCopyright": "Copyright (c) eddiedb6@gmail.com",
-        "sidNaviDebug": "Debug",
-        "sidButtonBack": "Back"
+    "aidPage": {
+        W3Const.w3ApiName: "page",
+        W3Const.w3ApiParam1: "id"
     }
 
     ###################################
