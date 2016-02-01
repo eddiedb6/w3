@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteRule ^page.* index.html
+RewriteRule ^bill.* index.html
+
+
