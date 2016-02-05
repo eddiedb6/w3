@@ -9,13 +9,31 @@ def W3ConstToPHP(const):
             constValues = constValues + "define('" + k + "', '" + const[k] + "');\n"
 
     return constValues;
-    
+
+def W3ConstToJS(const):
+    if not isinstance(const, dict):
+        return ""
+
+    constValues = ""
+    for k in const.keys():
+        if isinstance(const[k], basestring) and not k.startswith('__'):
+            constValues = constValues + "const " + k + " = \"" + const[k] + "\";\n"
+
+    return constValues;
 
 def W3ValueToPHP(value, indent):
     if isinstance(value, dict):
         return W3DictToPHP(value, indent)
     elif isinstance(value, list) or isinstance(value, tuple):
         return W3ArrayToPHP(value, indent)
+    else:
+        return "\"" + value + "\""
+
+def W3ValueToJS(value, indent):
+    if isinstance(value, dict):
+        return W3DictToJS(value, indent)
+    elif isinstance(value, list) or isinstance(value, tuple):
+        return W3ArrayToJS(value, indent)
     else:
         return "\"" + value + "\""
 
@@ -38,6 +56,25 @@ def W3ArrayToPHP(value, indent):
 
     return phpValue
 
+def W3ArrayToJS(value, indent):
+    indentString = "    " * indent
+    jsValue = "[\n"
+    index = len(value)
+    
+    if (index == 0):
+        jsValue = jsValue + indentString + "]"
+        return jsValue
+        
+    for v in value:
+        index = index - 1
+        jsValue = jsValue + indentString + W3ValueToJS(v, indent + 1)
+        if index == 0:
+            jsValue = jsValue + "]"
+        else:
+            jsValue = jsValue + ",\n"
+
+    return jsValue
+
 def W3DictToPHP(value, indent):
     indentString = "    " * indent
     phpValue = "array (\n"
@@ -56,3 +93,23 @@ def W3DictToPHP(value, indent):
             phpValue = phpValue + ",\n"
 
     return phpValue
+
+def W3DictToJS(value, indent):
+    indentString = "    " * indent
+    jsValue = "{\n"
+    index = len(value)
+
+    if (index == 0):
+        jsValue = jsValue + indentString + "}"
+        return jsValue
+        
+    for key in value.keys():
+        index = index - 1
+        jsValue = jsValue + indentString + key + ": " + W3ValueToJS(value[key], indent + 1)
+        if index == 0:
+            jsValue = jsValue + "}"
+        else:
+            jsValue = jsValue + ",\n"
+
+    return jsValue
+

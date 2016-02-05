@@ -7,9 +7,33 @@ require "php/generated/language.php";
 require "php/W3RequestHandler.php";
 require "php/W3PageSelector.php";
 require "php/W3LanguageSelector.php";
+require "php/W3UserLib.php";
+
+#
+# Request helper
+#
 
 function W3IsEmptyRequest() {
     return $_SERVER["REQUEST_URI"] == "/";
+}
+
+#
+# JS helper
+#
+
+function W3LoadJS() {
+    echo "<script src=\"js/generated/api.js\"></script>";
+    echo "<script src=\"js/generated/ui.js\"></script>";
+    echo "<script src=\"js/generated/const.js\"></script>";
+}
+
+#
+# String helper
+#
+
+function W3MakeString($val, $isSingleQuot = false) {
+    $quot = $isSingleQuot ? "'" : "\"";
+    return $quot . $val . $quot;
 }
 
 #
@@ -21,12 +45,37 @@ function W3GetLanguage() {
 
 
 #
-# UI helpers
+# API Helper
 #
+function W3GetSuccessfulResult($isFullResult = true) {
+    if ($isFullResult) {
+        return "{" . W3MakeString(w3ApiResultStatus) . ":" . W3MakeString(w3ApiResultSuccessful) . "}";
+    } else {
+        return W3MakeString(w3ApiResultStatus) . ":" . W3MakeString(w3ApiResultSuccessful);
+    }
+}
+
+function W3GetFailedResult($isFullResult = true) {
+    if ($isFullResult) {
+        return "{" . W3MakeString(w3ApiResultStatus) . ":" . W3MakeString(w3ApiResultFailed) . "}";
+    } else {
+        return W3MakeString(w3ApiResultStatus) . ":" . W3MakeString(w3ApiResultFailed);
+    }
+}
+
+function W3GetAPIParamCount($aid) {
+    global $w3API;
+
+    return sizeof($w3API[$aid]) - 1;
+}
 
 function W3GetParamName($index) {
     return "param" . strval($index); 
 }
+
+#
+# UI helpers
+#
 
 function W3GetAPIParamArray($uid) {
     global $w3UI;
@@ -52,7 +101,7 @@ function W3GetEvent($uid) {
     if (array_key_exists(w3PropEvent, $w3UI[$uid])) {
         $events = "";
         foreach ($w3UI[$uid][w3PropEvent] as $key => $value) {
-            $events .= $key . "='" . $value . "' ";
+            $events .= $key . "=\"" . $value . "\" ";
         }
         
         return $events;
@@ -101,6 +150,18 @@ function W3InsertAttr($uid, $attr) {
         $w3UI[$uid][w3PropAttr] = $w3UI[$uid][w3PropAttr] . " " . $attr;
     } else {
         $w3UI[$uid][w3PropAttr] = $attr;
+    }
+}
+
+function W3InsertAPIParam(&$api) {
+    # Handle api parameter in form or button or other UI
+    $paramSize = sizeof($api);
+    if ($paramSize > 1) {
+        for ($i = 1; $i <= $paramSize - 1; $i++) {
+            $paramIndex = W3GetParamName($i);
+            $paramName = "name='" . $w3API[$api[w3ApiID]][$paramIndex] . "'";
+            W3InsertAttr($api[$paramIndex], $paramName);
+        }
     }
 }
 
@@ -185,9 +246,13 @@ function W3CreateCombobox($uid) {
 
     W3CreateUIBasePro($uid);
 
-    $type = "input";
+    $type = "select";
+    $attr = "";
+
     $body = "";
-    $attr = "type='text'";
+    if (array_key_exists(w3PropFunc, $w3UI[$uid])) {
+        $body .= $w3UI[$uid][w3PropFunc][w3FuncComboCreator]();
+    }
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
@@ -203,8 +268,7 @@ function W3CreateSubmit($uid) {
     $attr = "type='submit'";
 
     # put body string as value attr for submit
-    if (array_key_exists(w3PropBody, $w3UI[$uid]))
-    {
+    if (array_key_exists(w3PropBody, $w3UI[$uid])) {
         $attr .= " value='" . $w3Lan[W3GetLanguage()][$w3UI[$uid][w3PropBody]] . "'";
         $w3UI[$uid][w3PropBody] = "";
     }
@@ -223,16 +287,8 @@ function W3CreateForm($uid) {
     $attr = "name='input' action='" . $w3API[$w3UI[$uid][w3PropApi][w3ApiID]][w3ApiName] .
           "' method='" . $w3UI[$uid][w3PropMethod] . "'";
 
-    # Handle api parameter in form
-    $paramSize = sizeof($w3UI[$uid][w3PropApi]);
-    if ($paramSize > 1) {
-        for ($i = 1; $i <= $paramSize - 1; $i++) {
-            $paramIndex = W3GetParamName($i);
-            $paramName = "name='" . $w3API[$w3UI[$uid][w3PropApi][w3ApiID]][$paramIndex] . "'";
-            W3InsertAttr($w3UI[$uid][w3PropApi][$paramIndex], $paramName);
-        }
-    }
-
+    W3InsertAPIParam($w3UI[$uid][w3PropApi]);
+    
     $body = "";
     if (array_key_exists(w3PropList, $w3UI[$uid])) {
         foreach ($w3UI[$uid][w3PropList] as $value) {
@@ -298,8 +354,16 @@ function W3CreateUIBasePro($uid) {
 
     # Copy everything from prototype 
     if (array_key_exists(w3PropPrototype, $w3UI[$uid])) {
+        # If there is another propotype also in prototype UI, create it first
+        if (array_key_exists(w3PropPrototype, $w3UI[$w3UI[$uid][w3PropPrototype]])) {
+            W3CreateUIBasePro($w3UI[$uid][w3PropPrototype]);
+        }
+        
         foreach ($w3UI[$w3UI[$uid][w3PropPrototype]] as $key => $value) {
-            $w3UI[$uid][$key] = $value;
+            # Do not overwrite property already in current UI
+            if (!array_key_exists($key, $w3UI[$uid])) {
+                    $w3UI[$uid][$key] = $value;
+            }
         }
     }
 }

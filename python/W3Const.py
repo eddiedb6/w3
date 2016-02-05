@@ -5,11 +5,14 @@ w3DirHelper = "python"
 w3DirDB = "db"
 w3DirGenerated = "generated"
 
-w3FileStringJS = "language.js"
 w3FileStringPHP = "language.php"
-w3FileAPI = "api.php"
-w3FileUI = "ui.php"
-w3FileConst = "const.php"
+w3FileStringJS = "language.js"
+w3FileAPIPHP = "api.php"
+w3FileAPIJS = "api.js"
+w3FileUIPHP = "ui.php"
+w3FileUIJS = "ui.js"
+w3FileConstPHP = "const.php"
+w3FileConstJS = "const.js"
 
 # Server output folders
 w3DirPHP = "php"
@@ -27,6 +30,11 @@ w3ApiParam6 = "param6"
 w3ApiParam7 = "param7"
 w3ApiParam8 = "param8"
 w3ApiParam9 = "param9"
+w3ApiResult = "result"
+w3ApiResultStatus = "status"
+w3ApiResultData = "data"
+w3ApiResultSuccessful = "success"
+w3ApiResultFailed = "failed"
 
 # Define "ui" properties
 w3PropType = "type"
@@ -38,10 +46,10 @@ w3PropList = "list"
 w3PropTH = "theader"
 w3PropTD = "tdata"
 w3PropEvent = "event"
+w3PropFunc = "function"
 w3PropMethod = "method"
 w3PropAttr = "attr"
 w3PropClass = "class"
-w3PropFunction = "function"
 w3PropPrototype = "prototype"
 
 # Define "ui" types
@@ -60,9 +68,16 @@ w3TypeCombobox = "combobox"
 # Define event
 w3EventClick = "onclick"
 
+# Define function
+w3FuncComboCreator = "funccombo"
+
 # Define method
 w3MethodGet = "get"
 w3MethodPost = "post"
+
+# Define HTML element checkbox property
+w3CBValue = "cbvalue"
+w3CBDisplay = "cbdisplay"
 
 # Define language
 w3LanEnglish = "en"

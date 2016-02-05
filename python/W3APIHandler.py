@@ -10,7 +10,7 @@ apiDefPath = os.path.join(W3Def.w3DirBase,
                           W3Const.w3DirServer,
                           W3Const.w3DirPHP,
                           W3Const.w3DirGenerated,
-                          W3Const.w3FileAPI)
+                          W3Const.w3FileAPIPHP)
 apiDef = open(apiDefPath, "w")
 
 apiDef.write("<?php\n\n")
@@ -26,8 +26,10 @@ apiDef.write(";\n\n")
 
 # API check function for each 
 for aid in W3API.w3API.keys():
-    apiDef.write("function W3IsRequest_" + W3API.w3API[aid][W3Const.w3ApiName] + "($request) {\n")
-    apiDef.write("    return preg_match(W3CreateAPIReg(\"" + aid + "\"), $request);\n")
+    apiDef.write("function W3IsRequest_" +
+                 W3API.w3API[aid][W3Const.w3ApiName] +
+                 "($request, &$parameters = NULL) {\n")
+    apiDef.write("    return preg_match(W3CreateAPIReg(\"" + aid + "\"), $request, $parameters);\n")
     apiDef.write("}\n\n")             
 
 # API create function                 
@@ -54,7 +56,7 @@ apiDef.write(funCreateAPI)
 # API regular match string create function                 
 funCreateAPIReg = "function W3CreateAPIReg($aid) {\n"
 funCreateAPIReg += "    global $w3API;\n"
-funCreateAPIReg += "    $paramCount = sizeof($w3API[$aid]) - 1;\n"
+funCreateAPIReg += "    $paramCount = W3GetAPIParamCount($aid);\n"
 funCreateAPIReg += "    $apiReg = \"/^\\/\" . $w3API[$aid][w3ApiName];\n" 
 funCreateAPIReg += "    if ($paramCount < 1) {\n" 
 funCreateAPIReg += "        return $apiReg . \"$/\";\n" 
@@ -63,7 +65,7 @@ funCreateAPIReg += "        $apiReg .= \"\\?\";\n"
 funCreateAPIReg += "    }\n"
 funCreateAPIReg += "    for ($i = 1; $i <= $paramCount; $i++) {\n" 
 funCreateAPIReg += "        $param = W3GetParamName($i);\n" 
-funCreateAPIReg += "        $apiReg .= $w3API[$aid][$param] . \"=([\\w\\-]+)\";\n" 
+funCreateAPIReg += "        $apiReg .= $w3API[$aid][$param] . \"=([\\w\\-]*)\";\n" 
 funCreateAPIReg += "        if ($i != $paramCount) {\n" 
 funCreateAPIReg += "            $apiReg .= \"&\";\n" 
 funCreateAPIReg += "        } else {\n"
@@ -76,3 +78,16 @@ apiDef.write(funCreateAPIReg)
 
 apiDef.write(" ?>\n")
 apiDef.close()
+
+# Generate JS api file
+apiDefPathJS = os.path.join(W3Def.w3DirBase,
+                            W3Const.w3DirServer,
+                            W3Const.w3DirJS,
+                            W3Const.w3DirGenerated,
+                            W3Const.w3FileAPIJS)
+apiDefJS = open(apiDefPathJS, "w")
+apiDefJS.write("var w3API = ")
+apiDefJS.write(W3Helper.W3ValueToJS(W3API.w3API, 1))
+apiDefJS.write(";")
+apiDefJS.close()
+

@@ -1,25 +1,33 @@
-<head>
-  <link rel="stylesheet" type="text/css" href="css/W3Style.css"></link>
-  <script src="jquery-2.2.0.js"></script>
-  <script src="js/W3Event.js"></script>
-  <?php W3SelectLanguage(); ?>
-</head>
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/W3Style.css"></link>
+    <script src="jquery-2.2.0.js"></script>
+    <script src="W3Helper.js"></script>
+    <script src="js/W3Event.js"></script>
+    <?php
+       W3SelectLanguage();
+       W3LoadJS();
+       ?>
+  </head>
   
-<body>
-  <div id="uidHeader">
-    <?php require("html/W3Header.html"); ?>
-  </div>
+  <body>
+    <div id="uidHeader">
+      <?php require("html/W3Header.html"); ?>
+    </div>
 
-  <div id="uidMain">
-    <div id="uidNavigation">
-      <?php require("html/W3Navigation.html"); ?>
+    <div id="uidMain">
+      <div id="uidNavigation">
+	<?php require("html/W3Navigation.html"); ?>
+      </div>
+      <div id="uidPage">
+	<?php W3SelectPage(); ?>
+      </div>
     </div>
-    <div id="uidPage">
-      <?php W3SelectPage(); ?>
-    </div>
-  </div>
     
-  <div id="uidFooter">
-    <?php require("html/W3Footer.html"); ?>
-  </div>
-</body>
+    <div id="uidFooter">
+      <?php require("html/W3Footer.html"); ?>
+    </div>
+  </body>
+</html>
+
