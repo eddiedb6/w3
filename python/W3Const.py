@@ -82,3 +82,10 @@ w3CBDisplay = "cbdisplay"
 # Define language
 w3LanEnglish = "en"
 
+# Define log level
+w3LogDebug = 0
+w3LogInfo = 1
+w3LogWarning = 2
+w3LogError = 3
+w3LogFatal = 4
+w3LogLevel = 0

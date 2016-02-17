@@ -1,5 +1,6 @@
 RewriteEngine On
 RewriteRule ^page.* index.html
 RewriteRule ^bill.* index.html
+RewriteRule ^addbill.* index.html
 
 

@@ -5,8 +5,11 @@ def W3ConstToPHP(const):
 
     constValues = ""
     for k in const.keys():
-        if isinstance(const[k], basestring) and not k.startswith('__'):
-            constValues = constValues + "define('" + k + "', '" + const[k] + "');\n"
+        if k.startswith('w3'):
+            if (isinstance(const[k], basestring)):
+                constValues = constValues + "define('" + k + "', '" + const[k] + "');\n"
+            else:
+                constValues = constValues + "define('" + k + "', " + str(const[k]) + ");\n"
 
     return constValues;
 
@@ -16,8 +19,11 @@ def W3ConstToJS(const):
 
     constValues = ""
     for k in const.keys():
-        if isinstance(const[k], basestring) and not k.startswith('__'):
-            constValues = constValues + "const " + k + " = \"" + const[k] + "\";\n"
+        if k.startswith('w3'):
+            if (isinstance(const[k], basestring)):
+                constValues = constValues + "const " + k + " = \"" + const[k] + "\";\n"
+            else:
+                constValues = constValues + "const " + k + " = " + str(const[k]) + ";\n"
 
     return constValues;
 

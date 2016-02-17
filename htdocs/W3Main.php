@@ -11,7 +11,9 @@ if (W3IsEmptyRequest()) {
     require "W3Main.html";
 } else {
     if (!W3HandleRequest()) {
-        echo "NOT handled request: " . $_SERVER["REQUEST_URI"];
+        $msg = "NOT handled request: " . $_SERVER["REQUEST_URI"];
+        W3LogError($msg);
+        echo $msg;
     }
 }
 
