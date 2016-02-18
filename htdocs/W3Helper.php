@@ -52,10 +52,20 @@ function W3IsEmptyRequest() {
 }
 
 #
+# CSS helper
+#
+function W3LoadCSS() {
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/generated/ui.css\"></link>";
+}
+    
+#
 # JS helper
 #
 
 function W3LoadJS() {
+    echo "<script src=\"jquery-2.2.0.js\"></script>";
+    echo "<script src=\"W3Helper.js\"></script>";
+    echo "<script src=\"js/W3Event.js\"></script>";
     echo "<script src=\"js/generated/api.js\"></script>";
     echo "<script src=\"js/generated/ui.js\"></script>";
     echo "<script src=\"js/generated/const.js\"></script>";

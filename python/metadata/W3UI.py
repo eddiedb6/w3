@@ -8,6 +8,37 @@ w3UI = {
     ###################################
 
     # e.g. #
+    "uidHeader": {
+        W3Const.w3PropCSS: {
+            "text-align": "center"
+        }
+    },
+
+    "uidNavigation": {
+        W3Const.w3PropCSS: {
+            "width": "20%",
+            "float": "right",
+            "border-style": "solid",
+            "border-left-width": "1px",
+            "padding-left": "5px",
+            "border-top-width": "0px",
+            "border-right-width": "0px",
+            "border-bottom-width": "0px"
+        }
+    },
+
+    "uidPage": {
+        W3Const.w3PropCSS: {
+            "width": "80%"
+        }
+    },
+    
+    "uidFooter": {
+        W3Const.w3PropCSS: {
+            "text-align": "center"
+        }
+    },
+    
     "uidTitle": { 
         W3Const.w3PropString: "sidTitle" 
     },

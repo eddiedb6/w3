@@ -11,12 +11,14 @@ w3FileAPIPHP = "api.php"
 w3FileAPIJS = "api.js"
 w3FileUIPHP = "ui.php"
 w3FileUIJS = "ui.js"
+w3FileUICSS = "ui.css"
 w3FileConstPHP = "const.php"
 w3FileConstJS = "const.js"
 
 # Server output folders
 w3DirPHP = "php"
 w3DirJS = "js"
+w3DirCSS = "css"
 
 # API properties
 w3ApiID = "aid"
@@ -51,6 +53,7 @@ w3PropMethod = "method"
 w3PropAttr = "attr"
 w3PropClass = "class"
 w3PropPrototype = "prototype"
+w3PropCSS = "css"
 
 # Define "ui" types
 w3TypeLink = "link"

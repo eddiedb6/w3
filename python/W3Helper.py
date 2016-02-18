@@ -111,7 +111,7 @@ def W3DictToJS(value, indent):
         
     for key in value.keys():
         index = index - 1
-        jsValue = jsValue + indentString + key + ": " + W3ValueToJS(value[key], indent + 1)
+        jsValue = jsValue + indentString + "\"" + key + "\"" + ": " + W3ValueToJS(value[key], indent + 1)
         if index == 0:
             jsValue = jsValue + "}"
         else:
