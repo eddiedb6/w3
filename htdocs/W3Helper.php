@@ -54,7 +54,6 @@ function W3IsEmptyRequest() {
 # CSS helper
 #
 function W3LoadCSS() {
-    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"W3Helper.css\"></link>";
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/generated/ui.css\"></link>";
 }
     

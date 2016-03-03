@@ -2,5 +2,7 @@ RewriteEngine On
 RewriteRule ^page.* index.html
 RewriteRule ^bill.* index.html
 RewriteRule ^addbill.* index.html
+RewriteRule ^income.* index.html
+RewriteRule ^addincome.* index.html
 
 
