@@ -34,24 +34,6 @@ uiJS.write(W3Helper.W3ValueToJS(W3UI.w3UI, 1))
 uiJS.write(";")
 uiJS.close()
 
-# Generate CSS for UI
-uiCSSPath = os.path.join(W3Def.w3DirBase,
-                         W3Const.w3DirServer,
-                         W3Const.w3DirCSS,
-                         W3Const.w3DirGenerated,
-                         W3Const.w3FileUICSS)
-uiCSS = open(uiCSSPath, "w")
-
-for uid in W3UI.w3UI.keys():
-    if not W3UI.w3UI[uid].has_key(W3Const.w3PropCSS):
-        continue;
-    uiCSS.write("#" + uid + " {\n")
-    for key in W3UI.w3UI[uid][W3Const.w3PropCSS].keys():
-        uiCSS.write("    " + key + ":" + W3UI.w3UI[uid][W3Const.w3PropCSS][key] + ";\n")
-    uiCSS.write("}\n\n")
-    
-uiCSS.close()
-
 # Generate Const for PHP reference
 constPhpPath = os.path.join(W3Def.w3DirBase,
                             W3Const.w3DirServer,

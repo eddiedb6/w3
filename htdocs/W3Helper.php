@@ -5,8 +5,7 @@ require "php/generated/api.php";
 require "php/generated/ui.php";
 require "php/generated/language.php";
 require "php/W3RequestHandler.php";
-require "php/W3PageSelector.php";
-require "php/W3LanguageSelector.php";
+require "php/W3PageHandler.php";
 require "php/W3UserLib.php";
 
 #
@@ -55,6 +54,7 @@ function W3IsEmptyRequest() {
 # CSS helper
 #
 function W3LoadCSS() {
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"W3Helper.css\"></link>";
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/generated/ui.css\"></link>";
 }
     
@@ -179,10 +179,10 @@ function W3GetUIBody($uid) {
     global $w3UI;
     global $w3Lan;
 
-    if (array_key_exists(w3PropBody, $w3UI[$uid]) and $w3UI[$uid][w3PropBody] != "") {
+    if (array_key_exists(w3PropString, $w3UI[$uid]) and $w3UI[$uid][w3PropString] != "") {
         $language = W3GetLanguage();
 
-        return $w3Lan[$language][$w3UI[$uid][w3PropBody]];
+        return $w3Lan[$language][$w3UI[$uid][w3PropString]];
     }
 
     return "";
@@ -223,6 +223,51 @@ function W3InsertAPIParamAttr(&$api) {
 #
 # UI Creators
 #
+
+function W3CreateHeadline($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $level = "1";
+    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
+        $level = $w3UI[$uid][w3PropTypeDef];
+    }
+
+    $type = "h" . $level;
+    $body = "";
+    $attr = "";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+    
+function W3CreateLine($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $type = "hr";
+    $body = "";
+    $attr = "";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+    
+function W3CreateLineBreak($uid) {
+    return "<br>";
+}
+    
+function W3CreateParagraph($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $type = "p";
+    $body = "";
+    $attr = "";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
 
 function W3CreateLink($uid) {
     global $w3UI;
@@ -304,11 +349,7 @@ function W3CreateCombobox($uid) {
 
     $type = "select";
     $attr = "";
-
     $body = "";
-    if (array_key_exists(w3PropFunc, $w3UI[$uid])) {
-        $body .= $w3UI[$uid][w3PropFunc][w3FuncComboCreator]();
-    }
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
@@ -324,9 +365,9 @@ function W3CreateSubmit($uid) {
     $attr = "type='submit'";
 
     # put body string as value attr for submit
-    if (array_key_exists(w3PropBody, $w3UI[$uid])) {
-        $attr .= " value=" . W3MakeString($w3Lan[W3GetLanguage()][$w3UI[$uid][w3PropBody]], true);
-        $w3UI[$uid][w3PropBody] = "";
+    if (array_key_exists(w3PropString, $w3UI[$uid])) {
+        $attr .= " value=" . W3MakeString($w3Lan[W3GetLanguage()][$w3UI[$uid][w3PropString]], true);
+        $w3UI[$uid][w3PropString] = "";
     }
     
     return W3CreateUIBase($uid, $type, $body, $attr);
@@ -363,10 +404,20 @@ function W3CreateTable($uid) {
     $type = "table";
 
     $body = "";
-    if (array_key_exists(w3PropTH, $w3UI[$uid])) {
+    $isHeadDefined = false;
+    $isRowDefined = false;
+    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
+        if (sizeof($w3UI[$uid][w3PropTypeDef]) >= 1 and sizeof($w3UI[$uid][w3PropTypeDef][0]) >= 1) {
+            $isHeadDefined = true;
+        }
+        if (sizeof($w3UI[$uid][w3PropTypeDef]) >= 2) {
+            $isRowDefined = true;
+        }
+    }
+    if ($isHeadDefined) {
         $body .= "<tr id=" . W3MakeString($uid . "Header", true) . ">";
         $header = 0;
-        foreach ($w3UI[$uid][w3PropTH] as $value) {
+        foreach ($w3UI[$uid][w3PropTypeDef][0] as $value) {
             $body .= "<th id=" . W3MakeString($uid . "Header" . strval($header), true) . ">";
             $body .= W3CreateUI($value);
             $body .= "</th>";
@@ -374,12 +425,12 @@ function W3CreateTable($uid) {
         }
         $body .= "</tr>";
     }
-    if (array_key_exists(w3PropTD, $w3UI[$uid])) {
-        $count = sizeof($w3UI[$uid][w3PropTD]);
-        for ($i = 0; $i < $count; $i++) {
+    if ($isRowDefined) {
+        $count = sizeof($w3UI[$uid][w3PropTypeDef]) - 1;
+        for ($i = 1; $i <= $count; $i++) {
             $body .= "<tr id=" . W3MakeString($uid . "Row" . strval($i), true) . ">";
             $j = 0;
-            foreach ($w3UI[$uid][w3PropTD][$i] as $value) {
+            foreach ($w3UI[$uid][w3PropTypeDef][$i] as $value) {
                 $body .= "<td id=" .
                     W3MakeString($uid . "Cell" . strval($i) . strval($j), true) .
                     ">";
@@ -396,12 +447,111 @@ function W3CreateTable($uid) {
     return W3CreateUIBase($uid, $type, $body, $attr);
 };
 
+function W3CreateTab($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $borderStyle = "solid";
+    $borderWidth = "1px";
+    $bgColor = "white";
+    
+    $type = "div";
+
+    $attr = "";
+    if (array_key_exists(w3PropCSS, $w3UI[$uid])) {
+        $attr .= "style='border-style:none'";
+        if (array_key_exists("border-style", $w3UI[$uid][w3PropCSS])) {
+            $borderStyle = $w3UI[$uid][w3PropCSS]["border-style"];
+        }
+        if (array_key_exists("border-width", $w3UI[$uid][w3PropCSS])) {
+            $borderWidth = $w3UI[$uid][w3PropCSS]["border-width"];
+        }
+        if (array_key_exists("background-color", $w3UI[$uid][w3PropCSS])) {
+            $bgColor = $w3UI[$uid][w3PropCSS]["background-color"];
+        }
+    }
+
+    $tabStyle = "clear:both;background-color:" . $bgColor .
+              ";border-top:" . $borderWidth . " " . $borderStyle;
+
+    $headerBorder = $borderWidth . " " . $borderStyle;
+
+    $headerBody = "<ul id=" . W3MakeString($uid . "header") . ">";
+    $contentBody = "<div id=" . W3MakeString($uid . "content") .
+                 " style=" . W3MakeString($tabStyle) . ">";
+    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
+        $i = 1;
+        $size = sizeof($w3UI[$uid][w3PropTypeDef]);
+        foreach ($w3UI[$uid][w3PropTypeDef] as $key => $value) {
+            $headerStyle = "float:left;list-style:none;margin-bottom:-" . $borderWidth . ";" .
+                         "background-color:" . $bgColor . ";";
+
+            if ($i == 1) {
+                $headerStyle .= "border-bottom:" . $headerBorder . " " . $bgColor . ";" .
+                             "border-top:" . $headerBorder . ";" .
+                             "border-left:" . $headerBorder . ";" .
+                             "border-right:" . $headerBorder . ";";
+
+            } 
+
+            $headerBody .= "<li" .
+                        " style=" . W3MakeString($headerStyle, true) .
+                        " id=" . W3MakeString($uid . "header" . strval($i)) .
+                        " onclick=" . W3MakeString("W3SetTab(" .
+                            W3MakeString($uid, true) . "," .
+                            strval($i) . "," .
+                            strval($size) . ")") .
+                        ">" . W3CreateUI($key) . "</li>";
+
+            $contentDisplay = $i == 1 ? "display:block" : "display:none";
+            
+            $contentBody .= "<div id=" . W3MakeString($uid . "content" . strval($i)) .
+                         " style=" . W3MakeString($contentDisplay, true) . ">" .
+                         W3CreateUI($value) .
+                         "</div>";
+            ++$i;
+        }
+    }
+    $headerBody .= "</ul>";
+    $contentBody .= "</div>";
+    $body = $headerBody . $contentBody;
+    
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+
+function W3CreatePanel($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $type = "div";
+
+    $body = "";
+    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
+        foreach ($w3UI[$uid][w3PropTypeDef] as $value) {
+            $body .= W3CreateUI($value);
+        }
+    }
+
+    $attr = "";
+    
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+
 function W3CreateUIBase($uid, $type, $body, $attr) {
+    global $w3UI;
+    
+    if (array_key_exists(w3PropFunc, $w3UI[$uid]) and
+        array_key_exists(w3FuncCreator, $w3UI[$uid][w3PropFunc])) {
+        $body .= $w3UI[$uid][w3PropFunc][w3FuncCreator]();
+    }
+
     return "<" . $type . " " .
                "id=" . W3MakeString($uid, true) . " " .
                W3GetUIEvent($uid) . " " .
                W3GetUIClass($uid) . " " .
-               W3GetUIAttr($uid) . " " . $attr . ">" .
+               $attr . " " . W3GetUIAttr($uid) . ">" .
                trim(W3GetUIBody($uid) . " " . $body) .
                "</" . $type . ">\n";
 }
@@ -425,33 +575,37 @@ function W3CreateUIBasePro($uid) {
     }
 }
 
+$w3UICreatorMap = array (
+    w3TypeTable => "W3CreateTable",
+    w3TypeLink => "W3CreateLink",
+    w3TypeLabel => "W3CreateLabel",
+    w3TypeCheckbox => "W3CreateCheckbox",
+    w3TypeDatePicker => "W3CreateDatePicker",
+    w3TypeButton => "W3CreateButton",
+    w3TypeForm => "W3CreateForm",
+    w3TypeSubmit => "W3CreateSubmit",
+    w3TypeText => "W3CreateText",
+    w3TypeCombobox => "W3CreateCombobox",
+    w3TypeTab => "W3CreateTab",
+    w3TypePanel => "W3CreatePanel",
+    w3TypeHeadline => "W3CreateHeadline",
+    w3TypeLine => "W3CreateLine",
+    w3TypeLineBreak => "W3CreateLineBreak",
+    w3TypeParagraph => "W3CreateParagraph"
+);
+
 function W3CreateUI($uid) {
     global $w3UI;
+    global $w3UICreatorMap;
 
     if (array_key_exists(w3PropType, $w3UI[$uid])) {
-        if ($w3UI[$uid][w3PropType] == w3TypeTable) {
-            return W3CreateTable($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeLink) {
-            return W3CreateLink($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeLabel) {
-            return W3CreateLabel($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeCheckbox) {
-            return W3CreateCheckbox($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeDatePicker) {
-            return W3CreateDatePicker($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeButton) {
-            return W3CreateButton($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeForm) {
-            return W3CreateForm($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeSubmit) {
-            return W3CreateSubmit($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeText) {
-            return W3CreateText($uid);
-        } else if ($w3UI[$uid][w3PropType] == w3TypeCombobox) {
-            return W3CreateCombobox($uid);
+        if (array_key_exists($w3UI[$uid][w3PropType], $w3UICreatorMap)) {
+            return $w3UICreatorMap[$w3UI[$uid][w3PropType]]($uid);
         } else {
             W3LogError("UI Type is not defined and cannot be created: " . $w3UI[$uid][w3PropType]);
         }
+    } else {
+        W3LogError("No UI type defined so cannot be created for uid: " . $uid);
     }
     
     return "";

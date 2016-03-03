@@ -4,27 +4,11 @@
     <?php
        W3LoadJS();
        W3LoadCSS();
-       W3SelectLanguage();
      ?>
   </head>
   
   <body>
-    <div id="uidHeader">
-      <?php require("html/W3Header.html"); ?>
-    </div>
-
-    <div id="uidMain">
-      <div id="uidNavigation">
-	<?php require("html/W3Navigation.html"); ?>
-      </div>
-      <div id="uidPage">
-	<?php W3SelectPage(); ?>
-      </div>
-    </div>
-    
-    <div id="uidFooter">
-      <?php require("html/W3Footer.html"); ?>
-    </div>
+    <?php W3CreatePage(); ?>
   </body>
 </html>
 

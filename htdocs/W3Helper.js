@@ -85,3 +85,41 @@ function W3GetAPIParamCount(aid) {
 function W3GetUIValue(uid) {
     return $("#" + uid).val();
 }
+
+//
+// Event Helper
+//
+
+function W3SetTab(uid, currentTab, tabSize) {
+    for (i = 1; i <= tabSize; ++i) {
+	var display = i == currentTab ? "block" : "none";
+	$("#" + uid + "content" + i.toString()).css("display", display);
+
+	var borderStyle = "solid";
+	var borderWidth = "1px";
+	var bgColor = "white";
+	if (w3UI[uid].hasOwnProperty(w3PropCSS)) {
+	    if (w3UI[uid][w3PropCSS].hasOwnProperty("border-style")) {
+		borderStyle = w3UI[uid][w3PropCSS]["border-style"];
+	    }
+	    if (w3UI[uid][w3PropCSS].hasOwnProperty("border-width")) {
+		borderWidth = w3UI[uid][w3PropCSS]["border-width"];
+	    }
+	    if (w3UI[uid][w3PropCSS].hasOwnProperty("background-color")) {
+		bgColor = w3UI[uid][w3PropCSS]["background-color"];
+	    }
+	}
+
+	if (i == currentTab) {
+	    var style = borderWidth + " " + borderStyle;
+	    var bottomStyle = style + " " + bgColor;
+	    $("#" + uid + "header" + i.toString()).css("border-bottom", bottomStyle);
+	    $("#" + uid + "header" + i.toString()).css("border-top", style);
+	    $("#" + uid + "header" + i.toString()).css("border-left", style);
+	    $("#" + uid + "header" + i.toString()).css("border-right", style);
+	} else {
+	    $("#" + uid + "header" + i.toString()).css("border", "none");
+	}
+	
+    }
+}

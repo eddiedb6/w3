@@ -40,16 +40,11 @@ w3ApiResultFailed = "failed"
 
 # Define "ui" properties
 w3PropType = "type"
+w3PropTypeDef = "typedef"
 w3PropString = "string"
-w3PropBody = "body"
 w3PropApi = "api"
-w3PropFile = "file"
-w3PropList = "list"
-w3PropTH = "theader"
-w3PropTD = "tdata"
 w3PropEvent = "event"
 w3PropFunc = "function"
-w3PropMethod = "method"
 w3PropAttr = "attr"
 w3PropClass = "class"
 w3PropPrototype = "prototype"
@@ -57,7 +52,6 @@ w3PropCSS = "css"
 
 # Define "ui" types
 w3TypeLink = "link"
-w3TypePage = "page"
 w3TypeTable = "table"
 w3TypeCheckbox = "checkbox"
 w3TypeLabel = "label"
@@ -67,20 +61,18 @@ w3TypeForm = "form"
 w3TypeSubmit = "submit"
 w3TypeText = "text"
 w3TypeCombobox = "combobox"
+w3TypeTab = "tab"
+w3TypePanel = "panel"
+w3TypeHeadline = "headline"
+w3TypeLine = "line"
+w3TypeLineBreak = "linebreak"
+w3TypeParagraph = "paragraph"
 
 # Define event
 w3EventClick = "onclick"
 
 # Define function
-w3FuncComboCreator = "funccombo"
-
-# Define method
-w3MethodGet = "get"
-w3MethodPost = "post"
-
-# Define HTML element checkbox property
-w3CBValue = "cbvalue"
-w3CBDisplay = "cbdisplay"
+w3FuncCreator = "funccreator"
 
 # Define language
 w3LanEnglish = "en"
