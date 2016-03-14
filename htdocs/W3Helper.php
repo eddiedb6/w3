@@ -317,6 +317,18 @@ function W3CreateDatePicker($uid) {
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
 
+function W3CreateMonthPicker($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $type = "input";
+    $body = "";
+    $attr = "type='month'";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+
 function W3CreateButton($uid) {
     global $w3UI;
 
@@ -580,6 +592,7 @@ $w3UICreatorMap = array (
     w3TypeLabel => "W3CreateLabel",
     w3TypeCheckbox => "W3CreateCheckbox",
     w3TypeDatePicker => "W3CreateDatePicker",
+    w3TypeMonthPicker => "W3CreateMonthPicker",
     w3TypeButton => "W3CreateButton",
     w3TypeForm => "W3CreateForm",
     w3TypeSubmit => "W3CreateSubmit",
