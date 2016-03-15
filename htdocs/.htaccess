@@ -4,5 +4,9 @@ RewriteRule ^bill.* index.html
 RewriteRule ^addbill.* index.html
 RewriteRule ^income.* index.html
 RewriteRule ^addincome.* index.html
-
+RewriteRule ^financereport.* index.html
+RewriteRule ^debt.* index.html
+RewriteRule ^adddebt.* index.html
+RewriteRule ^financetag.* index.html
+RewriteRule ^addfinancetag.* index.html
 

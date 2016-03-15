@@ -50,8 +50,12 @@ function W3CreateAPI(uid) {
     
     for (var i = 1; i <= len; ++i) {
 	var paramIndex = W3GetParamNameFromIndex(i);
-	var paramValueUI = w3UI[uid][w3PropApi][paramIndex];
-	api += apiDef[paramIndex] + "=" + W3GetUIValue(paramValueUI);
+	if (w3UI[uid][w3PropApi].hasOwnProperty(paramIndex)) {
+	    var paramValueUI = w3UI[uid][w3PropApi][paramIndex];
+	    api += apiDef[paramIndex] + "=" + W3GetUIValue(paramValueUI);
+	} else {
+	    api += apiDef[paramIndex] + "=";
+	}
 
 	if (i != len) {
 	    api += "&";

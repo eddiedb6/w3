@@ -79,6 +79,11 @@ function W3MakeString($val, $isSingleQuot = false) {
     return $quot . $val . $quot;
 }
 
+function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
+    $quot = $isSingleQuot ? "'" : "\"";
+    return $quot . strval($year) . "-" . strval($month) . "-" . strval($day) . $quot;
+}
+
 #
 # Language Helper
 #
