@@ -68,6 +68,7 @@ function W3LoadJS() {
     echo "<script src=\"js/generated/api.js\"></script>";
     echo "<script src=\"js/generated/ui.js\"></script>";
     echo "<script src=\"js/generated/const.js\"></script>";
+    echo "<script src=\"js/generated/language.js\"></script>";
 }
 
 #
@@ -218,7 +219,7 @@ function W3InsertAPIParamAttr(&$api) {
     if ($paramSize > 1) {
         for ($i = 1; $i <= $paramSize - 1; $i++) {
             $paramIndex = W3GetParamNameFromIndex($i);
-            $paramName = "name=" . W3MakeString($w3API[$api[w3ApiID]][$paramIndex], true);
+            $paramName = "name=" . W3MakeString($w3API[$api[w3ApiID]][$paramIndex][1], true);
             W3InsertAttr($api[$paramIndex], $paramName);
         }
     }

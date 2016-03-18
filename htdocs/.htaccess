@@ -7,6 +7,6 @@ RewriteRule ^addincome.* index.html
 RewriteRule ^financereport.* index.html
 RewriteRule ^debt.* index.html
 RewriteRule ^adddebt.* index.html
-RewriteRule ^financetag.* index.html
-RewriteRule ^addfinancetag.* index.html
+RewriteRule ^financeevent.* index.html
+RewriteRule ^addfinanceevent.* index.html
 

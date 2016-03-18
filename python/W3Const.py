@@ -37,6 +37,8 @@ w3ApiResultStatus = "status"
 w3ApiResultData = "data"
 w3ApiResultSuccessful = "success"
 w3ApiResultFailed = "failed"
+w3ApiValueTypeText = "textvalue"
+w3ApiValueTypeNum = "numbervalue"
 
 # Define "ui" properties
 w3PropType = "type"

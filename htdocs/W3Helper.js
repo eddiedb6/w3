@@ -52,9 +52,9 @@ function W3CreateAPI(uid) {
 	var paramIndex = W3GetParamNameFromIndex(i);
 	if (w3UI[uid][w3PropApi].hasOwnProperty(paramIndex)) {
 	    var paramValueUI = w3UI[uid][w3PropApi][paramIndex];
-	    api += apiDef[paramIndex] + "=" + W3GetUIValue(paramValueUI);
+	    api += apiDef[paramIndex][1] + "=" + W3GetUIValue(paramValueUI);
 	} else {
-	    api += apiDef[paramIndex] + "=";
+	    api += apiDef[paramIndex][1] + "=";
 	}
 
 	if (i != len) {
@@ -91,6 +91,13 @@ function W3GetUIValue(uid) {
 }
 
 //
+// Language Helper
+//
+function W3GetLanguage() {
+    return w3LanEnglish; // TODO
+}
+
+//
 // Event Helper
 //
 
@@ -124,6 +131,46 @@ function W3SetTab(uid, currentTab, tabSize) {
 	} else {
 	    $("#" + uid + "header" + i.toString()).css("border", "none");
 	}
-	
     }
+}
+
+function W3UpdateTable(uidSender, uidSinker, updater) {
+    var request = W3CreateAPI(uidSender);
+    $.get(request, function(data, status) {
+	var result = eval("(" + data + ")")[w3ApiResultData];
+
+	$("#" + uidSinker + " tr:not(:first)").remove();
+
+	if (!w3UI[uidSinker].hasOwnProperty(w3PropApi)) {
+	    W3LogError("No API binding defined for " + uidSinker);
+	    return;
+	}
+
+	var data = new Array();
+	var totalRow = result.length;
+	for (var rowIndex in result) {
+	    var rowData = "<tr>";
+	    var totalColumn = w3UI[uidSinker][w3PropApi].length;
+	    for (var columnIndex in  w3UI[uidSinker][w3PropApi]) {
+		var column = w3UI[uidSinker][w3PropApi][columnIndex];
+		if (typeof updater != 'undefined') {
+		    rowData += updater(column, result[rowIndex][column],
+				       rowIndex, totalRow,
+				       columnIndex, totalColumn,
+				       data);
+		} else {
+		    rowData += "<td>" + result[rowIndex][column] + "</td>";
+		}
+	    }
+	    rowData += "</tr>";
+	    $("#" + uidSinker + " tr:last").after(rowData);
+	}
+    });
+}
+
+function W3Submit(uid) {
+    var request = W3CreateAPI(uid);
+    $.get(request, function(data, status) {
+	alert("data: " + data);
+    });
 }
