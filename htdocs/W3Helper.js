@@ -90,6 +90,10 @@ function W3GetUIValue(uid) {
     return $("#" + uid).val();
 }
 
+function W3CreateCanvas(uid) {
+    return "<canvas id='" + uid + "'></canvas>";
+}
+
 //
 // Language Helper
 //
@@ -100,6 +104,96 @@ function W3GetLanguage() {
 //
 // Event Helper
 //
+
+function W3DrawPercentageReport(uid, percentage, text, padding) {
+    if (percentage.length != text.length) {
+	throw Error("Percentage data and text do not match!");
+	return;
+    }
+    
+    var color = [
+	"black",
+	"#616D7E",
+	"blue",
+	"#3090C7",
+	"#4E9258",
+	"green",
+	"orange",
+	"brown",
+	"coral",
+	"red",
+	"magenta",
+	"purple",
+	"#D2B9D3"
+    ];
+
+    var canvas = document.getElementById(uid);
+    var canvasContex = canvas.getContext("2d");
+
+    var radius = canvas.height / 2 - padding;
+    var x = radius + padding;
+    var y = radius + padding;
+
+    var rectWidth = 15;
+    var rectHeight = 10;
+    var rectX = x * 2 + padding;
+    var rectY = padding;
+    var textX = rectX + rectWidth + padding;
+    var textY = rectY + rectHeight;
+
+    var startAngle = 0;
+    var endAngle = 0;
+
+    var key = [];
+    for (var i in percentage) {
+	key.push(i);
+    }
+    key.sort(function (a, b) {
+	if (percentage[a] > percentage[b]) {
+	    return -1;
+	}
+	if (percentage[a] < percentage[b]) {
+	    return 1;
+	}
+	return 0;
+    });
+
+    color.sort(function (a, b) {
+	var rand = Math.round(Math.random() * 9);
+	if (rand <=3 ) {
+	    return -1;
+	}
+	if (rand >= 6) {
+	    return 1;
+	}
+	return 0;
+    });
+
+    for (var i = 0; i < key.length; ++i) {
+	// Check whether color is enough
+	if (i == color.length) {
+	    break;
+	}
+	
+	endAngle = endAngle + percentage[key[i]] * Math.PI * 2;
+	canvasContex.fillStyle = color[i];
+	canvasContex.beginPath();
+	canvasContex.moveTo(x, y);
+	canvasContex.arc(x, y, radius, startAngle, endAngle, false);
+	canvasContex.closePath();
+	canvasContex.fill();
+	startAngle = endAngle;
+
+
+	canvasContex.fillRect(rectX, rectY, rectWidth, rectHeight);
+	canvasContex.moveTo(rectX, rectY);
+	canvasContex.font = 'bold 12px';
+	var percent = text[key[i]] + ": " + (100 * percentage[key[i]]).toFixed(2) + "%";
+	canvasContex.fillText(percent, textX, textY);
+	rectY += rectHeight + padding;
+	textY += rectHeight + padding;
+    }
+}
 
 function W3SetTab(uid, currentTab, tabSize) {
     for (i = 1; i <= tabSize; ++i) {

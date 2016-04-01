@@ -37,7 +37,7 @@ w3ApiResultStatus = "status"
 w3ApiResultData = "data"
 w3ApiResultSuccessful = "success"
 w3ApiResultFailed = "failed"
-w3ApiValueTypeText = "textvalue"
+w3ApiValueTypeString = "stringvalue"
 w3ApiValueTypeNum = "numbervalue"
 
 # Define "ui" properties
@@ -70,6 +70,7 @@ w3TypeHeadline = "headline"
 w3TypeLine = "line"
 w3TypeLineBreak = "linebreak"
 w3TypeParagraph = "paragraph"
+w3TypeCanvas = "canvas"
 
 # Define event
 w3EventClick = "onclick"

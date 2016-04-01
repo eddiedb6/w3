@@ -274,6 +274,18 @@ function W3CreateParagraph($uid) {
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
 
+function W3CreateCanvas($uid) {
+    global $w3UI;
+
+    W3CreateUIBasePro($uid);
+
+    $type = "canvas";
+    $body = "";
+    $attr = "";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+
 function W3CreateLink($uid) {
     global $w3UI;
 
@@ -500,7 +512,7 @@ function W3CreateTab($uid) {
     if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
         $i = 1;
         $size = sizeof($w3UI[$uid][w3PropTypeDef]);
-        foreach ($w3UI[$uid][w3PropTypeDef] as $key => $value) {
+        foreach ($w3UI[$uid][w3PropTypeDef] as $value) {
             $headerStyle = "float:left;list-style:none;margin-bottom:-" . $borderWidth . ";" .
                          "background-color:" . $bgColor . ";";
 
@@ -519,13 +531,13 @@ function W3CreateTab($uid) {
                             W3MakeString($uid, true) . "," .
                             strval($i) . "," .
                             strval($size) . ")") .
-                        ">" . W3CreateUI($key) . "</li>";
+                        ">" . W3CreateUI($value[0]) . "</li>";
 
             $contentDisplay = $i == 1 ? "display:block" : "display:none";
             
             $contentBody .= "<div id=" . W3MakeString($uid . "content" . strval($i)) .
                          " style=" . W3MakeString($contentDisplay, true) . ">" .
-                         W3CreateUI($value) .
+                         W3CreateUI($value[1]) .
                          "</div>";
             ++$i;
         }
@@ -609,7 +621,8 @@ $w3UICreatorMap = array (
     w3TypeHeadline => "W3CreateHeadline",
     w3TypeLine => "W3CreateLine",
     w3TypeLineBreak => "W3CreateLineBreak",
-    w3TypeParagraph => "W3CreateParagraph"
+    w3TypeParagraph => "W3CreateParagraph",
+    w3TypeCanvas => "W3CreateCanvas"
 );
 
 function W3CreateUI($uid) {
