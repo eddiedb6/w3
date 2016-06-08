@@ -32,6 +32,7 @@ uiJS = open(uiJSPath, "w")
 uiJS.write("var w3UI = ")
 uiJS.write(W3Helper.W3ValueToJS(W3UI.w3UI, 1))
 uiJS.write(";")
+uiJS.write(W3Helper.W3InitDatePicker(W3UI.w3UI))
 uiJS.close()
 
 # Generate Const for PHP reference

@@ -1,3 +1,4 @@
+import W3Const
 
 def W3ConstToPHP(const):
     if not isinstance(const, dict):
@@ -119,3 +120,12 @@ def W3DictToJS(value, indent):
 
     return jsValue
 
+def W3InitDatePicker(ui):
+    js = "\n$(document).ready(function() {\n"
+    for key in ui.keys():
+        if ui[key].has_key(W3Const.w3PropType):
+            if (ui[key][W3Const.w3PropType] == W3Const.w3TypeDatePicker):
+                js = js + "\t$(\"#" + key + "\").datepicker();\n"
+
+    js = js + "});"
+    return js

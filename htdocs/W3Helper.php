@@ -55,6 +55,7 @@ function W3IsEmptyRequest() {
 #
 function W3LoadCSS() {
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/generated/ui.css\"></link>";
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"jquery-ui.min.css\"></link>";
 }
     
 #
@@ -63,6 +64,7 @@ function W3LoadCSS() {
 
 function W3LoadJS() {
     echo "<script src=\"jquery-2.2.0.js\"></script>";
+    echo "<script src=\"jquery-ui.min.js\"></script>";
     echo "<script src=\"W3Helper.js\"></script>";
     echo "<script src=\"js/W3Event.js\"></script>";
     echo "<script src=\"js/generated/api.js\"></script>";
@@ -330,7 +332,7 @@ function W3CreateDatePicker($uid) {
 
     $type = "input";
     $body = "";
-    $attr = "type='date'";
+    $attr = "type='text'";
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
