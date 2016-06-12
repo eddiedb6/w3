@@ -98,7 +98,7 @@ function W3CreateCanvas(uid) {
 // Language Helper
 //
 function W3GetLanguage() {
-    return w3LanEnglish; // TODO
+    return w3LanEnglish; // TODO, need to handle language selection
 }
 
 //

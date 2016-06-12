@@ -125,7 +125,9 @@ def W3InitDatePicker(ui):
     for key in ui.keys():
         if ui[key].has_key(W3Const.w3PropType):
             if (ui[key][W3Const.w3PropType] == W3Const.w3TypeDatePicker):
-                js = js + "\t$(\"#" + key + "\").datepicker();\n"
+                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'yy-mm-dd'});\n"
+            elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeMonthPicker):
+                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'yy-mm'});\n"
 
     js = js + "});"
     return js

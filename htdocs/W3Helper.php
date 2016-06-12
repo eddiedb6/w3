@@ -92,7 +92,7 @@ function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
 #
 
 function W3GetLanguage() {
-    return w3LanEnglish; ## TODO
+    return w3LanEnglish; ## TODO, handle language selection
 }
 
 
@@ -344,7 +344,7 @@ function W3CreateMonthPicker($uid) {
 
     $type = "input";
     $body = "";
-    $attr = "type='month'";
+    $attr = "type='text'";
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
