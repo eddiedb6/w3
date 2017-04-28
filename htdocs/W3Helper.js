@@ -66,7 +66,7 @@ function W3CreateAPI(uid) {
 }
 
 function W3GetParamNameFromIndex(i) {
-    return "param" + i;
+    return "apiparam" + i;
 }
 
 function W3GetAPIParamCount(aid) {

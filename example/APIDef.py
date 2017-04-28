@@ -1,20 +1,15 @@
-import sys
-sys.path.append("..")
-import W3Const
-
-w3Class = {
+{
     ###################################
     # User data should be added below #
     ###################################
 
     # e.g. #
-    "cidLRPadding": {
-        W3Const.w3PropCSS: {
-            "padding-left": "2px",
-            "padding-right": "2px"
-        }
+    "aidPage": {
+        W3Const.w3ElementType: W3Const.w3TypeApi,
+        W3Const.w3ApiName: "page",
+        W3Const.w3ApiParam1: "id"
     }
-    
+
     ###################################
     # User data should be added above #
     ###################################

@@ -150,7 +150,7 @@ function W3GetAPIParamArrayFromUI($uid) {
 }
 
 function W3GetParamNameFromIndex($index) {
-    return "param" . strval($index); 
+    return "apiparam" . strval($index); 
 }
 
 #
@@ -237,8 +237,8 @@ function W3CreateHeadline($uid) {
     W3CreateUIBasePro($uid);
 
     $level = "1";
-    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
-        $level = $w3UI[$uid][w3PropTypeDef];
+    if (array_key_exists(w3PropAttr, $w3UI[$uid])) {
+        $level = $w3UI[$uid][w3PropAttr];
     }
 
     $type = "h" . $level;
@@ -437,18 +437,18 @@ function W3CreateTable($uid) {
     $body = "";
     $isHeadDefined = false;
     $isRowDefined = false;
-    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
-        if (sizeof($w3UI[$uid][w3PropTypeDef]) >= 1 and sizeof($w3UI[$uid][w3PropTypeDef][0]) >= 1) {
+    if (array_key_exists(w3PropSubUI, $w3UI[$uid])) {
+        if (sizeof($w3UI[$uid][w3PropSubUI]) >= 1 and sizeof($w3UI[$uid][w3PropSubUI][0]) >= 1) {
             $isHeadDefined = true;
         }
-        if (sizeof($w3UI[$uid][w3PropTypeDef]) >= 2) {
+        if (sizeof($w3UI[$uid][w3PropSubUI]) >= 2) {
             $isRowDefined = true;
         }
     }
     if ($isHeadDefined) {
         $body .= "<tr id=" . W3MakeString($uid . "Header", true) . ">";
         $header = 0;
-        foreach ($w3UI[$uid][w3PropTypeDef][0] as $value) {
+        foreach ($w3UI[$uid][w3PropSubUI][0] as $value) {
             $body .= "<th id=" . W3MakeString($uid . "Header" . strval($header), true) . ">";
             $body .= W3CreateUI($value);
             $body .= "</th>";
@@ -457,11 +457,11 @@ function W3CreateTable($uid) {
         $body .= "</tr>";
     }
     if ($isRowDefined) {
-        $count = sizeof($w3UI[$uid][w3PropTypeDef]) - 1;
+        $count = sizeof($w3UI[$uid][w3PropSubUI]) - 1;
         for ($i = 1; $i <= $count; $i++) {
             $body .= "<tr id=" . W3MakeString($uid . "Row" . strval($i), true) . ">";
             $j = 0;
-            foreach ($w3UI[$uid][w3PropTypeDef][$i] as $value) {
+            foreach ($w3UI[$uid][w3PropSubUI][$i] as $value) {
                 $body .= "<td id=" .
                     W3MakeString($uid . "Cell" . strval($i) . strval($j), true) .
                     ">";
@@ -511,10 +511,10 @@ function W3CreateTab($uid) {
     $headerBody = "<ul id=" . W3MakeString($uid . "header") . ">";
     $contentBody = "<div id=" . W3MakeString($uid . "content") .
                  " style=" . W3MakeString($tabStyle) . ">";
-    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
+    if (array_key_exists(w3PropSubUI, $w3UI[$uid])) {
         $i = 1;
-        $size = sizeof($w3UI[$uid][w3PropTypeDef]);
-        foreach ($w3UI[$uid][w3PropTypeDef] as $value) {
+        $size = sizeof($w3UI[$uid][w3PropSubUI]);
+        foreach ($w3UI[$uid][w3PropSubUI] as $value) {
             $headerStyle = "float:left;list-style:none;margin-bottom:-" . $borderWidth . ";" .
                          "background-color:" . $bgColor . ";";
 
@@ -559,8 +559,8 @@ function W3CreatePanel($uid) {
     $type = "div";
 
     $body = "";
-    if (array_key_exists(w3PropTypeDef, $w3UI[$uid])) {
-        foreach ($w3UI[$uid][w3PropTypeDef] as $value) {
+    if (array_key_exists(w3PropSubUI, $w3UI[$uid])) {
+        foreach ($w3UI[$uid][w3PropSubUI] as $value) {
             $body .= W3CreateUI($value);
         }
     }

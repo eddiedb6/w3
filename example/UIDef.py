@@ -1,8 +1,4 @@
-import sys
-sys.path.append("..")
-import W3Const
-
-w3UI = {
+{
     ###################################
     # User data should be added below #
     ###################################
@@ -25,7 +21,7 @@ w3UI = {
     # Main Page
     "uidBody": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidHeader",
             "uidMain",
             "uidFooter"
@@ -33,7 +29,7 @@ w3UI = {
     },
     "uidHeader": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidTitle",
             "uidLine"
         ],
@@ -43,14 +39,14 @@ w3UI = {
     },
     "uidMain": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidNavigation",
             "uidContent"
         ]
     },
     "uidNavigation": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidNaviDebug",
             "uidLineBreak"
         ],
@@ -72,7 +68,7 @@ w3UI = {
     },
     "uidFooter": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidLine",
             "uidCopyright"
         ],
@@ -84,7 +80,7 @@ w3UI = {
     },
     "uidTitle": {
         W3Const.w3PropType: W3Const.w3TypeHeadline,
-        W3Const.w3PropTypeDef: "1",
+        W3Const.w3PropAttr: "1",
         W3Const.w3PropString: "sidTitle" 
     },
     "uidCopyright": {
@@ -101,7 +97,7 @@ w3UI = {
     },
     "uidPageDebug": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidDebugContent",
             "uidLineBreak",
             "uidPageErrorBackButton"
@@ -116,7 +112,7 @@ w3UI = {
     },
     "uidPageError": {
         W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropTypeDef: [
+        W3Const.w3PropSubUI: [
             "uidErrorContent",
             "uidLineBreak",
             "uidPageErrorBackButton"

@@ -1,8 +1,4 @@
-import sys
-sys.path.append("..")
-import W3Const
-
-w3Lan = {
+{
     ###################################
     # User data should be added below #
     ###################################

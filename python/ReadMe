@@ -1,8 +1,0 @@
-1. Describe API in metadata/API.py
-2. Describe UI in metadata/UI.py
-3. Add UI string in metadata/String.py
-4. Configure path and file in metadata/Def.py
-5. Generate Web file:
-      python APIHandler.py
-      python StringHandler.py
-      phthon UIHandler.py

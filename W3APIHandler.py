@@ -1,12 +1,18 @@
 import os
+import sys
 
 import W3Helper
 import W3Const
 
-from metadata import W3API
-from metadata import W3Def
+from metadata import W3Config
 
-apiDefPath = os.path.join(W3Def.w3DirBase,
+w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
+result, apiSchema = W3Helper.W3SchemaCheck(W3Config.w3APIDefPath)
+if not result:
+    print "API schema check error"
+    sys.exit(0)
+
+apiDefPath = os.path.join(w3HandlerDirBase,
                           W3Const.w3DirServer,
                           W3Const.w3DirPHP,
                           W3Const.w3DirGenerated,
@@ -17,7 +23,7 @@ apiDef.write("<?php\n\n")
 
 # Write APIs
 apiDef.write("$w3API = ")
-apiDef.write(W3Helper.W3ValueToPHP(W3API.w3API, 1))
+apiDef.write(W3Helper.W3ValueToPHP(apiSchema, 1))
 apiDef.write(";\n\n")
 
 #
@@ -25,9 +31,9 @@ apiDef.write(";\n\n")
 #
 
 # API check function for each 
-for aid in W3API.w3API.keys():
+for aid in apiSchema.keys():
     apiDef.write("function W3IsRequest_" +
-                 W3API.w3API[aid][W3Const.w3ApiName] +
+                 apiSchema[aid][W3Const.w3ApiName] +
                  "($request, &$parameters = NULL) {\n")
     apiDef.write("    return preg_match(W3CreateAPIReg(\"" + aid + "\"), $request, $parameters);\n")
     apiDef.write("}\n\n")             
@@ -80,14 +86,14 @@ apiDef.write(" ?>\n")
 apiDef.close()
 
 # Generate JS api file
-apiDefPathJS = os.path.join(W3Def.w3DirBase,
+apiDefPathJS = os.path.join(w3HandlerDirBase,
                             W3Const.w3DirServer,
                             W3Const.w3DirJS,
                             W3Const.w3DirGenerated,
                             W3Const.w3FileAPIJS)
 apiDefJS = open(apiDefPathJS, "w")
 apiDefJS.write("var w3API = ")
-apiDefJS.write(W3Helper.W3ValueToJS(W3API.w3API, 1))
+apiDefJS.write(W3Helper.W3ValueToJS(apiSchema, 1))
 apiDefJS.write(";")
 apiDefJS.close()
 

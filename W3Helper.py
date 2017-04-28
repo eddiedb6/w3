@@ -1,4 +1,17 @@
+import sys
+import os
+
 import W3Const
+
+from schema import SchemaChecker
+
+thisDir = os.path.split(os.path.realpath(__file__))[0]
+                
+def W3SchemaCheck(configPath):
+    schemaPath = os.path.join(thisDir, "W3Schema.py")
+    constPath = os.path.join(thisDir, "W3Const.py")
+    checker = SchemaChecker.SchemaChecker(configPath, schemaPath, constPath)
+    return checker.Check()
 
 def W3ConstToPHP(const):
     if not isinstance(const, dict):
