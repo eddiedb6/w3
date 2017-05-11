@@ -48,16 +48,15 @@ function W3CreateAPI(uid) {
 
     api += "?";
     
-    for (var i = 1; i <= len; ++i) {
-	var paramIndex = W3GetParamNameFromIndex(i);
-	if (w3UI[uid][w3PropApi].hasOwnProperty(paramIndex)) {
-	    var paramValueUI = w3UI[uid][w3PropApi][paramIndex];
-	    api += apiDef[paramIndex][1] + "=" + W3GetUIValue(paramValueUI);
+    for (var i = 0; i < len; ++i) {
+	if (w3UI[uid][w3PropApi].hasOwnProperty(w3ApiParams)) {
+	    var paramValueUI = w3UI[uid][w3PropApi][w3ApiParams][i][w3ApiDataValue];
+	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=" + W3GetUIValue(paramValueUI);
 	} else {
-	    api += apiDef[paramIndex][1] + "=";
+	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=";
 	}
 
-	if (i != len) {
+	if (i != len - 1) {
 	    api += "&";
 	}
     }
@@ -70,15 +69,7 @@ function W3GetParamNameFromIndex(i) {
 }
 
 function W3GetAPIParamCount(aid) {
-    var count = Object.keys(w3API[aid]).length;
-
-    if (w3API[aid].hasOwnProperty(w3ApiName)) {
-	count -= 1;
-    }
-    if (w3API[aid].hasOwnProperty(w3ApiResult)) {
-	count -= 1;
-    }
-    
+    var count = w3API[aid][w3ApiParams].length;
     return count;
 }
 

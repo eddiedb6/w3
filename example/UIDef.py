@@ -80,7 +80,7 @@
     },
     "uidTitle": {
         W3Const.w3PropType: W3Const.w3TypeHeadline,
-        W3Const.w3PropAttr: "1",
+        W3Const.w3PropAttr: "level=1",
         W3Const.w3PropString: "sidTitle" 
     },
     "uidCopyright": {
@@ -92,7 +92,11 @@
         W3Const.w3PropString: "sidNaviDebug",
         W3Const.w3PropApi: {
             W3Const.w3ApiID: "aidPage",
-            W3Const.w3ApiParam1: "uidPageDebug"
+            W3Const.w3ApiParams: [
+            {
+                W3Const.w3ApiDataType: W3Const.w3ApiDataTypeUID,
+                W3Const.w3ApiDataValue: "uidPageDebug"
+            }]
         }
     },
     "uidPageDebug": {

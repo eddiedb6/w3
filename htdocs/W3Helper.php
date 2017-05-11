@@ -119,15 +119,7 @@ function W3CreateFailedResult($isFullResult = true) {
 function W3GetAPIParamCount($aid) {
     global $w3API;
 
-    $count = sizeof($w3API[$aid]);
-
-    if (array_key_exists(w3ApiName, $w3API[$aid])) {
-        $count -= 1;
-    }
-    if (array_key_exists(w3ApiResult, $w3API[$aid])) {
-        $count -= 1;
-    }
-
+    $count = sizeof($w3API[$aid][w3ApiParams]);
     return $count;
 }
 
@@ -135,15 +127,14 @@ function W3GetAPIParamArrayFromUI($uid) {
     global $w3UI;
 
     $paramArray = array ();
-    $arraySize = sizeof($w3UI[$uid][w3PropApi]);
+    $arraySize = sizeof($w3UI[$uid][w3PropApi][w3ApiParams]);
 
-    if ($arraySize <= 1) {
+    if ($arraySize < 1) {
         return $paramArray;
     }
 
-    for ($i = 1; $i < $arraySize; $i++) {
-        $paramIndex = W3GetParamNameFromIndex($i);
-        array_push($paramArray, $w3UI[$uid][w3PropApi][$paramIndex]);
+    for ($i = 0; $i < $arraySize; $i++) {
+        array_push($paramArray, $w3UI[$uid][w3PropApi][w3ApiParams][$i][w3ApiDataValue]);
     }
     
     return $paramArray;
@@ -219,10 +210,9 @@ function W3InsertAPIParamAttr(&$api) {
     # Handle api parameter in form or button or other UI
     $paramSize = sizeof($api);
     if ($paramSize > 1) {
-        for ($i = 1; $i <= $paramSize - 1; $i++) {
-            $paramIndex = W3GetParamNameFromIndex($i);
-            $paramName = "name=" . W3MakeString($w3API[$api[w3ApiID]][$paramIndex][1], true);
-            W3InsertAttr($api[$paramIndex], $paramName);
+        for ($i = 0; $i < $paramSize; $i++) {
+            $paramName = "name=" . W3MakeString($w3API[$api[w3ApiID]][w3ApiParams][$i][w3ApiDataValue], true);
+            W3InsertAttr($api[w3ApiParams][$i][w3ApiDataValue], $paramName);
         }
     }
 }
@@ -238,7 +228,9 @@ function W3CreateHeadline($uid) {
 
     $level = "1";
     if (array_key_exists(w3PropAttr, $w3UI[$uid])) {
-        $level = $w3UI[$uid][w3PropAttr];
+        if (preg_match('/level=([0-9]?)/', $w3UI[$uid][w3PropAttr], $matches)) {
+            $level = $matches[1];
+        }
     }
 
     $type = "h" . $level;

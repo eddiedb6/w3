@@ -71,25 +71,27 @@ w3ElementTypeCollection = [
 # API properties
 w3ApiID = "apiid"
 w3ApiName = "apiname"
-w3ApiParam1 = "apiparam1"
-w3ApiParam2 = "apiparam2"
-w3ApiParam3 = "apiparam3"
-w3ApiParam4 = "apiparam4"
-w3ApiParam5 = "apiparam5"
-w3ApiParam6 = "apiparam6"
-w3ApiParam7 = "apiparam7"
-w3ApiParam8 = "apiparam8"
-w3ApiParam9 = "apiparam9"
+w3ApiParams = "apiparams"
+w3ApiData = "apidata"
+w3ApiDataType = "apidatatype"
+w3ApiDataValue = "apidatavalue"
+# API data types
+w3ApiDataTypeString = "apivaluetypestring"
+w3ApiDataTypeNum = "apivaluetypenum"
+w3ApiDataTypeUID = "apivaluetypeuid"
+w3ApiDataTypeCollection = [
+    w3ApiDataTypeString,
+    w3ApiDataTypeNum,
+    w3ApiDataTypeUID
+]
 w3ApiResult = "apiresult"
 w3ApiResultStatus = "apiresultstatus"
 w3ApiResultData = "apiresultdata"
 w3ApiResultSuccessful = "apiresultsuccessful"
 w3ApiResultFailed = "apiresultfailed"
-w3ApiValueTypeString = "apivaluetypestring"
-w3ApiValueTypeNum = "apivaluetypenum"
 
 # Define "ui" properties
-w3PropType = w3ElementType
+w3PropType = "elementtype" # w3ElementType
 w3PropSubUI = "propsubui"
 w3PropString = "propstring"
 w3PropApi = "propapi"
@@ -121,6 +123,9 @@ w3EventCollection = [
 
 # Define function
 w3FuncCreator = "funccreator"
+w3FuncCollection = [
+    w3FuncCreator
+]
 
 # Define language
 w3LanEnglish = "lanenglish"

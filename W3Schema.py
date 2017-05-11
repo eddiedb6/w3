@@ -28,7 +28,8 @@
     {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3ApiName)
+            HasKey(W3Const.w3ApiName),
+            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult]) 
         ]
     },
     W3Const.w3ApiID: {
@@ -37,32 +38,42 @@
     W3Const.w3ApiName: {
         SchemaType: SchemaTypeString
     },
-    W3Const.w3ApiParam1: {
+    W3Const.w3ApiData: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3ApiDataType, W3Const.w3ApiDataValue),
+            KeyIn([W3Const.w3ApiDataType, W3Const.w3ApiDataValue])
+        ]
+    },
+    W3Const.w3ApiDataType: {
+        SchemaType: SchemaTypeString,
+        SchemaRule: [
+            ValueIn(W3Const.w3ApiDataTypeCollection)
+        ]
+    },
+    W3Const.w3ApiDataValue: {
         SchemaType: SchemaTypeString
     },
-    W3Const.w3ApiParam2: {
-        SchemaType: SchemaTypeString
+    W3Const.w3ApiParams: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3ApiData)
+        ]
     },
-    W3Const.w3ApiParam3: {
-        SchemaType: SchemaTypeString
+    W3Const.w3ApiResult: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            KeyIn([W3Const.w3ApiResultStatus, W3Const.w3ApiResultData])
+        ]
     },
-    W3Const.w3ApiParam4: {
-        SchemaType: SchemaTypeString
+    W3Const.w3ApiResultStatus: {
+        SchemaType: SchemaTypeArray
     },
-    W3Const.w3ApiParam5: {
-        SchemaType: SchemaTypeString
-    },
-    W3Const.w3ApiParam6: {
-        SchemaType: SchemaTypeString
-    },
-    W3Const.w3ApiParam7: {
-        SchemaType: SchemaTypeString
-    },
-    W3Const.w3ApiParam8: {
-        SchemaType: SchemaTypeString
-    },
-    W3Const.w3ApiParam9: {
-        SchemaType: SchemaTypeString
+    W3Const.w3ApiResultData: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3ApiData)
+        ]
     },
 
     # Class
@@ -73,7 +84,7 @@
         ]
     },
 
-    # UI
+    # UI Type
     W3Const.w3TypeButton: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
@@ -131,6 +142,8 @@
     W3Const.w3TypeCanvas: {
         SchemaInherit: W3Const.w3TypeButton
     },
+
+    # UI Prop
     W3Const.w3PropCSS: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
@@ -146,7 +159,8 @@
     W3Const.w3PropApi: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3ApiID)
+            HasKey(W3Const.w3ApiID),
+            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams])
         ]
     },
     W3Const.w3PropEvent: {
@@ -156,7 +170,10 @@
         ]
     },
     W3Const.w3PropFunc: {
-        SchemaType: SchemaTypeDict        
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            KeyIn(W3Const.w3FuncCollection)
+        ]
     },
     W3Const.w3PropClass: {
         SchemaType: SchemaTypeString
