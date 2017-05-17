@@ -15,6 +15,15 @@
         ]
     },
 
+    # Default UI
+    W3Const.w3UIBody: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            CheckAsTypeFromKey(W3Const.w3ElementType),
+            HasKey(W3Const.w3PropDefaultPage, W3Const.w3PropDefaultErrorPage)
+        ]
+    },
+
     # String 
     W3Const.w3LanEnglish: {
         SchemaType: SchemaTypeDict,
@@ -28,8 +37,8 @@
     {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3ApiName),
-            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult]) 
+            HasKey(W3Const.w3ApiName, W3Const.w3ApiHandler),
+            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult, W3Const.w3ApiHandler]) 
         ]
     },
     W3Const.w3ApiID: {
@@ -74,6 +83,9 @@
         SchemaRule: [
             CheckForeachAsType(W3Const.w3ApiData)
         ]
+    },
+    W3Const.w3ApiHandler: {
+        SchemaType: SchemaTypeString
     },
 
     # Class
@@ -142,8 +154,17 @@
     W3Const.w3TypeCanvas: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypePage: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
 
     # UI Prop
+    W3Const.w3PropDefaultPage: {
+        SchemaType: SchemaTypeString
+    },
+    W3Const.w3PropDefaultErrorPage: {
+        SchemaType: SchemaTypeString
+    },
     W3Const.w3PropCSS: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
@@ -182,7 +203,10 @@
         SchemaType: SchemaTypeString
     },
     W3Const.w3PropAttr: {
-        SchemaType: SchemaTypeString
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            IgnoreChildSchema()
+        ]
     },
 
     # Event

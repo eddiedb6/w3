@@ -12,6 +12,21 @@ if not result:
     print "API schema check error"
     sys.exit(0)
 
+# Insert default API "aidPage"
+apiSchema["aidPage"] = {
+    W3Const.w3ElementType: W3Const.w3TypeApi,
+    W3Const.w3ApiName: "page",
+    W3Const.w3ApiParams: [
+    {
+        W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
+        W3Const.w3ApiDataValue: "id"
+    }]
+}
+
+#########################
+# Generate PHP api file #
+#########################
+
 apiDefPath = os.path.join(w3HandlerDirBase,
                           W3Const.w3DirServer,
                           W3Const.w3DirPHP,
@@ -32,60 +47,34 @@ apiDef.write(";\n\n")
 
 # API check function for each 
 for aid in apiSchema.keys():
-    apiDef.write("function W3IsRequest_" +
-                 apiSchema[aid][W3Const.w3ApiName] +
-                 "($request, &$parameters = NULL) {\n")
+    apiDef.write("function W3IsRequest_" + apiSchema[aid][W3Const.w3ApiName] + "($request, &$parameters = NULL) {\n")
     apiDef.write("    return preg_match(W3CreateAPIReg(\"" + aid + "\"), $request, $parameters);\n")
-    apiDef.write("}\n\n")             
+    apiDef.write("}\n\n")
 
-# API create function                 
-funCreateAPI = "function W3CreateAPI($aid, $paramArray) {\n"
-funCreateAPI += "    global $w3API;\n"
-funCreateAPI += "    $paramCount = sizeof($paramArray);\n"
-funCreateAPI += "    $paramDefCount = W3GetAPIParamCount($aid);\n"
-funCreateAPI += "    $apiString = $w3API[$aid][w3ApiName];\n" 
-funCreateAPI += "    if ($paramDefCount == 0) {\n" 
-funCreateAPI += "        return $apiString;\n" 
-funCreateAPI += "    } else {\n"
-funCreateAPI += "        $apiString .= \"?\";\n"
-funCreateAPI += "    }\n"
-funCreateAPI += "    for ($i = 0; $i < $paramDefCount; $i++) {\n"
-funCreateAPI += "        $paramValue = $i < $paramCount ? $paramArray[$i] : '';\n"
-funCreateAPI += "        $apiString .= $w3API[$aid][w3ApiParams][$i][w3ApiDataValue] . \"=\" . $paramValue;\n" 
-funCreateAPI += "        if ($i != $paramDefCount - 1) {\n" 
-funCreateAPI += "            $apiString .= \"&\";\n" 
-funCreateAPI += "        }\n" 
-funCreateAPI += "    }\n" 
-funCreateAPI += "    return $apiString;\n" 
-funCreateAPI += "};\n\n"
-apiDef.write(funCreateAPI)
-
-# API regular match string create function                 
-funCreateAPIReg = "function W3CreateAPIReg($aid) {\n"
-funCreateAPIReg += "    global $w3API;\n"
-funCreateAPIReg += "    $paramCount = W3GetAPIParamCount($aid);\n"
-funCreateAPIReg += "    $apiReg = \"/^\\/\" . $w3API[$aid][w3ApiName];\n" 
-funCreateAPIReg += "    if ($paramCount < 1) {\n" 
-funCreateAPIReg += "        return $apiReg . \"$/\";\n" 
-funCreateAPIReg += "    } else {\n"
-funCreateAPIReg += "        $apiReg .= \"\\?\";\n"
-funCreateAPIReg += "    }\n"
-funCreateAPIReg += "    for ($i = 0; $i < $paramCount; $i++) {\n" 
-funCreateAPIReg += "        $apiReg .= $w3API[$aid][w3ApiParams][$i][w3ApiDataValue] . \"=([\\w\\-\\.\\,]*)\";\n" 
-funCreateAPIReg += "        if ($i != $paramCount - 1) {\n" 
-funCreateAPIReg += "            $apiReg .= \"&\";\n" 
-funCreateAPIReg += "        } else {\n"
-funCreateAPIReg += "            $apiReg .= \"$/\";\n"
-funCreateAPIReg += "        }\n"
-funCreateAPIReg += "    }\n" 
-funCreateAPIReg += "    return $apiReg;\n" 
-funCreateAPIReg += "};\n\n"
-apiDef.write(funCreateAPIReg)
+# API server handler for each
+apiDef.write("function W3APIHandleRequest() {\n")
+apiDef.write("    $request = $_SERVER[\"REQUEST_URI\"];\n")
+apiDef.write("    $parameters = \"\";\n\n")
+for aid in apiSchema.keys():
+    if aid == "aidPage":
+        # Do not need to handle default api "aidPage"
+        continue
+    apiDef.write("    if (W3IsRequest_" + apiSchema[aid][W3Const.w3ApiName] + "($request, $parameters)) {\n")
+    apiDef.write("        echo " + apiSchema[aid][W3Const.w3ApiHandler] + "($parameters);\n")
+    apiDef.write("        return true;\n")
+    apiDef.write("    }\n")
+apiDef.write("\n")
+apiDef.write("    W3LogError(\"Request could not be handled: \" . $request);\n")
+apiDef.write("    return false;\n")
+apiDef.write("}\n")
 
 apiDef.write(" ?>\n")
 apiDef.close()
 
-# Generate JS api file
+########################
+# Generate JS api file #
+########################
+
 apiDefPathJS = os.path.join(w3HandlerDirBase,
                             W3Const.w3DirServer,
                             W3Const.w3DirJS,

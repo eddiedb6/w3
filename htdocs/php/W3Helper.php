@@ -1,12 +1,16 @@
 <?php
 
+# The path or dir or file name is defined by W3Const
+# However, W3Const could not be used before it's loaded
+# So here hard code is used directly and only here
+# Becareful to change W3Const and it will be affect here
 require "php/generated/const.php";
 require "php/generated/api.php";
 require "php/generated/ui.php";
 require "php/generated/language.php";
+require "php/generated/user.php";
 require "php/W3RequestHandler.php";
 require "php/W3PageHandler.php";
-require "php/W3UserLib.php";
 
 #
 # Logger
@@ -54,8 +58,10 @@ function W3IsEmptyRequest() {
 # CSS helper
 #
 function W3LoadCSS() {
-    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/generated/ui.css\"></link>";
-    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"jquery-ui.min.css\"></link>";
+    $uiPath = w3DirCSS . "/" . w3DirGenerated . "/" . w3FileUICSS;
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $uiPath . "\"></link>";
+
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery-ui.min.css\"></link>";
 }
     
 #
@@ -63,14 +69,21 @@ function W3LoadCSS() {
 #
 
 function W3LoadJS() {
-    echo "<script src=\"jquery-2.2.0.js\"></script>";
-    echo "<script src=\"jquery-ui.min.js\"></script>";
-    echo "<script src=\"W3Helper.js\"></script>";
-    echo "<script src=\"js/W3Event.js\"></script>";
-    echo "<script src=\"js/generated/api.js\"></script>";
-    echo "<script src=\"js/generated/ui.js\"></script>";
-    echo "<script src=\"js/generated/const.js\"></script>";
-    echo "<script src=\"js/generated/language.js\"></script>";
+    echo "<script src=\"js/jquery-2.2.0.js\"></script>";
+    echo "<script src=\"js/jquery-ui.min.js\"></script>";
+    echo "<script src=\"js/W3Helper.js\"></script>";
+
+    $generatedPath = w3DirJS . "/" . w3DirGenerated;
+    $apiPath = $generatedPath . "/" . w3FileAPIJS;
+    $uiPath = $generatedPath . "/" . w3FileUIJS;
+    $constPath = $generatedPath . "/" . w3FileConstJS;
+    $languagePath = $generatedPath . "/" . w3FileStringJS;
+    echo "<script src=\"" . $apiPath . "\"></script>";
+    echo "<script src=\"" . $uiPath . "\"></script>";
+    echo "<script src=\"" . $constPath . "\"></script>";
+    echo "<script src=\"" . $languagePath . "\"></script>";
+
+    W3LoadUserJS();
 }
 
 #
@@ -83,6 +96,7 @@ function W3MakeString($val, $isSingleQuot = false) {
 }
 
 function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
+    ## TODO, change based on different date format?
     $quot = $isSingleQuot ? "'" : "\"";
     return $quot . strval($year) . "-" . strval($month) . "-" . strval($day) . $quot;
 }
@@ -94,7 +108,6 @@ function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
 function W3GetLanguage() {
     return w3LanEnglish; ## TODO, handle language selection
 }
-
 
 #
 # API Helper
@@ -119,8 +132,7 @@ function W3CreateFailedResult($isFullResult = true) {
 function W3GetAPIParamCount($aid) {
     global $w3API;
 
-    $count = sizeof($w3API[$aid][w3ApiParams]);
-    return $count;
+    return sizeof($w3API[$aid][w3ApiParams]);
 }
 
 function W3GetAPIParamArrayFromUI($uid) {
@@ -140,8 +152,44 @@ function W3GetAPIParamArrayFromUI($uid) {
     return $paramArray;
 }
 
-function W3GetParamNameFromIndex($index) {
-    return "apiparam" . strval($index); 
+function W3CreateAPI($aid, $paramArray) {
+    global $w3API;
+    $paramCount = sizeof($paramArray);
+    $paramDefCount = W3GetAPIParamCount($aid);
+    $apiString = $w3API[$aid][w3ApiName];
+    if ($paramDefCount == 0) {
+        return $apiString;
+    } else {
+        $apiString .= "?";
+    }
+    for ($i = 0; $i < $paramDefCount; $i++) {
+        $paramValue = $i < $paramCount ? $paramArray[$i] : '';
+        $apiString .= $w3API[$aid][w3ApiParams][$i][w3ApiDataValue] . "=" . $paramValue;
+        if ($i != $paramDefCount - 1) {
+            $apiString .= "&";
+        }
+    }
+    return $apiString;
+}
+
+function W3CreateAPIReg($aid) {
+    global $w3API;
+    $paramCount = W3GetAPIParamCount($aid);
+    $apiReg = "/^\/" . $w3API[$aid][w3ApiName];
+    if ($paramCount < 1) {
+        return $apiReg . "$/";
+    } else {
+        $apiReg .= "\?";
+    }
+    for ($i = 0; $i < $paramCount; $i++) {
+        $apiReg .= $w3API[$aid][w3ApiParams][$i][w3ApiDataValue] . "=([\w\-\.\,]*)";
+        if ($i != $paramCount - 1) {
+            $apiReg .= "&";
+        } else {
+            $apiReg .= "$/";
+        }
+    }
+    return $apiReg;
 }
 
 #
@@ -190,19 +238,28 @@ function W3GetUIAttr($uid) {
     global $w3UI;
 
     if (array_key_exists(w3PropAttr, $w3UI[$uid])) {
-        return $w3UI[$uid][w3PropAttr];
+        $attr = "";
+        foreach ($w3UI[$uid][w3PropAttr] as $key => $value) {
+            $attr = $attr . $key . "=" . $value . " ";
+        }
+        
+        return $attr;
     }
 
     return "";
 }
 
-function W3InsertAttr($uid, $attr) {
+function W3InsertAttr($uid, $attrDict) {
     global $w3UI;
 
     if (array_key_exists(w3PropAttr, $w3UI[$uid])) {
-        $w3UI[$uid][w3PropAttr] = $w3UI[$uid][w3PropAttr] . " " . $attr;
+        foreach ($attrDict as $key => $value) {
+            if (!array_key_exists($key, $w3UI[$uid][w3PropAttr])) {
+                $w3UI[$uid][w3PropAttr][$key] = $value;
+            }
+        }
     } else {
-        $w3UI[$uid][w3PropAttr] = $attr;
+        $w3UI[$uid][w3PropAttr] = $attrDict;
     }
 }
 
@@ -228,8 +285,8 @@ function W3CreateHeadline($uid) {
 
     $level = "1";
     if (array_key_exists(w3PropAttr, $w3UI[$uid])) {
-        if (preg_match('/level=([0-9]?)/', $w3UI[$uid][w3PropAttr], $matches)) {
-            $level = $matches[1];
+        if (array_key_exists(w3AttrHeadlineLevel, $w3UI[$uid][w3PropAttr])) {
+            $level = $w3UI[$uid][w3PropAttr][w3AttrHeadlineLevel];
         }
     }
 
@@ -287,8 +344,7 @@ function W3CreateLink($uid) {
 
     $type = "a";
     $body = "";
-    $attr = "href=" .
-          W3MakeString(W3CreateAPI($w3UI[$uid][w3PropApi][w3ApiID], W3GetAPIParamArrayFromUI($uid)), true);
+    $attr = "href=" . W3MakeString(W3CreateAPI($w3UI[$uid][w3PropApi][w3ApiID], W3GetAPIParamArrayFromUI($uid)), true);
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 };
@@ -404,10 +460,10 @@ function W3CreateForm($uid) {
 
     $type = "form";
 
-    $attr = "name='input' action=" . W3MakeString($w3API[$w3UI[$uid][w3PropApi][w3ApiID]][w3ApiName], true) .
-          " method=" . W3MakeString($w3UI[$uid][w3PropMethod], true);
+    $attr = "name='input' action=" . W3MakeString($w3API[$w3UI[$uid][w3PropApi][w3ApiID]][w3ApiName], true) . " method=" . W3MakeString($w3UI[$uid][w3PropMethod], true);
 
-    W3InsertAPIParamAttr($w3UI[$uid][w3PropApi]);
+    # TODO
+    #W3InsertAPIParamAttr($w3UI[$uid][w3PropApi]);
     
     $body = "";
     if (array_key_exists(w3PropList, $w3UI[$uid])) {
@@ -475,6 +531,7 @@ function W3CreateTab($uid) {
 
     W3CreateUIBasePro($uid);
 
+    # TODO: resolve hard code here
     $borderStyle = "solid";
     $borderWidth = "1px";
     $bgColor = "white";
@@ -562,6 +619,22 @@ function W3CreatePanel($uid) {
     return W3CreateUIBase($uid, $type, $body, $attr);
 }
 
+function W3CreatePage($uid) {
+    global $w3UI;
+
+    # No matter what functor defined for page type, it's creator is default to W3SelectPage
+    $pageCreator = "W3SelectPage";
+    if (array_key_exists(w3PropFunc, $w3UI[$uid])) {        
+        $w3UI[$uid][w3PropFunc][w3FuncCreator] = $pageCreator;
+    } else {
+        $w3UI[$uid][w3PropFunc] = array(
+            w3FuncCreator => $pageCreator
+        );
+    }
+    
+    return W3CreatePanel($uid);
+}
+
 function W3CreateUIBase($uid, $type, $body, $attr) {
     global $w3UI;
     
@@ -616,7 +689,8 @@ $w3UICreatorMap = array (
     w3TypeLine => "W3CreateLine",
     w3TypeLineBreak => "W3CreateLineBreak",
     w3TypeParagraph => "W3CreateParagraph",
-    w3TypeCanvas => "W3CreateCanvas"
+    w3TypeCanvas => "W3CreateCanvas",
+    w3TypePage => "W3CreatePage"
 );
 
 function W3CreateUI($uid) {

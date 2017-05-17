@@ -4,6 +4,18 @@
     ###################################
 
     # e.g. #
+    # W3Const.w3UIBody must be defined in UI define file
+    W3Const.w3UIBody: {
+        W3Const.w3PropDefaultPage: "uidPageDebug",
+        W3Const.w3PropDefaultErrorPage: "uidPageError",
+        W3Const.w3PropType: W3Const.w3TypePanel,
+        W3Const.w3PropSubUI: [
+            "uidHeader",
+            "uidMain",
+            "uidFooter"
+        ]
+    },
+
     "uidButtonBack": {
         W3Const.w3PropType: W3Const.w3TypeButton,
         W3Const.w3PropString: "sidButtonBack",
@@ -19,14 +31,6 @@
     },
 
     # Main Page
-    "uidBody": {
-        W3Const.w3PropType: W3Const.w3TypePanel,
-        W3Const.w3PropSubUI: [
-            "uidHeader",
-            "uidMain",
-            "uidFooter"
-        ]
-    },
     "uidHeader": {
         W3Const.w3PropType: W3Const.w3TypePanel,
         W3Const.w3PropSubUI: [
@@ -41,7 +45,7 @@
         W3Const.w3PropType: W3Const.w3TypePanel,
         W3Const.w3PropSubUI: [
             "uidNavigation",
-            "uidContent"
+            "uidPage"
         ]
     },
     "uidNavigation": {
@@ -56,12 +60,9 @@
             "float": "left",
         }
     },
-    "uidContent": {
-        W3Const.w3PropType: W3Const.w3TypePanel,
+    "uidPage": {
+        W3Const.w3PropType: W3Const.w3TypePage,
         W3Const.w3PropClass: "cidLRPadding",
-        W3Const.w3PropFunc: {
-            W3Const.w3FuncCreator: "W3SelectPage"
-        },
         W3Const.w3PropCSS: {
             "float": "left"
         }
@@ -80,7 +81,9 @@
     },
     "uidTitle": {
         W3Const.w3PropType: W3Const.w3TypeHeadline,
-        W3Const.w3PropAttr: "level=1",
+        W3Const.w3PropAttr: {
+            W3Const.w3AttrHeadlineLevel : "1"
+        },
         W3Const.w3PropString: "sidTitle" 
     },
     "uidCopyright": {

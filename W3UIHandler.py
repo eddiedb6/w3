@@ -60,6 +60,7 @@ constPhpPath = os.path.join(w3HandlerDirBase,
 constPhp = open(constPhpPath, "w")
 constPhp.write("<?php\n\n")
 constPhp.write(W3Helper.W3ConstToPHP(constDef))
+constPhp.write("define('w3LogLevel', " + str(W3Config.w3LogLevel) + ");\n");
 constPhp.write("\n\n")
 constPhp.write(" ?>")
 constPhp.close()
@@ -72,4 +73,5 @@ constJSPath = os.path.join(w3HandlerDirBase,
                            W3Const.w3FileConstJS)
 constJS = open(constJSPath, "w")
 constJS.write(W3Helper.W3ConstToJS(constDef))
+constJS.write("const w3LogLevel = " + str(W3Config.w3LogLevel) + ";\n")
 constJS.close()

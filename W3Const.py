@@ -1,9 +1,7 @@
 # Folder and file def
-w3DirMeta = "python/metadata"
 w3DirServer = "htdocs"
-w3DirHelper = "python"
-w3DirDB = "db"
 w3DirGenerated = "generated"
+w3DirUserFile = "user"
 
 w3FileStringPHP = "language.php"
 w3FileStringJS = "language.js"
@@ -14,11 +12,15 @@ w3FileUIJS = "ui.js"
 w3FileUICSS = "ui.css"
 w3FileConstPHP = "const.php"
 w3FileConstJS = "const.js"
+w3FileUserPHP = "user.php"
 
 # Server output folders
 w3DirPHP = "php"
 w3DirJS = "js"
 w3DirCSS = "css"
+
+# Default UI
+w3UIBody = "uibody"
 
 # W3 element types
 w3ElementType = "elementtype"
@@ -43,6 +45,7 @@ w3TypeLine = "typeline"
 w3TypeLineBreak = "typelinebreak"
 w3TypeParagraph = "typeparagraph"
 w3TypeCanvas = "typecanvas"
+w3TypePage = "typepage"
 # Collect types
 w3ElementTypeCollection = [
     w3TypeApi,
@@ -65,7 +68,8 @@ w3ElementTypeCollection = [
     w3TypeLine,
     w3TypeLineBreak,
     w3TypeParagraph,
-    w3TypeCanvas
+    w3TypeCanvas,
+    w3TypePage
 ]
 
 # API properties
@@ -89,8 +93,11 @@ w3ApiResultStatus = "apiresultstatus"
 w3ApiResultData = "apiresultdata"
 w3ApiResultSuccessful = "apiresultsuccessful"
 w3ApiResultFailed = "apiresultfailed"
+w3ApiHandler = "apihandler"
 
 # Define "ui" properties
+w3PropDefaultPage = "propdefaultpage"
+w3PropDefaultErrorPage = "propdefaulterrorpage"
 w3PropType = "elementtype" # w3ElementType
 w3PropSubUI = "propsubui"
 w3PropString = "propstring"
@@ -103,6 +110,8 @@ w3PropPrototype = "propprototype"
 w3PropCSS = "propcss"
 # Collect UI properties
 w3PropCollection = [
+    w3PropDefaultPage,
+    w3PropDefaultErrorPage,
     w3PropType,
     w3PropSubUI,
     w3PropString,
@@ -114,6 +123,9 @@ w3PropCollection = [
     w3PropPrototype,
     w3PropCSS
 ]
+
+# Define "ui" attributes
+w3AttrHeadlineLevel = "attrheadlinelevel"
 
 # Define event
 w3EventClick = "eventclick"
@@ -136,4 +148,3 @@ w3LogInfo = 1
 w3LogWarning = 2
 w3LogError = 3
 w3LogFatal = 4
-w3LogLevel = 0

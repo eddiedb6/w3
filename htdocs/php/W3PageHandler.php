@@ -1,29 +1,17 @@
 <?php
 
-function W3CreatePage() {
-    #############################################
-    # User function logic should be added below #
-    #############################################
-
-    # e.g. #
-    echo W3CreateUI("uidBody");
-
-    #############################################
-    # User function logic should be added above #
-    #############################################
+function W3LoadPage() {
+    echo W3CreateUI(w3UIBody);
 }
 
 function W3SelectPage() {
-    #############################################
-    # User function logic should be added below #
-    #############################################
-
-    # e.g. #
-    
     global $w3UI;
 
     if (W3IsEmptyRequest()) {
-        return W3CreateUI("uidPageDebug");
+        $defaultPageID = $w3UI[w3UIBody][w3PropDefaultPage];
+        if (array_key_exists($defaultPageID, $w3UI)) {
+            return W3CreateUI($defaultPageID);
+        }
     } else {
         if (preg_match(W3CreateAPIReg("aidPage"), $_SERVER["REQUEST_URI"], $matches) and 
             array_key_exists($matches[1], $w3UI)) {
@@ -31,11 +19,7 @@ function W3SelectPage() {
         }
     }
 
-    return W3CreateUI("uidPageError");
-
-    #############################################
-    # User function logic should be added above #
-    #############################################
+    return W3CreateUI($w3UI[w3UIBody][w3PropDefaultErrorPage]);
 }
 
  ?>

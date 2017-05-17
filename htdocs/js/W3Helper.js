@@ -64,10 +64,6 @@ function W3CreateAPI(uid) {
     return api;
 }
 
-function W3GetParamNameFromIndex(i) {
-    return "apiparam" + i;
-}
-
 function W3GetAPIParamCount(aid) {
     var count = w3API[aid][w3ApiParams].length;
     return count;
@@ -258,4 +254,12 @@ function W3Submit(uid) {
     $.get(request, function(data, status) {
 	alert("data: " + data);
     });
+}
+
+//
+// Event helpers
+//
+
+function W3GoBack() {
+    javascript:history.back(-1);
 }

@@ -5,7 +5,7 @@
 # So any global variable, function or any include could be used here
 #
 
-require "W3Helper.php";
+require "php/W3Helper.php";
 
 if (W3IsEmptyRequest()) {
     require "W3Main.html";
