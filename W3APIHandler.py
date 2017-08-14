@@ -1,13 +1,13 @@
 import os
 import sys
 
-import W3Helper
+import W3Util
 import W3Const
 
 from metadata import W3Config
 
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
-result, apiSchema = W3Helper.W3SchemaCheck(W3Config.w3APIDefPath)
+result, apiSchema = W3Util.W3SchemaCheck(W3Config.w3APIDefPath)
 if not result:
     print "API schema check error"
     sys.exit(0)
@@ -38,7 +38,7 @@ apiDef.write("<?php\n\n")
 
 # Write APIs
 apiDef.write("$w3API = ")
-apiDef.write(W3Helper.W3ValueToPHP(apiSchema, 1))
+apiDef.write(W3Util.W3ValueToPHP(apiSchema, 1))
 apiDef.write(";\n\n")
 
 #
@@ -82,7 +82,7 @@ apiDefPathJS = os.path.join(w3HandlerDirBase,
                             W3Const.w3FileAPIJS)
 apiDefJS = open(apiDefPathJS, "w")
 apiDefJS.write("var w3API = ")
-apiDefJS.write(W3Helper.W3ValueToJS(apiSchema, 1))
+apiDefJS.write(W3Util.W3ValueToJS(apiSchema, 1))
 apiDefJS.write(";")
 apiDefJS.close()
 

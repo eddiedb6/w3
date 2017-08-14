@@ -1,16 +1,16 @@
 import os
 
-import W3Helper
+import W3Util
 import W3Const
 
 from metadata import W3Config
 
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
-result, classDef = W3Helper.W3SchemaCheck(W3Config.w3ClassDefPath)
+result, classDef = W3Util.W3SchemaCheck(W3Config.w3ClassDefPath)
 if not result:
     print "Class schema check error"
     sys.exit(0)
-result, uiDef = W3Helper.W3SchemaCheck(W3Config.w3UIDefPath)
+result, uiDef = W3Util.W3SchemaCheck(W3Config.w3UIDefPath)
 if not result:
     print "UI schema check error"
     sys.exit(0)

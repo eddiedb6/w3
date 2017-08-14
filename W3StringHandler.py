@@ -1,13 +1,13 @@
 import os
 import sys
 
-import W3Helper
+import W3Util
 import W3Const
 
 from metadata import W3Config
 
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
-result, stringDef = W3Helper.W3SchemaCheck(W3Config.w3StringDefPath)
+result, stringDef = W3Util.W3SchemaCheck(W3Config.w3StringDefPath)
 if not result:
     print "String schema check error"
     sys.exit(0)
@@ -21,7 +21,7 @@ languagePHPPath = os.path.join(w3HandlerDirBase,
 languagePHP = open(languagePHPPath, "w")
 languagePHP.write("<?php\n\n")
 languagePHP.write("$w3Lan = ")
-languagePHP.write(W3Helper.W3ValueToPHP(stringDef, 1))
+languagePHP.write(W3Util.W3ValueToPHP(stringDef, 1))
 languagePHP.write(";\n\n")
 languagePHP.write(" ?>")
 languagePHP.close()
@@ -34,6 +34,6 @@ languageJSPath = os.path.join(w3HandlerDirBase,
                               W3Const.w3FileStringJS)
 languageJS = open(languageJSPath, "w")
 languageJS.write("var w3Lan = ")
-languageJS.write(W3Helper.W3ValueToJS(stringDef, 1))
+languageJS.write(W3Util.W3ValueToJS(stringDef, 1))
 languageJS.write(";")
 languageJS.close()

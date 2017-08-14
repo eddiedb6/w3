@@ -29,6 +29,7 @@ w3TypeClass = "typeclass"
 # Define "ui" types
 w3TypeLink = "typelink"
 w3TypeTable = "typetable"
+w3TypeTableHeader = "typetableheader"
 w3TypeCheckbox = "typecheckbox"
 w3TypeLabel = "typelabel"
 w3TypeDatePicker = "typedatepicker"
@@ -53,6 +54,7 @@ w3ElementTypeCollection = [
 
     w3TypeLink,
     w3TypeTable,
+    w3TypeTableHeader,
     w3TypeCheckbox,
     w3TypeLabel,
     w3TypeDatePicker,
@@ -83,10 +85,12 @@ w3ApiDataValue = "apidatavalue"
 w3ApiDataTypeString = "apivaluetypestring"
 w3ApiDataTypeNum = "apivaluetypenum"
 w3ApiDataTypeUID = "apivaluetypeuid"
+w3ApiDataTypeSID = "apivaluetypesid"
 w3ApiDataTypeCollection = [
     w3ApiDataTypeString,
     w3ApiDataTypeNum,
-    w3ApiDataTypeUID
+    w3ApiDataTypeUID,
+    w3ApiDataTypeSID
 ]
 w3ApiResult = "apiresult"
 w3ApiResultStatus = "apiresultstatus"
@@ -128,7 +132,7 @@ w3PropCollection = [
 w3AttrHeadlineLevel = "attrheadlinelevel"
 
 # Define event
-w3EventClick = "eventclick"
+w3EventClick = "onclick" # It's js event name and do not change it
 w3EventCollection = [
     w3EventClick
 ]

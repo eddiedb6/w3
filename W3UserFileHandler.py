@@ -2,7 +2,6 @@ import os
 import sys
 import shutil
 
-import W3Helper
 import W3Const
 
 from metadata import W3Config

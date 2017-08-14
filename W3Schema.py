@@ -104,9 +104,16 @@
         ]
     },
     W3Const.w3TypeLink: {
-        SchemaInherit: W3Const.w3TypeButton
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            KeyIn(W3Const.w3PropCollection),
+            HasKey(W3Const.w3PropApi)
+        ]
     },
     W3Const.w3TypeTable: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
+    W3Const.w3TypeTableHeader: {
         SchemaInherit: W3Const.w3TypeButton
     },
     W3Const.w3TypeCheckbox: {
@@ -181,7 +188,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams])
+            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams, W3Const.w3ApiResult])
         ]
     },
     W3Const.w3PropEvent: {
@@ -211,7 +218,7 @@
 
     # Event
     W3Const.w3EventClick: {
-        SchemaType: SchemaTypeString
+        SchemaType: SchemaTypeArray
     },
 
     # Functor
