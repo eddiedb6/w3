@@ -126,15 +126,4 @@ function W3InsertAttr($uid, $attrDict) {
     }
 }
 
-function W3InsertAPIParamAttr(&$api) {
-    # Handle api parameter in form or button or other UI
-    $paramSize = sizeof($api);
-    if ($paramSize > 1) {
-        for ($i = 0; $i < $paramSize; $i++) {
-            $paramName = "name=" . W3MakeString($w3API[$api[w3ApiID]][w3ApiParams][$i][w3ApiDataValue], true);
-            W3InsertAttr($api[w3ApiParams][$i][w3ApiDataValue], $paramName);
-        }
-    }
-}
-
 ?>

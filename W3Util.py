@@ -133,14 +133,20 @@ def W3DictToJS(value, indent):
 
     return jsValue
 
+def W3ConvertToDatePickerFormat(w3Format):
+    w3Format = w3Format.replace("YYYY", "yy", 1)
+    w3Format = w3Format.replace("MM", "mm", 1)
+    w3Format = w3Format.replace("DD", "dd", 1)
+    return w3Format
+    
 def W3InitDatePicker(ui):
     js = "\n$(document).ready(function() {\n"
     for key in ui.keys():
         if ui[key].has_key(W3Const.w3PropType):
             if (ui[key][W3Const.w3PropType] == W3Const.w3TypeDatePicker):
-                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'yy-mm-dd'});\n"
+                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3DateFormat) + "'});\n"
             elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeMonthPicker):
-                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'yy-mm'});\n"
+                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3MonthFormat) + "'});\n"
 
     js = js + "});"
     return js

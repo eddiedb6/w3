@@ -98,9 +98,13 @@ function W3MakeString($val, $isSingleQuot = false) {
 }
 
 function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
-    ## TODO, change based on different date format?
+    $dateFormat = w3DateFormat;
+    $dateFormat = str_replace("YYYY", strval($year), $dateFormat);
+    $dateFormat = str_replace("MM", strval($month), $dateFormat);
+    $dateFormat = str_replace("DD", strval($day), $dateFormat);
+    
     $quot = $isSingleQuot ? "'" : "\"";
-    return $quot . strval($year) . "-" . strval($month) . "-" . strval($day) . $quot;
+    return $quot . $dateFormat . $quot;
 }
 
 #
@@ -108,7 +112,7 @@ function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
 #
 
 function W3GetLanguage() {
-    return w3LanEnglish; ## TODO, handle language selection
+    return w3LanEnglish; # [ED]PENDING: Handle language selection
 }
 
 #
@@ -359,9 +363,6 @@ function W3CreateForm($uid) {
 
     $attr = "name='input' action=" . W3MakeString($w3API[$w3UI[$uid][w3PropApi][w3ApiID]][w3ApiName], true) . " method=" . W3MakeString($w3UI[$uid][w3PropMethod], true);
 
-    # TODO
-    #W3InsertAPIParamAttr($w3UI[$uid][w3PropApi]);
-    
     $body = "";
     if (array_key_exists(w3PropList, $w3UI[$uid])) {
         foreach ($w3UI[$uid][w3PropList] as $value) {

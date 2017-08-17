@@ -224,5 +224,9 @@
     # Functor
     W3Const.w3FuncCreator: {
         SchemaType: SchemaTypeString
+    },
+    W3Const.w3FuncProcessor: {
+        SchemaType: SchemaTypeArray
     }
+    
 }

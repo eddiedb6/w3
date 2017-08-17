@@ -112,6 +112,7 @@ w3PropAttr = "propattr"
 w3PropClass = "propclass"
 w3PropPrototype = "propprototype"
 w3PropCSS = "propcss"
+w3PropBinding = "propbinding"
 # Collect UI properties
 w3PropCollection = [
     w3PropDefaultPage,
@@ -125,7 +126,8 @@ w3PropCollection = [
     w3PropAttr,
     w3PropClass,
     w3PropPrototype,
-    w3PropCSS
+    w3PropCSS,
+    w3PropBinding
 ]
 
 # Define "ui" attributes
@@ -139,12 +141,31 @@ w3EventCollection = [
 
 # Define function
 w3FuncCreator = "funccreator"
+w3FuncProcessor = "funcprocessor"
 w3FuncCollection = [
-    w3FuncCreator
+    w3FuncCreator,
+    w3FuncProcessor
 ]
+
+# Define function parameter holder
+w3PlaceHolder_1 = "w3PlaceHolder_1"
+w3PlaceHolder_2 = "w3PlaceHolder_2"
+w3PlaceHolder_3 = "w3PlaceHolder_3"
+w3PlaceHolder_4 = "w3PlaceHolder_4"
+w3PlaceHolder_5 = "w3PlaceHolder_5"
+w3PlaceHolder_6 = "w3PlaceHolder_6"
+w3PlaceHolder_7 = "w3PlaceHolder_7"
+w3PlaceHolder_8 = "w3PlaceHolder_8"
+w3PlaceHolder_9 = "w3PlaceHolder_9"
 
 # Define language
 w3LanEnglish = "lanenglish"
+
+# Datetime format
+# Keep the same as MySQL and do not change it
+w3DatetimeFormat = "YYYY-MM-DD HH:MM:SS"
+w3DateFormat = "YYYY-MM-DD"
+w3MonthFormat = "YYYY-MM"
 
 # Define log level
 w3LogDebug = 0

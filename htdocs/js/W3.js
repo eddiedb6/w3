@@ -86,7 +86,7 @@ function W3CreateAPI(uid) {
 //
 
 function W3GetLanguage() {
-    return w3LanEnglish; // TODO, need to handle language selection
+    return w3LanEnglish; // [ED]PENDING: Need to handle language selection
 }
 
 function W3GetStringValue(sid) {
@@ -232,8 +232,11 @@ function W3UpdateTableByAPI(uidSender, uidSinker) {
 			}
 
 			if (w3UI[uidTableHeader].hasOwnProperty(w3PropFunc)) {
-			    if (w3UI[uidTableHeader][w3PropFunc].hasOwnProperty(w3FuncCreator)) {
-				columnElementValue = W3FormatTableValue(columnElementValue, w3UI[uidTableHeader][w3PropFunc][w3FuncCreator]);
+			    if (w3UI[uidTableHeader][w3PropFunc].hasOwnProperty(w3FuncProcessor)) {
+				var formatters = w3UI[uidTableHeader][w3PropFunc][w3FuncProcessor];
+				for (var formatterIndex in formatters) {
+				    columnElementValue = W3FormatValue(columnElementValue, formatters[formatterIndex]);
+				}
 			    }
 			}
 		    } 
@@ -252,31 +255,35 @@ function W3UpdateTableByAPI(uidSender, uidSinker) {
 //
 
 function W3FormatDatetime(datetime, format) {
-    // TODO: do real format for datetime
-    return datetime.split(" ")[0];
-}
-
-function W3FormatTableValue(value, formatter) {
-    // TODO: do real format calld
-    var index = formatter.indexOf("(");
-    if (index < 0) {
-	W3LogError("Formatter name not found: " + formatter);
-	return value;
+    // w3DatetimeFormat = "YYYY-MM-DD HH:MM:SS"
+    var pattern = new RegExp("^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$");
+    var result = pattern.exec(datetime);
+    if (result == null) {
+	W3LogError("It's not W3 datetime format: " + datetime);
+	return datetime;
     }
-    
-    var formatterName = formatter.substr(0, index);
-    
-    var paramStr = formatter.substr(index + 1);
-    index = paramStr.indexOf(")");
-    if (index < 0) {
-	W3LogError("Formatter parameters not match: " + formatter);
-	return value;
-    }
-    paramStr = paramStr.substr(0, index);
-    var paramters = paramStr.split(",");
 
-    var func = eval(formatterName);
-    return func(value, paramters[1]);
+    var formatArray = format.split(" ");
+    if (formatArray.length <= 0 || formatArray.length > 2) {
+	W3LogError("Unexpected datetime format required: " + format);
+	return datetime;
+    }
+
+    var date = formatArray[0];
+    date = date.replace(/yyyy/i, result[1]);
+    date = date.replace(/mm/i, result[2]);
+    date = date.replace(/dd/i, result[3]);
+
+    if (formatArray.length < 2) {
+	return date;
+    }
+
+    var time = formatArray[1];
+    time = time.replace(/hh/i, result[4]);
+    time = time.replace(/mm/i, result[5]);
+    time = time.replace(/ss/i, result[6]);
+
+    return date + " " + time;	
 }
 
 //
@@ -284,7 +291,6 @@ function W3FormatTableValue(value, formatter) {
 //
 
 function W3DrawPercentageReport(uid, percentage, text, padding) {
-    // TODO
     if (percentage.length != text.length) {
 	throw Error("Percentage data and text do not match!");
 	return;
@@ -353,7 +359,7 @@ function W3DrawPercentageReport(uid, percentage, text, padding) {
 	if (i == color.length) {
 	    break;
 	}
-	
+
 	endAngle = endAngle + percentage[key[i]] * Math.PI * 2;
 	canvasContex.fillStyle = color[i];
 	canvasContex.beginPath();
@@ -363,10 +369,10 @@ function W3DrawPercentageReport(uid, percentage, text, padding) {
 	canvasContex.fill();
 	startAngle = endAngle;
 
-
 	canvasContex.fillRect(rectX, rectY, rectWidth, rectHeight);
 	canvasContex.moveTo(rectX, rectY);
 	canvasContex.font = 'bold 12px';
+
 	var percent = text[key[i]] + ": " + (100 * percentage[key[i]]).toFixed(2) + "%";
 	canvasContex.fillText(percent, textX, textY);
 	rectY += rectHeight + padding;
