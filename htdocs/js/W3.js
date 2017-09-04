@@ -33,114 +33,100 @@ function W3LogFatal(msg) {
 }
 
 //
-// API 
-//
-
-function W3CreateAPI(uid) {
-    if (!w3UI[uid].hasOwnProperty(w3PropApi))
-    {
-	W3LogError("There is no API property defined to create API for uid: " + uid);
-	return "";
-    }
-
-    // w3ApiID is mandatory for w3PropApi
-    var apiBinding = w3UI[uid][w3PropApi];
-    var apiDef = w3API[apiBinding[w3ApiID]];
-    var api = apiDef[w3ApiName];
-    
-    var len = W3GetAPIParamCount(apiBinding[w3ApiID]);
-
-    if (len < 1) {
-	return api;
-    }
-
-    api += "?";
-
-    inputParamLen = 0;
-    if (apiBinding.hasOwnProperty(w3ApiParams)) {
-	inputParamLen = apiBinding[w3ApiParams].length;
-    }
-
-    if (len != inputParamLen) {
-	W3LogWarning("The api binding does not match exactly to api def: " + uid);
-    }
-    
-    for (var i = 0; i < len; ++i) {
-	if (i < inputParamLen) {
-	    var paramValueUI = apiBinding[w3ApiParams][i][w3ApiDataValue];
-	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=" + W3GetAPIParamValue(apiBinding[w3ApiParams][i]);
-	} else {
-	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=";
-	}
-
-	if (i != len - 1) {
-	    api += "&";
-	}
-    }
-    
-    return api;
-}
-
-//
 // Language 
 //
 
-function W3GetLanguage() {
-    return w3LanEnglish; // [ED]PENDING: Need to handle language selection
-}
-
 function W3GetStringValue(sid) {
-    return w3Lan[W3GetLanguage()][sid]
+    var language = w3Lan[W3GetLanguage()];
+    if (!language.hasOwnProperty(sid)) {
+	W3LogError("No sid defined: " + sid);
+	return "";
+    }
+    
+    return language[sid];
 }
 
 //
 // Event
 //
 
-function W3SetTab(uid, currentTab, tabSize) {
+function W3OnTabClicked(uid, currentTab, tabSize) {
     for (i = 1; i <= tabSize; ++i) {
 	var display = i == currentTab ? "block" : "none";
-	$("#" + uid + "content" + i.toString()).css("display", display);
+	W3SetUICSS(uid + "content" + i.toString(), {"display": display});
 
 	var borderStyle = "solid";
 	var borderWidth = "1px";
 	var bgColor = "white";
-	if (w3UI[uid].hasOwnProperty(w3PropCSS)) {
-	    if (w3UI[uid][w3PropCSS].hasOwnProperty("border-style")) {
-		borderStyle = w3UI[uid][w3PropCSS]["border-style"];
+	var cssDef = W3TryGetUIProperty(uid, w3PropCSS);
+	if (cssDef != null) {
+	    if (cssDef.hasOwnProperty("border-style")) {
+		borderStyle = cssDef["border-style"];
 	    }
-	    if (w3UI[uid][w3PropCSS].hasOwnProperty("border-width")) {
-		borderWidth = w3UI[uid][w3PropCSS]["border-width"];
+	    if (cssDef.hasOwnProperty("border-width")) {
+		borderWidth = cssDef["border-width"];
 	    }
-	    if (w3UI[uid][w3PropCSS].hasOwnProperty("background-color")) {
-		bgColor = w3UI[uid][w3PropCSS]["background-color"];
+	    if (cssDef.hasOwnProperty("background-color")) {
+		bgColor = cssDef["background-color"];
 	    }
 	}
 
+	var uidHeader = uid + "header" + i.toString();
+	var css = {};
 	if (i == currentTab) {
 	    var style = borderWidth + " " + borderStyle;
 	    var bottomStyle = style + " " + bgColor;
-	    $("#" + uid + "header" + i.toString()).css("border-bottom", bottomStyle);
-	    $("#" + uid + "header" + i.toString()).css("border-top", style);
-	    $("#" + uid + "header" + i.toString()).css("border-left", style);
-	    $("#" + uid + "header" + i.toString()).css("border-right", style);
+	    css["border-bottom"] = bottomStyle;
+	    css["border-top"] = style;
+	    css["border-left"] = style;
+	    css["border-right"] = style;
 	} else {
-	    $("#" + uid + "header" + i.toString()).css("border", "none");
+	    css["border"] = "none";
 	}
+	W3SetUICSS(uidHeader, css);
     }
 }
 
-function W3Submit(uid) {
-    var request = W3CreateAPI(uid);
-    if (request == "") {
-	W3LogWarning("Nothing to submit");
+function W3TriggerAPIFromUI(uid) {
+    var apiTrigger = W3TryGetUIProperty(uid, w3PropTriggerApi);
+    if (apiTrigger == null) {
+	W3LogError("No API trigger defined for ui: " + uid);
+	return;
+    }
+    
+    var apiDef = W3GetAPIDef(apiTrigger[w3ApiID]);
+    if (apiDef == null) {
 	return;
     }
 
-    W3LogDebug("Submit: " + request);
+    var request = W3CreateAPIFromUI(uid);
+    if (request == "") {
+	W3LogWarning("No API to create from UI:  " + uid);
+	return;
+    }
+
+    W3LogDebug("Trigger API: " + request);
+    
+    var api = apiDef[w3ApiName];
+
+    var listeners = [];
+    if (apiDef.hasOwnProperty(w3ApiListener) &&
+	apiDef[w3ApiListener].length > 0) {
+	for (var index in apiDef[w3ApiListener])
+	{
+	    listeners.push(apiDef[w3ApiListener][index]);
+	}
+    } else {
+	listeners.push("W3OnAPIDefaultListener(w3PlaceHolder_1, w3PlaceHolder_2)");
+    }
     
     $.get(request, function(data, status) {
-	alert("data: " + data);
+	W3LogDebug("status: " + status);
+	W3LogDebug("data: " + data);
+	
+	for (var index in listeners) {
+	    W3ExecuteFuncFromString(listeners[index], data, status);
+	}		    
     });
 }
 
@@ -152,10 +138,6 @@ function W3GoBack() {
 // UI
 //
 
-function W3CreateCanvas(uid) {
-    return "<canvas id='" + uid + "'></canvas>";
-}
-
 function W3DisplayUI(uid) {
     $("#" + uid).css("display", "block");
 }
@@ -164,109 +146,96 @@ function W3HideUI(uid) {
     $("#" + uid).css("display", "none");
 }
 
-function W3UpdateTableByAPI(uidSender, uidSinker) {
-    // w3PropType is mandatory for UI
-    if (w3UI[uidSinker][w3PropType] != w3TypeTable) {
-	W3LogError("Sinker is not table when update table by API for uid: " + uidSinker);
+function W3UpdateTable(uidTable, data, status) {
+    var apiResult = eval("(" + data + ")")[w3ApiResultStatus];
+    if (apiResult != w3ApiResultSuccessful) {
+	W3LogWarning("Update table failed");
 	return;
     }
-
-    if (!w3UI[uidSinker].hasOwnProperty(w3PropApi))
-    {
-	W3LogError("There is no API property defined to update table for uid: " + uidSinker);
-	return;
-    }
-
-    if (!w3UI[uidSinker][w3PropApi].hasOwnProperty(w3ApiResult)) {
-	W3LogError("No API result binding defined for " + uidSinker);
-	return;
-    }
-
-    if (!w3UI[uidSinker][w3PropApi][w3ApiResult].hasOwnProperty(w3ApiResultData)) {
-	W3LogError("No API result data binding defined for " + uidSinker);
-	return;
-    }
-
-    var request = W3CreateAPI(uidSender);
-    if (request == "") {
-	return;
-    }
-
-    W3LogDebug("Update Table by API: " + request);
     
-    $.get(request, function(data, status) {
-	W3LogDebug("data: " + data);
-	W3LogDebug("status: " + status);
-	var result = eval("(" + data + ")")[w3ApiResultData];
+    var tableDef = W3GetUIDef(uidTable);
+    if (tableDef == null)  {
+	return;
+    }
+    
+    if (tableDef[w3PropType] != w3TypeTable) {
+	W3LogError("Sinker is not table when update table by API: " + uidTable)
+	return;
+    }
 
-	var isThereTableHeader = W3IsThereTableHeader(uidSinker);
-	if (isThereTableHeader) {
-	    $("#" + uidSinker + " tr:not(:first)").remove();
-	} else {
-	    $("#" + uidSinker).empty();
-	}
+    var bindingDef = W3TryGetUIProperty(uidTable, w3PropBindingApi);
+    if (bindingDef == null) {
+	W3LogError("There is no API property defined to update table for uid: " + uidTable);
+	return;
+    }
 
-	var apiResultBinding = w3UI[uidSinker][w3PropApi][w3ApiResult][w3ApiResultData];
-
-	for (var rowIndex in result) {
-	    var rowData = "<tr>";
-	    for (var columnIndex in  apiResultBinding) {
-		var resultField = apiResultBinding[columnIndex][w3ApiDataValue];
-		var columnDataType = apiResultBinding[columnIndex][w3ApiDataType];
-
-		if (columnDataType == w3ApiDataTypeSID) {
-		    rowData += "<td>" + W3GetStringValue(result[rowIndex][resultField]) + "</td>";
-		} else {
-		    var columnElementHeader = "<td";
-		    var columnElementValue = result[rowIndex][resultField];
-
-		    if (isThereTableHeader) {
-			var uidTableHeader = w3UI[uidSinker][w3PropSubUI][0][columnIndex];
-
-			if (w3UI[uidTableHeader].hasOwnProperty(w3PropCSS)) {
-			    columnElementHeader += " style='";
-			    for (var key in w3UI[uidTableHeader][w3PropCSS]) {
-				columnElementHeader += key + ":" + w3UI[uidTableHeader][w3PropCSS][key] + ";";
-			    }
-			    columnElementHeader += "'";
-			}
-
-			if (w3UI[uidTableHeader].hasOwnProperty(w3PropFunc)) {
-			    if (w3UI[uidTableHeader][w3PropFunc].hasOwnProperty(w3FuncProcessor)) {
-				var formatters = w3UI[uidTableHeader][w3PropFunc][w3FuncProcessor];
-				for (var formatterIndex in formatters) {
-				    columnElementValue = W3FormatValue(columnElementValue, formatters[formatterIndex]);
-				}
-			    }
-			}
-		    } 
-
-		    rowData += columnElementHeader + ">" + columnElementValue + "</td>";
-		}
-	    }
-	    rowData += "</tr>";
-	    $("#" + uidSinker + " tr:last").after(rowData);
-	}
-    });
+    // Check binding style manually
+    if (bindingDef.hasOwnProperty(w3BindingRow)) {
+	W3UpdateTableByRow(uidTable, data, status);
+    } else if (bindingDef.hasOwnProperty(w3BindingMatrix)) {
+	W3UpdateTableByMatrix(uidTable, data, status);
+    } else {
+	W3LogError("No binding style for " + uidTable);
+    }
 }
 
 //
 // Formatter
+// 
+// Formatter is one type of processor
+// All processor accept the first param as [value, {key: css}]
+// And return result as [value, {key: css}]
 //
 
-function W3FormatDatetime(datetime, format) {
+function W3FormatCurrency(paramArray) {
+    var currencyNum = paramArray[0];
+
+    return [currencyNum.toFixed(2).toString(), paramArray[1]];
+}
+
+function W3FormatCurrencyColor(paramArray) {
+    var currencyNum = paramArray[0];
+    var css = paramArray[1];
+
+    var color = "";
+    if (typeof currencyNum == "string") {
+	if (currencyNum.indexOf("-") == 0) {
+	    color = "red";
+	} else {
+	    color = "green";
+	}
+    } else if (typeof currencyNum == "number") {
+	if (currencyNum < 0) {
+	    color = "red";
+	} else {
+	    color = "green";
+	}	
+    } else {
+	W3LogError("Currency data format is not expected: " + typeof currencyNum);
+    }
+
+    if (color.length > 0) {
+	css["color"] = color;
+    }
+
+    return [currencyNum, css];
+}
+
+function W3FormatDatetime(paramArray, format) {
+    var datetime = paramArray[0];
+    
     // w3DatetimeFormat = "YYYY-MM-DD HH:MM:SS"
     var pattern = new RegExp("^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$");
     var result = pattern.exec(datetime);
     if (result == null) {
 	W3LogError("It's not W3 datetime format: " + datetime);
-	return datetime;
+	return [datetime, paramArray[1]];
     }
 
     var formatArray = format.split(" ");
     if (formatArray.length <= 0 || formatArray.length > 2) {
 	W3LogError("Unexpected datetime format required: " + format);
-	return datetime;
+	return [datetime, paramArray[1]];
     }
 
     var date = formatArray[0];
@@ -274,16 +243,18 @@ function W3FormatDatetime(datetime, format) {
     date = date.replace(/mm/i, result[2]);
     date = date.replace(/dd/i, result[3]);
 
-    if (formatArray.length < 2) {
-	return date;
+    var resultDatetime = date;
+    
+    if (formatArray.length > 1) {
+	var time = formatArray[1];
+	time = time.replace(/hh/i, result[4]);
+	time = time.replace(/mm/i, result[5]);
+	time = time.replace(/ss/i, result[6]);
+
+	resultDatetime += " " + time;
     }
 
-    var time = formatArray[1];
-    time = time.replace(/hh/i, result[4]);
-    time = time.replace(/mm/i, result[5]);
-    time = time.replace(/ss/i, result[6]);
-
-    return date + " " + time;	
+    return [resultDatetime, paramArray[1]];	
 }
 
 //
@@ -292,7 +263,7 @@ function W3FormatDatetime(datetime, format) {
 
 function W3DrawPercentageReport(uid, percentage, text, padding) {
     if (percentage.length != text.length) {
-	throw Error("Percentage data and text do not match!");
+	W3LogError("Percentage data and text do not match!");
 	return;
     }
     

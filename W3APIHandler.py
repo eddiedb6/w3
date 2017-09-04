@@ -75,6 +75,25 @@ apiDef.close()
 # Generate JS api file #
 ########################
 
+# Insert api binding
+result, uiDef = W3Util.W3SchemaCheck(W3Config.w3UIDefPath)
+if not result:
+    print "UI schema check error for api"
+    sys.exit(0)
+for uid in uiDef.keys():
+    if W3Const.w3PropBindingApi not in uiDef[uid]:
+        continue
+    func = ""
+    if uiDef[uid][W3Const.w3PropType] == W3Const.w3TypeTable:
+        func = "W3UpdateTable(" + uid + ", w3PlaceHolder_1, w3PlaceHolder_2)"
+    if func == "":
+        continue
+    aid = uiDef[uid][W3Const.w3PropBindingApi][W3Const.w3ApiID]
+    if W3Const.w3ApiListener in apiSchema[aid]:
+        apiSchema[aid][W3Const.w3ApiListener].append(func)
+    else:
+        apiSchema[aid][W3Const.w3ApiListener] = [func]
+
 apiDefPathJS = os.path.join(w3HandlerDirBase,
                             W3Const.w3DirServer,
                             W3Const.w3DirJS,

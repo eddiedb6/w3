@@ -93,7 +93,7 @@
     "uidNaviDebug": {
         W3Const.w3PropType: W3Const.w3TypeLink,
         W3Const.w3PropString: "sidNaviDebug",
-        W3Const.w3PropApi: {
+        W3Const.w3PropTriggerApi: {
             W3Const.w3ApiID: "aidPage",
             W3Const.w3ApiParams: [
             {

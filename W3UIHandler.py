@@ -12,6 +12,19 @@ if not result:
     print "UI schema check error"
     sys.exit(0)
 
+# Check if there is dead loop for prototype
+for uid in uiDef.keys():
+    uiPrototypes = []
+    currentUI = uiDef[uid]
+    currentUID = uid
+    while W3Const.w3PropPrototype in currentUI:
+        if currentUID in uiPrototypes:
+            print "There is dead loop for prototype define: " + currentUID
+            sys.exit(0);
+        uiPrototypes.append(currentUID)
+        currentUID = currentUI[W3Const.w3PropPrototype]
+        currentUI = uiDef[currentUID]
+
 # Generate UI components for PHP
 uiPhpPath = os.path.join(w3HandlerDirBase,
                          W3Const.w3DirServer,

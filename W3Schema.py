@@ -87,6 +87,9 @@
     W3Const.w3ApiHandler: {
         SchemaType: SchemaTypeString
     },
+    W3Const.w3ApiListener: {
+        SchemaType: SchemaTypeArray
+    },
 
     # Class
     W3Const.w3TypeClass: {
@@ -107,7 +110,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             KeyIn(W3Const.w3PropCollection),
-            HasKey(W3Const.w3PropApi)
+            HasKey(W3Const.w3PropTriggerApi)
         ]
     },
     W3Const.w3TypeTable: {
@@ -128,12 +131,6 @@
     W3Const.w3TypeMonthPicker: {
         SchemaInherit: W3Const.w3TypeButton
     },
-    W3Const.w3TypeForm: {
-        SchemaInherit: W3Const.w3TypeButton
-    },
-    W3Const.w3TypeSubmit: {
-        SchemaInherit: W3Const.w3TypeButton
-    },
     W3Const.w3TypeText: {
         SchemaInherit: W3Const.w3TypeButton
     },
@@ -144,6 +141,9 @@
         SchemaInherit: W3Const.w3TypeButton
     },
     W3Const.w3TypePanel: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
+    W3Const.w3TypeCanvasPanel: {
         SchemaInherit: W3Const.w3TypeButton
     },
     W3Const.w3TypeHeadline: {
@@ -184,11 +184,36 @@
     W3Const.w3PropString: {
         SchemaType: SchemaTypeString
     },
-    W3Const.w3PropApi: {
+    W3Const.w3PropBindingApi: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams, W3Const.w3ApiResult])
+            KeyIn([W3Const.w3ApiID, W3Const.w3BindingRow, W3Const.w3BindingMatrix])
+        ]
+    },
+    W3Const.w3PropTriggerApi: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3ApiID),
+            KeyIn([W3Const.w3TriggerEvent, W3Const.w3ApiID, W3Const.w3ApiParams])
+        ]
+    },
+    W3Const.w3BindingRow: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3ApiData)
+        ]
+    },
+    W3Const.w3BindingMatrix: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3BindingRow)
+        ]
+    },
+    W3Const.w3TriggerEvent: {
+        SchemaType: SchemaTypeString,
+        SchemaRule: [
+            ValueIn(W3Const.w3EventCollection)
         ]
     },
     W3Const.w3PropEvent: {

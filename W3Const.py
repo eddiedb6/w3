@@ -35,12 +35,11 @@ w3TypeLabel = "typelabel"
 w3TypeDatePicker = "typedatepicker"
 w3TypeMonthPicker = "typemonthpicker"
 w3TypeButton = "typebutton"
-w3TypeForm = "typeform"
-w3TypeSubmit = "typesubmit"
 w3TypeText = "typetext"
 w3TypeCombobox = "typecombobox"
 w3TypeTab = "typetab"
 w3TypePanel = "typepanel"
+w3TypeCanvasPanel = "typecanvaspanel"
 w3TypeHeadline = "typeheadline"
 w3TypeLine = "typeline"
 w3TypeLineBreak = "typelinebreak"
@@ -60,12 +59,11 @@ w3ElementTypeCollection = [
     w3TypeDatePicker,
     w3TypeMonthPicker,
     w3TypeButton,
-    w3TypeForm,
-    w3TypeSubmit,
     w3TypeText,
     w3TypeCombobox,
     w3TypeTab,
     w3TypePanel,
+    w3TypeCanvasPanel,
     w3TypeHeadline,
     w3TypeLine,
     w3TypeLineBreak,
@@ -82,11 +80,13 @@ w3ApiData = "apidata"
 w3ApiDataType = "apidatatype"
 w3ApiDataValue = "apidatavalue"
 # API data types
+w3ApiDataTypeNone = "apivaluetypenone"
 w3ApiDataTypeString = "apivaluetypestring"
 w3ApiDataTypeNum = "apivaluetypenum"
 w3ApiDataTypeUID = "apivaluetypeuid"
 w3ApiDataTypeSID = "apivaluetypesid"
 w3ApiDataTypeCollection = [
+    w3ApiDataTypeNone,
     w3ApiDataTypeString,
     w3ApiDataTypeNum,
     w3ApiDataTypeUID,
@@ -98,6 +98,7 @@ w3ApiResultData = "apiresultdata"
 w3ApiResultSuccessful = "apiresultsuccessful"
 w3ApiResultFailed = "apiresultfailed"
 w3ApiHandler = "apihandler"
+w3ApiListener = "apilistener"
 
 # Define "ui" properties
 w3PropDefaultPage = "propdefaultpage"
@@ -105,14 +106,14 @@ w3PropDefaultErrorPage = "propdefaulterrorpage"
 w3PropType = "elementtype" # w3ElementType
 w3PropSubUI = "propsubui"
 w3PropString = "propstring"
-w3PropApi = "propapi"
 w3PropEvent = "propevent"
 w3PropFunc = "propfunc"
 w3PropAttr = "propattr"
 w3PropClass = "propclass"
 w3PropPrototype = "propprototype"
 w3PropCSS = "propcss"
-w3PropBinding = "propbinding"
+w3PropBindingApi = "propbindingapi"
+w3PropTriggerApi = "proptriggerapi"
 # Collect UI properties
 w3PropCollection = [
     w3PropDefaultPage,
@@ -120,21 +121,32 @@ w3PropCollection = [
     w3PropType,
     w3PropSubUI,
     w3PropString,
-    w3PropApi,
     w3PropEvent,
     w3PropFunc,
     w3PropAttr,
     w3PropClass,
     w3PropPrototype,
     w3PropCSS,
-    w3PropBinding
+    w3PropBindingApi,
+    w3PropTriggerApi
 ]
+
+# Define binding
+w3BindingRow = "bindingeachrow"
+w3BindingMatrix = "bindingmatrix"
+w3BindingStyle = [
+    w3BindingRow,
+    w3BindingMatrix
+]
+
+# Define trigger
+w3TriggerEvent = "triggerevent"
 
 # Define "ui" attributes
 w3AttrHeadlineLevel = "attrheadlinelevel"
 
 # Define event
-w3EventClick = "onclick" # It's js event name and do not change it
+w3EventClick = "onclick" # It's js event name and DO NOT change it
 w3EventCollection = [
     w3EventClick
 ]
@@ -162,7 +174,7 @@ w3PlaceHolder_9 = "w3PlaceHolder_9"
 w3LanEnglish = "lanenglish"
 
 # Datetime format
-# Keep the same as MySQL and do not change it
+# Keep the same as MySQL and DO NOT change it
 w3DatetimeFormat = "YYYY-MM-DD HH:MM:SS"
 w3DateFormat = "YYYY-MM-DD"
 w3MonthFormat = "YYYY-MM"
