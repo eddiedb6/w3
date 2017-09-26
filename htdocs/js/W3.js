@@ -350,3 +350,34 @@ function W3DrawPercentageReport(uid, percentage, text, padding) {
 	textY += rectHeight + padding;
     }
 }
+
+//
+// Variable
+//
+
+function W3SetVariable(variable, value) {
+    variable[w3VariableValue] = value;
+
+    for (var uidListener in variable[w3VariableListeners]) {
+	var uiDef = W3GetUIDef(uidListener);
+	if (uiDef[w3PropType] == w3TypeText || uiDef[w3PropType] == w3TypeLabel) {
+	    var varStr = value.toString();
+	    var format = variable[w3VariableListeners][uidListener];
+	    if (format != "") {
+		if (format[0] == "F") {
+		    var fixNum = parseInt(format.substring(1));
+		    varStr = value.toFixed(fixNum).toString();
+		} else {
+		    W3LogWarning("Variable format is not supported yet: " + format);
+		}
+	    }
+	    W3SetUIText(uidListener, varStr);
+	} else {
+	    W3LogWarning("UI type is not supported for variable binding: " + uiDef[w3PropType]);
+	}
+    }
+}
+
+function W3GetVariable(variable) {
+    return variable[w3VariableValue];
+}

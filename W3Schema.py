@@ -240,7 +240,20 @@
             IgnoreChildSchema()
         ]
     },
-
+    W3Const.w3PropBindingVar: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3BindingVarName)
+            #KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingFormat])
+        ]
+    },
+    W3Const.w3BindingVarName: {
+        SchemaType: SchemaTypeString
+    },
+    W3Const.w3BindingFormat: {
+        SchemaType: SchemaTypeString
+    },
+    
     # Event
     W3Const.w3EventClick: {
         SchemaType: SchemaTypeArray

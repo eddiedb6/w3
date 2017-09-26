@@ -160,15 +160,17 @@ function W3TryGetUIProperty($uid, $property) {
 
 function W3GetUIEvent($uid) {
     $eventDict = array();
+    $apiTriggerDict = array();
 
     # First check trigger in UI
     $apiTrigger = W3TryGetUIProperty($uid, w3PropTriggerApi);
     if ($apiTrigger != NULL &&
         array_key_exists(w3TriggerEvent, $apiTrigger)) {
         $event = $apiTrigger[w3TriggerEvent];
-        $eventDict[$event] = array("W3TriggerAPIFromUI(" . W3MakeString($uid, true) . ")");
+        $apiTriggerDict[$event] = array("W3TriggerAPIFromUI(" . W3MakeString($uid, true) . ")");
     } # Check api trigger and later add more if new trigger introduced
 
+    # Get event from property
     $events = "";
     $uiEvents = W3TryGetUIProperty($uid, w3PropEvent);
     if ($uiEvents != NULL) {
@@ -185,6 +187,29 @@ function W3GetUIEvent($uid) {
             foreach ($value as $func) {
                 array_push($eventDict[$key], $func);
             }
+        }
+    }
+
+    # Merge trigger event
+    foreach ($apiTriggerDict as $event => $funcArray) {
+        if (array_key_exists($event, $eventDict)) {
+            $lenTrigger = sizeof($funcArray);
+            $lenFunc = sizeof($eventDict[$event]);
+            for ($i = 0; $i < $lenFunc; $i++) {
+                if (strncmp($eventDict[$event][$i], w3PlaceHolder_1, 14) != 0) {
+                    continue;
+                }
+                
+                $pos = intval(substr($eventDict[$event][$i], 14));
+                if ($pos > $lenTrigger) {
+                    W3LogError("Trigger event place holder is more than trigger");
+                    break;
+                }
+
+                $eventDict[$event][$i] = $funcArray[$pos - 1];
+            }
+        } else {
+            $eventDict[$event] = $funcArray;
         }
     }
 

@@ -50,7 +50,34 @@ uiJSPath = os.path.join(w3HandlerDirBase,
 uiJS = open(uiJSPath, "w")
 uiJS.write("var w3UI = ")
 uiJS.write(W3Util.W3ValueToJS(uiDef, 1))
-uiJS.write(";")
+uiJS.write(";\n")
+# Generate JS variable defined in UI
+varList = {}
+for uid in uiDef.keys():
+    currentUI = uiDef[uid]
+    if W3Const.w3PropBindingVar not in currentUI:
+        continue
+    varName = currentUI[W3Const.w3PropBindingVar][W3Const.w3BindingVarName]
+    varFormat = ""
+    if W3Const.w3BindingFormat in currentUI[W3Const.w3PropBindingVar]:
+        varFormat = currentUI[W3Const.w3PropBindingVar][W3Const.w3BindingFormat]
+    listenerInfo = "\"" + uid + "\": \"" + varFormat + "\""
+    if varName in varList:
+        if uid not in varList[varName]:
+            varList[varName].append(listenerInfo)
+        else:
+            print "Error: uid already in var listener"
+            sys.exit(0)
+    else:
+        varList[varName] = [listenerInfo]
+for var in varList:
+    uiJS.write("var " + var + " = {\n")
+    uiJS.write("    \"" + W3Const.w3VariableValue + "\": 0,\n")
+    uiJS.write("    \"" + W3Const.w3VariableListeners + "\": {")
+    if len(varList[var]) > 0:
+        uiJS.write(",".join(varList[var]))
+    uiJS.write("}\n};\n")
+# Init date picker for JS
 uiJS.write(W3Util.W3InitDatePicker(uiDef))
 uiJS.close()
 

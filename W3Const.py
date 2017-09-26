@@ -112,6 +112,7 @@ w3PropAttr = "propattr"
 w3PropClass = "propclass"
 w3PropPrototype = "propprototype"
 w3PropCSS = "propcss"
+w3PropBindingVar = "propbindingvar"
 w3PropBindingApi = "propbindingapi"
 w3PropTriggerApi = "proptriggerapi"
 # Collect UI properties
@@ -127,6 +128,7 @@ w3PropCollection = [
     w3PropClass,
     w3PropPrototype,
     w3PropCSS,
+    w3PropBindingVar,
     w3PropBindingApi,
     w3PropTriggerApi
 ]
@@ -134,13 +136,16 @@ w3PropCollection = [
 # Define binding
 w3BindingRow = "bindingeachrow"
 w3BindingMatrix = "bindingmatrix"
-w3BindingStyle = [
-    w3BindingRow,
-    w3BindingMatrix
-]
+w3BindingVarName = "bindingvarname"
+w3BindingFormat = "bindingformat"
 
 # Define trigger
 w3TriggerEvent = "triggerevent"
+
+# Define variable
+w3VariableValue = "variablevalue"
+w3VariableListeners = "variablelisteners"
+w3VariableFormat = "variableformat"
 
 # Define "ui" attributes
 w3AttrHeadlineLevel = "attrheadlinelevel"
