@@ -158,6 +158,17 @@ function W3CreateAPIReg($aid) {
     return $apiReg;
 }
 
+function W3GetAPIDef($aid) {
+    global $w3API;
+
+    if (!array_key_exists($aid, $w3API)) {
+        W3LogError("No aid defined: " . $aid);
+        return NULL;
+    }
+
+    return $w3API[$aid];
+}
+
 #
 # UI Creators
 #

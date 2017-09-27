@@ -9,4 +9,5 @@ RewriteRule ^debt.* index.html
 RewriteRule ^adddebt.* index.html
 RewriteRule ^financeevent.* index.html
 RewriteRule ^addfinanceevent.* index.html
+RewriteRule ^exchangerate.* index.html
 

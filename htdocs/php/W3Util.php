@@ -35,17 +35,6 @@ function W3GetLanguage() {
 # API Helper
 #
 
-function W3GetAPIDef($aid) {
-    global $w3API;
-
-    if (!array_key_exists($aid, $w3API)) {
-        W3LogError("No aid defined: " . $aid);
-        return NULL;
-    }
-
-    return $w3API[$aid];
-}
-
 function W3CreateAPI($aid, $paramArray) {
     $apiDef = W3GetAPIDef($aid);
     if ($apiDef == NULL) {
