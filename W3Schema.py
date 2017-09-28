@@ -15,15 +15,6 @@
         ]
     },
 
-    # Default UI
-    W3Const.w3UIBody: {
-        SchemaType: SchemaTypeDict,
-        SchemaRule: [
-            CheckAsTypeFromKey(W3Const.w3ElementType),
-            HasKey(W3Const.w3PropDefaultPage, W3Const.w3PropDefaultErrorPage)
-        ]
-    },
-
     # String 
     W3Const.w3LanEnglish: {
         SchemaType: SchemaTypeDict,
@@ -95,7 +86,17 @@
     W3Const.w3TypeClass: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3PropCSS)
+            HasKey(W3Const.w3PropCSS),
+            KeyIn([W3Const.w3PropCSS, W3Const.w3PropType])
+        ]
+    },
+
+    # Default UI
+    W3Const.w3UIBody: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            CheckAsTypeFromKey(W3Const.w3ElementType),
+            HasKey(W3Const.w3PropDefaultPage, W3Const.w3PropDefaultErrorPage)
         ]
     },
 
@@ -184,38 +185,6 @@
     W3Const.w3PropString: {
         SchemaType: SchemaTypeString
     },
-    W3Const.w3PropBindingApi: {
-        SchemaType: SchemaTypeDict,
-        SchemaRule: [
-            HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3BindingRow, W3Const.w3BindingMatrix])
-        ]
-    },
-    W3Const.w3PropTriggerApi: {
-        SchemaType: SchemaTypeDict,
-        SchemaRule: [
-            HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3TriggerEvent, W3Const.w3ApiID, W3Const.w3ApiParams])
-        ]
-    },
-    W3Const.w3BindingRow: {
-        SchemaType: SchemaTypeArray,
-        SchemaRule: [
-            CheckForeachAsType(W3Const.w3ApiData)
-        ]
-    },
-    W3Const.w3BindingMatrix: {
-        SchemaType: SchemaTypeArray,
-        SchemaRule: [
-            CheckForeachAsType(W3Const.w3BindingRow)
-        ]
-    },
-    W3Const.w3TriggerEvent: {
-        SchemaType: SchemaTypeString,
-        SchemaRule: [
-            ValueIn(W3Const.w3EventCollection)
-        ]
-    },
     W3Const.w3PropEvent: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
@@ -243,8 +212,37 @@
     W3Const.w3PropBindingVar: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3BindingVarName)
-            #KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingFormat])
+            HasKey(W3Const.w3BindingVarName),
+            KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingFormat])
+        ]
+    },
+    W3Const.w3PropBindingApi: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3ApiID),
+            KeyIn([W3Const.w3ApiID, W3Const.w3BindingRow, W3Const.w3BindingMatrix])
+        ]
+    },
+    W3Const.w3PropTriggerApi: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3ApiID),
+            KeyIn([W3Const.w3TriggerEvent, W3Const.w3ApiID, W3Const.w3ApiParams])
+        ]
+    },
+
+    # Trigger & Binding
+    W3Const.w3BindingRow: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3ApiData)
+        ]
+    },
+        
+    W3Const.w3BindingMatrix: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3BindingRow)
         ]
     },
     W3Const.w3BindingVarName: {
@@ -252,6 +250,12 @@
     },
     W3Const.w3BindingFormat: {
         SchemaType: SchemaTypeString
+    },
+    W3Const.w3TriggerEvent: {
+        SchemaType: SchemaTypeString,
+        SchemaRule: [
+            ValueIn(W3Const.w3EventCollection)
+        ]
     },
     
     # Event

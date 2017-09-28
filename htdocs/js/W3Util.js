@@ -125,7 +125,7 @@ function W3SetUICSS(uid, css) {
     }
 }
 
-function W3UpdateUIDisplay(uid, value, valueType) {
+function W3UpdateTableCellDisplay(uid, value, valueType) {
     var ui = W3GetUIDef(uid);
     if (ui == null) {
 	return;
@@ -239,7 +239,7 @@ function W3UpdateTableCell(uidTable, rowIndex, columnIndex, value, valueType) {
 	return;
     }
 
-    W3UpdateUIDisplay(cellsDef[rowIndex][columnIndex], value, valueType);
+    W3UpdateTableCellDisplay(cellsDef[rowIndex][columnIndex], value, valueType);
 }
 
 function W3UpdateTableByMatrix(uidTable, data, status) {

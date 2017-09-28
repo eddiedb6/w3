@@ -588,8 +588,6 @@ function W3CreatePage($uid) {
 }
 
 function W3CreateUIBase($uid, $type, $body, $attr) {
-    global $w3UI;
-
     $uiFunc = W3TryGetUIProperty($uid, w3PropFunc);
     if ($uiFunc != NULL and array_key_exists(w3FuncCreator, $uiFunc)) {
         $body .= $uiFunc[w3FuncCreator]();
