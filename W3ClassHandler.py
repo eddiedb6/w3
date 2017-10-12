@@ -1,18 +1,21 @@
 import os
+import sys
 
 import W3Util
 import W3Const
 
 from metadata import W3Config
 
+sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], "schema"))
+
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
 result, classDef = W3Util.W3SchemaCheck(W3Config.w3ClassDefPath)
 if not result:
-    print "Class schema check error"
+    print("Class schema check error")
     sys.exit(0)
 result, uiDef = W3Util.W3SchemaCheck(W3Config.w3UIDefPath)
 if not result:
-    print "UI schema check error"
+    print("UI schema check error")
     sys.exit(0)
 
 # Generate CSS for UI
@@ -25,7 +28,7 @@ uiCSS = open(uiCSSPath, "w")
 
 # Handle CSS for each UI 
 for uid in uiDef.keys():
-    if not uiDef[uid].has_key(W3Const.w3PropCSS):
+    if W3Const.w3PropCSS not in uiDef[uid]:
         continue;
     uiCSS.write("#" + uid + " {\n")
     for key in uiDef[uid][W3Const.w3PropCSS].keys():
@@ -35,13 +38,13 @@ for uid in uiDef.keys():
 def CopyBaseCSS(cid, cidBase):
     if cid == cidBase:
         return
-    if classDef[cidBase].has_key(W3Const.w3PropPrototype):
+    if W3Const.w3PropPrototype in classDef[cidBase]:
         CopyBaseCSS(cidBase, classDef[cidBase][W3Const.w3PropPrototype])
-    if classDef[cidBase].has_key(W3Const.w3PropCSS):
+    if W3Const.w3PropCSS in classDef[cidBase]:
         # Copy but do not overwrite existed CSS
         for key in classDef[cidBase][W3Const.w3PropCSS].keys():
-            if classDef[cid].has_key(W3Const.w3PropCSS):
-                if classDef[cid][W3Const.w3PropCSS].has_key(key):
+            if W3Const.w3PropCSS in classDef[cid]:
+                if key in classDef[cid][W3Const.w3PropCSS]:
                     continue
             classDef[cid][W3Const.w3PropCSS][key] = classDef[cidBase][W3Const.w3PropCSS][key]
     # Remove prototype so it would no be copied by next derived CSS
@@ -49,10 +52,10 @@ def CopyBaseCSS(cid, cidBase):
     
 # Handle CSS for each class    
 for cid in classDef.keys():
-    if classDef[cid].has_key(W3Const.w3PropPrototype):
+    if W3Const.w3PropPrototype in classDef[cid]:
         CopyBaseCSS(cid, classDef[cid][W3Const.w3PropPrototype])
         
-    if not classDef[cid].has_key(W3Const.w3PropCSS):
+    if W3Const.w3PropCSS not in classDef[cid]:
         continue;
     
     uiCSS.write("." + cid + " {\n")

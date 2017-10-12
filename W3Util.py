@@ -3,7 +3,9 @@ import os
 
 import W3Const
 
-from schema import SchemaChecker
+sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], "schema"))
+
+import SchemaChecker
 
 thisDir = os.path.split(os.path.realpath(__file__))[0]
                 
@@ -20,7 +22,7 @@ def W3ConstToPHP(const):
     constValues = ""
     for k in const.keys():
         if k.startswith('w3'):
-            if (isinstance(const[k], basestring)):
+            if (isinstance(const[k], str)):
                 constValues = constValues + "define('" + k + "', '" + const[k] + "');\n"
             else:
                 constValues = constValues + "define('" + k + "', " + str(const[k]) + ");\n"
@@ -34,7 +36,7 @@ def W3ConstToJS(const):
     constValues = ""
     for k in const.keys():
         if k.startswith('w3'):
-            if (isinstance(const[k], basestring)):
+            if (isinstance(const[k], str)):
                 constValues = constValues + "const " + k + " = \"" + const[k] + "\";\n"
             else:
                 constValues = constValues + "const " + k + " = " + str(const[k]) + ";\n"
@@ -142,7 +144,7 @@ def W3ConvertToDatePickerFormat(w3Format):
 def W3InitDatePicker(ui):
     js = "\n$(document).ready(function() {\n"
     for key in ui.keys():
-        if ui[key].has_key(W3Const.w3PropType):
+        if W3Const.w3PropType in ui[key]:
             if (ui[key][W3Const.w3PropType] == W3Const.w3TypeDatePicker):
                 js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3DateFormat) + "'});\n"
             elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeMonthPicker):

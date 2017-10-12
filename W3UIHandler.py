@@ -6,10 +6,12 @@ import W3Const
 
 from metadata import W3Config
 
+sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], "schema"))
+
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
 result, uiDef = W3Util.W3SchemaCheck(W3Config.w3UIDefPath)
 if not result:
-    print "UI schema check error"
+    print("UI schema check error")
     sys.exit(0)
 
 # Check if there is dead loop for prototype
@@ -19,7 +21,7 @@ for uid in uiDef.keys():
     currentUID = uid
     while W3Const.w3PropPrototype in currentUI:
         if currentUID in uiPrototypes:
-            print "There is dead loop for prototype define: " + currentUID
+            print("There is dead loop for prototype define: " + currentUID)
             sys.exit(0);
         uiPrototypes.append(currentUID)
         currentUID = currentUI[W3Const.w3PropPrototype]
@@ -66,7 +68,7 @@ for uid in uiDef.keys():
         if uid not in varList[varName]:
             varList[varName].append(listenerInfo)
         else:
-            print "Error: uid already in var listener"
+            print("Error: uid already in var listener")
             sys.exit(0)
     else:
         varList[varName] = [listenerInfo]

@@ -6,10 +6,12 @@ import W3Const
 
 from metadata import W3Config
 
+sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], "schema"))
+
 w3HandlerDirBase = os.path.split(os.path.realpath(__file__))[0]
 result, apiSchema = W3Util.W3SchemaCheck(W3Config.w3APIDefPath)
 if not result:
-    print "API schema check error"
+    print("API schema check error")
     sys.exit(0)
 
 # Insert default API "aidPage"
@@ -78,7 +80,7 @@ apiDef.close()
 # Insert api binding
 result, uiDef = W3Util.W3SchemaCheck(W3Config.w3UIDefPath)
 if not result:
-    print "UI schema check error for api"
+    print("UI schema check error for api")
     sys.exit(0)
 for uid in uiDef.keys():
     if W3Const.w3PropBindingApi not in uiDef[uid]:
