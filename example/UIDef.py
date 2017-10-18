@@ -20,7 +20,9 @@
         W3Const.w3PropType: W3Const.w3TypeButton,
         W3Const.w3PropString: "sidButtonBack",
         W3Const.w3PropEvent: {
-            W3Const.w3EventClick: "W3GoBack()"
+            W3Const.w3EventClick: [
+                "W3GoBack()"
+            ]
         }
     },
     "uidLine": {
