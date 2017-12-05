@@ -147,6 +147,9 @@
     W3Const.w3TypeCanvasPanel: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypePassword: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
     W3Const.w3TypeHeadline: {
         SchemaInherit: W3Const.w3TypeButton
     },

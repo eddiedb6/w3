@@ -254,6 +254,7 @@ $w3UICreatorMap = array (
     w3TypeMonthPicker => "W3CreateMonthPicker",
     w3TypeButton => "W3CreateButton",
     w3TypeText => "W3CreateText",
+    w3TypePassword => "W3CreatePassword",
     w3TypeCombobox => "W3CreateCombobox",
     w3TypeTab => "W3CreateTab",
     w3TypePanel => "W3CreatePanel",
@@ -392,6 +393,16 @@ function W3CreateText($uid) {
     $type = "input";
     $body = "";
     $attr = "type='text'";
+
+    return W3CreateUIBase($uid, $type, $body, $attr);
+}
+
+function W3CreatePassword($uid) {
+    W3CreateUIBasePro($uid);
+
+    $type = "input";
+    $body = "";
+    $attr = "type='password'";
 
     return W3CreateUIBase($uid, $type, $body, $attr);
 }

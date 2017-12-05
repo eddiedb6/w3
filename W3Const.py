@@ -36,6 +36,7 @@ w3TypeDatePicker = "typedatepicker"
 w3TypeMonthPicker = "typemonthpicker"
 w3TypeButton = "typebutton"
 w3TypeText = "typetext"
+w3TypePassword = "typepassword"
 w3TypeCombobox = "typecombobox"
 w3TypeTab = "typetab"
 w3TypePanel = "typepanel"
@@ -60,6 +61,7 @@ w3ElementTypeCollection = [
     w3TypeMonthPicker,
     w3TypeButton,
     w3TypeText,
+    w3TypePassword,
     w3TypeCombobox,
     w3TypeTab,
     w3TypePanel,
