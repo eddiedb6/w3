@@ -29,7 +29,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiName, W3Const.w3ApiHandler),
-            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult, W3Const.w3ApiHandler]) 
+            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult, W3Const.w3ApiHandler, W3Const.w3ApiListener]) 
         ]
     },
     W3Const.w3ApiID: {
