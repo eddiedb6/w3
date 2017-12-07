@@ -47,6 +47,46 @@ function W3GetStringValue(sid) {
 }
 
 //
+// API
+//
+
+function W3CreateAPI() {
+    var argLen = arguments.length;
+    if (argLen <= 0) {
+	W3LogError("There is no API parameters");
+	return "";
+    }
+
+    var aid = arguments[0];
+    var apiDef = W3GetAPIDef(aid);
+    if (apiDef == null) {
+	return "";
+    }
+    
+    var api = apiDef[w3ApiName];
+    var len = W3GetAPIParamCount(aid);
+    if (len + 1 != argLen) {
+	W3LogError("API parameters do not match: " + aid);
+	return "";
+    }
+    
+    if (len < 1) {
+	return api;
+    }
+
+    api += "?";
+
+    for (var i = 0; i < len; ++i) {
+	api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=" + arguments[i + 1];
+	if (i != len - 1) {
+	    api += "&";
+	}
+    }
+    
+    return api;
+}
+
+//
 // Event
 //
 
