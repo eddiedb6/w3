@@ -115,6 +115,25 @@ function W3GetAPIParamArrayFromUI($uid) {
 }
 
 #
+# API Handler
+#
+
+function W3OnRequestPage() {
+    require "W3Main.html";
+    return true;
+}
+
+function W3OnRequestToken() {
+    // TODO
+    return true;
+}
+
+function W3OnGetEncryption(&$parameter) {
+    // TODO
+    return true;
+}
+
+#
 # UI Helper
 #
 
