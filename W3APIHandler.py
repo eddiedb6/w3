@@ -36,7 +36,7 @@ apiSchema["aidToken"] = {
         ],
         W3Const.w3ApiResultData: [
         {
-            W3Const.w3ApiDataType: W3Const.w3ApiDataTypeNum,
+            W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
             W3Const.w3ApiDataValue: "token"
         }]
     }
@@ -51,6 +51,12 @@ apiSchema["aidEncryption"] = {
         W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
         W3Const.w3ApiDataValue: "encryption"
     }],
+    W3Const.w3ApiResult: {
+        W3Const.w3ApiResultStatus: [
+            W3Const.w3ApiResultSuccessful,
+            W3Const.w3ApiResultFailed
+        ]
+    },
     W3Const.w3ApiHandler: "W3OnGetEncryption"
 }
 

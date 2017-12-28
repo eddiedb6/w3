@@ -124,13 +124,32 @@ function W3OnRequestPage() {
 }
 
 function W3OnRequestToken() {
-    // TODO
+    // TODO: generate token
+    $token = "abc123_";
+    $apiDef = W3GetAPIDef("aidToken");
+    $result = "{" . W3CreateSuccessfulResult(false) . "," . W3MakeString(w3ApiResultData) . ":{";
+    $result .= W3MakeString($apiDef[w3ApiResult][w3ApiResultData][0][w3ApiDataValue]) . ":";
+    $result .= W3MakeString($token) . "}}";
+
+    echo $result;
+
     return true;
 }
 
 function W3OnGetEncryption(&$parameter) {
-    // TODO
-    return true;
+    if (!isset($parameter) or sizeof($parameter) != 2) {
+        W3LogError("Get encryption with wrong parameter: " . var_dump($parameter));
+        echo W3CreateFailedResult();
+        return;
+    }
+    
+    $encryption = $parameter[1];
+    // TODO: save envryption to session
+    
+    $apiDef = W3GetAPIDef("aidEncryption");
+    $result = W3CreateSuccessfulResult();
+
+    echo $result;
 }
 
 #

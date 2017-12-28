@@ -8,7 +8,7 @@
 require "php/W3.php";
 
 if (W3IsEmptyRequest()) {
-    require "W3Main.html";
+    W3OnRequestPage();
 } else {
     if (!W3HandleRequest()) {
         $msg = "NOT handled request: " . $_SERVER["REQUEST_URI"];

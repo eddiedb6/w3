@@ -51,6 +51,8 @@ function W3GetStringValue(sid) {
 //
 
 function W3CreateAPI() {
+    // Variable parameter length function
+    
     var argLen = arguments.length;
     if (argLen <= 0) {
 	W3LogError("There is no API parameters");
@@ -84,6 +86,24 @@ function W3CreateAPI() {
     }
     
     return api;
+}
+
+function W3CallAPIAsync(request, callback)
+{
+    W3LogDebug("Trigger API Async: " + request);
+    $.get(request, callback);
+}
+
+function W3CallAPISync(request, callback)
+{
+    W3LogDebug("Trigger API Sync: " + request);
+    $.ajax({
+	type: "get",
+	url: request,
+	data: "",
+	async: false,
+	success: callback
+    });
 }
 
 //
@@ -145,8 +165,6 @@ function W3TriggerAPIFromUI(uid) {
 	return;
     }
 
-    W3LogDebug("Trigger API: " + request);
-    
     var api = apiDef[w3ApiName];
 
     var listeners = [];
@@ -160,7 +178,7 @@ function W3TriggerAPIFromUI(uid) {
 	listeners.push("W3OnAPIDefaultListener(w3PlaceHolder_1, w3PlaceHolder_2)");
     }
     
-    $.get(request, function(data, status) {
+    W3CallAPIAsync(request, function(data, status) {
 	W3LogDebug("status: " + status);
 	W3LogDebug("data: " + data);
 	
@@ -217,6 +235,10 @@ function W3UpdateTable(uidTable, data, status) {
     } else {
 	W3LogError("No binding style for " + uidTable);
     }
+}
+
+function W3GetUIValue(uid) {
+    return $("#" + uid).val();
 }
 
 //

@@ -111,10 +111,6 @@ function W3GetUIDef(uid) {
     return w3UI[uid];
 }
 
-function W3GetUIValue(uid) {
-    return $("#" + uid).val();
-}
-
 function W3SetUIText(uid, text) {
     $("#" + uid).text(text);    
 }
