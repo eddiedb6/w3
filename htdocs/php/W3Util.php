@@ -124,14 +124,16 @@ function W3OnRequestPage() {
 }
 
 function W3OnRequestToken() {
-    // TODO: generate token
-    $token = "abc123_";
+    $token = w3RSAPublicKey;
     $apiDef = W3GetAPIDef("aidToken");
     $result = "{" . W3CreateSuccessfulResult(false) . "," . W3MakeString(w3ApiResultData) . ":{";
     $result .= W3MakeString($apiDef[w3ApiResult][w3ApiResultData][0][w3ApiDataValue]) . ":";
     $result .= W3MakeString($token) . "}}";
 
-    echo $result;
+    $pik = openssl_pkey_get_private(w3RSAPrivateKey);
+    $puk = openssl_key_get_public(w3RSAPublicKey);
+    #echo $result;
+    echo $pik . "_____" . $puk;
 
     return true;
 }
