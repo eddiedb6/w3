@@ -227,14 +227,20 @@
         ]
     },
     W3Const.w3PropTriggerApi: {
-        SchemaType: SchemaTypeDict,
+        SchemaType: SchemaTypeArray,
         SchemaRule: [
-            HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3TriggerEvent, W3Const.w3ApiID, W3Const.w3ApiParams])
+            CheckForeachAsType(W3Const.w3TriggerApi)
         ]
     },
 
     # Trigger & Binding
+    W3Const.w3TriggerApi: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            HasKey(W3Const.w3ApiID),
+            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams])
+        ]
+    },
     W3Const.w3BindingRow: {
         SchemaType: SchemaTypeArray,
         SchemaRule: [
@@ -254,13 +260,7 @@
     W3Const.w3BindingFormat: {
         SchemaType: SchemaTypeString
     },
-    W3Const.w3TriggerEvent: {
-        SchemaType: SchemaTypeString,
-        SchemaRule: [
-            ValueIn(W3Const.w3EventCollection)
-        ]
-    },
-    
+
     # Event
     W3Const.w3EventClick: {
         SchemaType: SchemaTypeArray

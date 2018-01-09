@@ -135,14 +135,14 @@ w3PropCollection = [
     w3PropTriggerApi
 ]
 
+# Define trigger
+w3TriggerApi = "triggerapi"
+
 # Define binding
 w3BindingRow = "bindingeachrow"
 w3BindingMatrix = "bindingmatrix"
 w3BindingVarName = "bindingvarname"
 w3BindingFormat = "bindingformat"
-
-# Define trigger
-w3TriggerEvent = "triggerevent"
 
 # Define variable
 w3VariableValue = "variablevalue"

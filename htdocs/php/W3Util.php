@@ -82,15 +82,20 @@ function W3GetAPIParamCount($aid) {
     return sizeof($apiDef[w3ApiParams]);
 }
 
-function W3GetAPIParamArrayFromUI($uid) {
+function W3GetAPIParamArrayFromUI($uid, $index) {
     $paramArray = array ();
 
-    $apiTrigger = W3TryGetUIProperty($uid, w3PropTriggerApi);
-    if ($apiTrigger == NULL) {
+    $apiTriggers = W3TryGetUIProperty($uid, w3PropTriggerApi);
+    if ($apiTriggers == NULL) {
         W3LogWarning("There is no API trigger defined for specifed uid: " + $uid);
         return $paramArray;
     }
+    if ($index < 0 || $index >= sizeof($apiTriggers)) {
+        W3LogWarning("The API trigger index is overflow for uid: " + $uid);
+        return $paramArray;
+    }
 
+    $apiTrigger = $apiTriggers[$index];
     if (!array_key_exists(w3ApiParams, $apiTrigger)) {
         W3LogWarning("There is no API param property defined for specifed uid: " + $uid);
         return $paramArray;

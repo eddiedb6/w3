@@ -147,19 +147,24 @@ function W3OnTabClicked(uid, currentTab, tabSize) {
     }
 }
 
-function W3TriggerAPIFromUI(uid) {
-    var apiTrigger = W3TryGetUIProperty(uid, w3PropTriggerApi);
-    if (apiTrigger == null) {
+function W3TriggerAPIFromUI(uid, index) {
+    var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
+    if (apiTriggers == null) {
 	W3LogError("No API trigger defined for ui: " + uid);
 	return;
     }
-    
+    if (index < 0 || index >= apiTriggers.length) {
+	W3LogError("The API trigger item index is overflow for uid: " + uid);
+	return "";
+    }
+
+    var apiTrigger = apiTriggers[index];
     var apiDef = W3GetAPIDef(apiTrigger[w3ApiID]);
     if (apiDef == null) {
 	return;
     }
 
-    var request = W3CreateAPIFromUI(uid);
+    var request = W3CreateAPIFromUI(uid, index);
     if (request == "") {
 	W3LogWarning("No API to create from UI:  " + uid);
 	return;

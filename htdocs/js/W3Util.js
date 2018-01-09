@@ -48,13 +48,18 @@ function W3GetAPIParamCount(aid) {
     return apiDef[w3ApiParams].length;
 }
 
-function W3CreateAPIFromUI(uid) {
-    var apiTrigger = W3TryGetUIProperty(uid, w3PropTriggerApi);
-    if (apiTrigger == null) {
+function W3CreateAPIFromUI(uid, index) {
+    var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
+    if (apiTriggers == null) {
 	W3LogError("There is no API trigger defined to create API for uid: " + uid);
 	return "";
     }
+    if (index < 0 || index >= apiTriggers.length) {
+	W3LogError("The API trigger index is overflow for uid: " + uid);
+	return "";
+    }
 
+    var apiTrigger = apiTriggers[index];
     var aid = apiTrigger[w3ApiID];
     var apiDef = W3GetAPIDef(aid);
     if (apiDef == null) {

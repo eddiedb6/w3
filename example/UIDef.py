@@ -95,14 +95,15 @@
     "uidNaviDebug": {
         W3Const.w3PropType: W3Const.w3TypeLink,
         W3Const.w3PropString: "sidNaviDebug",
-        W3Const.w3PropTriggerApi: {
+        W3Const.w3PropTriggerApi: [
+        {
             W3Const.w3ApiID: "aidPage",
             W3Const.w3ApiParams: [
             {
                 W3Const.w3ApiDataType: W3Const.w3ApiDataTypeUID,
                 W3Const.w3ApiDataValue: "uidPageDebug"
             }]
-        }
+        }]
     },
     "uidPageDebug": {
         W3Const.w3PropType: W3Const.w3TypePanel,
