@@ -99,8 +99,6 @@ constPhp = open(constPhpPath, "w")
 constPhp.write("<?php\n\n")
 constPhp.write(W3Util.W3ConstToPHP(constDef))
 constPhp.write("define('w3LogLevel', " + str(W3Config.w3LogLevel) + ");\n");
-constPhp.write("define('w3RSAPublicKey', '" + str(W3Config.w3RSAPublicKey) + "');\n");
-constPhp.write("define('w3RSAPrivateKey', '" + str(W3Config.w3RSAPrivateKey) + "');\n");
 constPhp.write("\n\n")
 constPhp.write(" ?>")
 constPhp.close()

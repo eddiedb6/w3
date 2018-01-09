@@ -9,9 +9,6 @@ w3UIDefPath = "/home/ed/Documents/git/w3/example/UIDef.py"
 w3UserPHPRoot = ""
 w3UserJSRoot = ""
 
-w3RSAPublicKey = ""
-w3RSAPrivateKey = ""
-
 # w3LogDebug =   0
 # w3LogInfo =    1
 # w3LogWarning = 2

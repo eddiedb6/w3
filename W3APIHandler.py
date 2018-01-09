@@ -25,41 +25,6 @@ apiSchema["aidPage"] = {
     }]
 }
 
-# Insert default API "aidToken"
-apiSchema["aidToken"] = {
-    W3Const.w3ElementType: W3Const.w3TypeApi,
-    W3Const.w3ApiName: "token",
-    W3Const.w3ApiResult: {
-        W3Const.w3ApiResultStatus: [
-            W3Const.w3ApiResultSuccessful,
-            W3Const.w3ApiResultFailed
-        ],
-        W3Const.w3ApiResultData: [
-        {
-            W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
-            W3Const.w3ApiDataValue: "token"
-        }]
-    }
-}
-
-# Insert default API "aidEncryption"
-apiSchema["aidEncryption"] = {
-    W3Const.w3ElementType: W3Const.w3TypeApi,
-    W3Const.w3ApiName: "encryption",
-    W3Const.w3ApiParams: [
-    {
-        W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
-        W3Const.w3ApiDataValue: "encryption"
-    }],
-    W3Const.w3ApiResult: {
-        W3Const.w3ApiResultStatus: [
-            W3Const.w3ApiResultSuccessful,
-            W3Const.w3ApiResultFailed
-        ]
-    },
-    W3Const.w3ApiHandler: "W3OnGetEncryption"
-}
-
 #########################
 # Generate PHP api file #
 #########################
@@ -93,7 +58,7 @@ apiDef.write("function W3APIHandleRequest() {\n")
 apiDef.write("    $request = $_SERVER[\"REQUEST_URI\"];\n")
 apiDef.write("    $parameters = \"\";\n\n")
 for aid in apiSchema.keys():
-    if aid == "aidPage" or aid == "aidToken":
+    if aid == "aidPage":
         # Do not need to handle default api "aidPage"
         continue
     apiDef.write("    if (W3IsRequest_" + apiSchema[aid][W3Const.w3ApiName] + "($request, $parameters)) {\n")
