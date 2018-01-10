@@ -101,6 +101,16 @@ w3ApiResultSuccessful = "apiresultsuccessful"
 w3ApiResultFailed = "apiresultfailed"
 w3ApiHandler = "apihandler"
 w3ApiListener = "apilistener"
+# API call
+w3ApiCall = "apicall"
+w3ApiDirect = "apidirect"
+w3ApiAsync = "apiasync"
+w3ApiSync = "apisync"
+w3ApiCallCollection = [
+    w3ApiDirect,
+    w3ApiSync,
+    w3ApiSync
+]
 
 # Define "ui" properties
 w3PropDefaultPage = "propdefaultpage"

@@ -88,14 +88,17 @@ function W3CreateAPI() {
     return api;
 }
 
-function W3CallAPIAsync(request, callback)
-{
+function W3CallAPI(request) {
+    W3LogDebug("Trigger API Directly: " + request);
+    location.href = request
+}
+
+function W3CallAPIAsync(request, callback) {
     W3LogDebug("Trigger API Async: " + request);
     $.get(request, callback);
 }
 
-function W3CallAPISync(request, callback)
-{
+function W3CallAPISync(request, callback) {
     W3LogDebug("Trigger API Sync: " + request);
     $.ajax({
 	type: "get",
@@ -182,15 +185,28 @@ function W3TriggerAPIFromUI(uid, index) {
     } else {
 	listeners.push("W3OnAPIDefaultListener(w3PlaceHolder_1, w3PlaceHolder_2)");
     }
-    
-    W3CallAPIAsync(request, function(data, status) {
+
+    var apiCallMethod = w3ApiAsync;
+    if (apiTrigger.hasOwnProperty(w3ApiCall)) {
+	apiCallMethod = apiTrigger[w3ApiCall]
+    }
+
+    var callback = function(data, status) {
 	W3LogDebug("status: " + status);
 	W3LogDebug("data: " + data);
 	
 	for (var index in listeners) {
 	    W3ExecuteFuncFromString(listeners[index], data, status);
 	}		    
-    });
+    };
+
+    if (apiCallMethod == w3ApiDirect) {
+	W3CallAPI(request);
+    } else if (apiCallMethod == w3ApiAsync) {
+	W3CallAPIAsync(request, callback);
+    } else {
+	W3CallAPISync(request, callback);
+    }	
 }
 
 function W3GoBack() {

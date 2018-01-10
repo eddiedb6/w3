@@ -81,6 +81,12 @@
     W3Const.w3ApiListener: {
         SchemaType: SchemaTypeArray
     },
+    W3Const.w3ApiCall: {
+        SchemaType: SchemaTypeString,
+        SchemaRule: [
+            ValueIn(W3Const.w3ApiCallCollection)
+        ]
+    },
 
     # Class
     W3Const.w3TypeClass: {
@@ -238,7 +244,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams])
+            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams, W3Const.w3ApiCall])
         ]
     },
     W3Const.w3BindingRow: {

@@ -111,11 +111,14 @@ function W3GetAPIParamArrayFromUI($uid, $index) {
         $paramValue = $apiTrigger[w3ApiParams][$i][w3ApiDataValue];
         if ($paramType == w3ApiDataTypeSID) {
             $paramValue = W3GetStringValue($paramValue);
+        } else {
+            // TODO: support other type if needed
+            echo "<other type to be supported>";
         }
-
+        
         array_push($paramArray, $paramValue);
     }
-    
+   
     return $paramArray;
 }
 
@@ -163,15 +166,18 @@ function W3TryGetUIProperty($uid, $property) {
 
 function W3GetUIEvent($uid) {
     $eventDict = array();
-    $apiTriggerDict = array();
+    $apiTriggerArray = array();
 
-    # First check trigger in UI
-    $apiTrigger = W3TryGetUIProperty($uid, w3PropTriggerApi);
-    if ($apiTrigger != NULL &&
-        array_key_exists(w3TriggerEvent, $apiTrigger)) {
-        $event = $apiTrigger[w3TriggerEvent];
-        $apiTriggerDict[$event] = array("W3TriggerAPIFromUI(" . W3MakeString($uid, true) . ")");
-    } # Check api trigger and later add more if new trigger introduced
+    # First check triggers in UI and wrapper API trigger as event function
+    $apiTriggers = W3TryGetUIProperty($uid, w3PropTriggerApi);
+    $triggerArraySize = 0;
+    if ($apiTriggers != NULL) {
+        $triggerArraySize = sizeof($apiTriggers);
+        for ($i = 0; $i < $triggerArraySize; $i++) {
+            $func =  "W3TriggerAPIFromUI(" . W3MakeString($uid, true) . ", " . strval($i) . ")";   
+            array_push($apiTriggerArray, $func);
+        }
+    }
 
     # Get event from property
     $events = "";
@@ -188,31 +194,19 @@ function W3GetUIEvent($uid) {
             }
 
             foreach ($value as $func) {
-                array_push($eventDict[$key], $func);
-            }
-        }
-    }
+                # Replace place holder as API trigger
+                if (strncmp($func, w3PlaceHolder_1, 14) == 0) {
+                    $posPlaceHolder = intval(substr($func, 14));
+                    if ($posPlaceHolder > $triggerArraySize) {
+                        W3LogError("Trigger event place holder is more than trigger");
+                        return "";
+                    }
 
-    # Merge trigger event
-    foreach ($apiTriggerDict as $event => $funcArray) {
-        if (array_key_exists($event, $eventDict)) {
-            $lenTrigger = sizeof($funcArray);
-            $lenFunc = sizeof($eventDict[$event]);
-            for ($i = 0; $i < $lenFunc; $i++) {
-                if (strncmp($eventDict[$event][$i], w3PlaceHolder_1, 14) != 0) {
-                    continue;
+                    $func = $apiTriggerArray[$posPlaceHolder - 1];
                 }
                 
-                $pos = intval(substr($eventDict[$event][$i], 14));
-                if ($pos > $lenTrigger) {
-                    W3LogError("Trigger event place holder is more than trigger");
-                    break;
-                }
-
-                $eventDict[$event][$i] = $funcArray[$pos - 1];
+                array_push($eventDict[$key], $func);
             }
-        } else {
-            $eventDict[$event] = $funcArray;
         }
     }
 
@@ -336,14 +330,7 @@ function W3CreateCanvas($uid) {
 function W3CreateLink($uid) {
     W3CreateUIBasePro($uid);
 
-    $href = "";
-    $apiTrigger = W3TryGetUIProperty($uid, w3PropTriggerApi);
-    if ($apiTrigger != NULL) {
-        $href = W3MakeString(W3CreateAPI($apiTrigger[w3ApiID], W3GetAPIParamArrayFromUI($uid)), true);
-    } else {
-        W3LogError("No API trigger defined for link: " . $uid);
-    }
-    
+    $href = "javascript: void(0);";
     $type = "a";
     $body = "";
     $attr = "href=" . $href;
