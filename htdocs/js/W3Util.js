@@ -28,6 +28,8 @@ function W3GetAPIParamValue(apiInputParam) {
 	return paramValue;
     } else if (paramType == w3ApiDataTypeNum) {
 	return Number(paramValue);
+    } else if (paramType == w3ApiDataTypeVar) {
+	return W3GetVariable(paramValue);
     }
 
     W3LogError("Invalid API param data type: " + paramType);
@@ -246,12 +248,12 @@ function W3UpdateTableCell(uidTable, rowIndex, columnIndex, value, valueType) {
 function W3UpdateTableByMatrix(uidTable, data, status) {
     var apiResult = eval("(" + data + ")")[w3ApiResultData];
 
-    var apiBinding = W3TryGetUIProperty(uidTable, w3PropBindingApi);
+    var apiBinding = W3TryGetUIProperty(uidTable, w3PropSinkApi);
     if (apiBinding == null) {
 	return;
     }
     
-    var bindingMatrix = apiBinding[w3BindingMatrix];
+    var bindingMatrix = apiBinding[w3SinkMatrix];
     for (var rowIndex in bindingMatrix) {
 	for (var columnIndex in bindingMatrix[rowIndex]) {
 	    var binding = bindingMatrix[rowIndex][columnIndex];
@@ -280,12 +282,12 @@ function W3UpdateTableByRow(uidTable, data, status) {
 	$("#" + uidTable).empty();
     }
 
-    var apiBinding = W3TryGetUIProperty(uidTable, w3PropBindingApi);
+    var apiBinding = W3TryGetUIProperty(uidTable, w3PropSinkApi);
     if (apiBinding == null) {
 	return;
     }
     
-    var apiResultBinding = apiBinding[w3BindingRow];
+    var apiResultBinding = apiBinding[w3SinkRow];
     var tableBody = "";
     for (var rowIndex in apiResult) {
         var rowData = "<tr>";

@@ -242,16 +242,16 @@ function W3UpdateTable(uidTable, data, status) {
 	return;
     }
 
-    var bindingDef = W3TryGetUIProperty(uidTable, w3PropBindingApi);
+    var bindingDef = W3TryGetUIProperty(uidTable, w3PropSinkApi);
     if (bindingDef == null) {
 	W3LogError("There is no API property defined to update table for uid: " + uidTable);
 	return;
     }
 
     // Check binding style manually
-    if (bindingDef.hasOwnProperty(w3BindingRow)) {
+    if (bindingDef.hasOwnProperty(w3SinkRow)) {
 	W3UpdateTableByRow(uidTable, data, status);
-    } else if (bindingDef.hasOwnProperty(w3BindingMatrix)) {
+    } else if (bindingDef.hasOwnProperty(w3SinkMatrix)) {
 	W3UpdateTableByMatrix(uidTable, data, status);
     } else {
 	W3LogError("No binding style for " + uidTable);

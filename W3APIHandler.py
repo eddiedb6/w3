@@ -21,6 +21,10 @@ apiSchema["aidPage"] = {
     W3Const.w3ApiParams: [
     {
         W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
+        W3Const.w3ApiDataValue: "session"
+    },
+    {
+        W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
         W3Const.w3ApiDataValue: "id"
     }]
 }
@@ -83,14 +87,14 @@ if not result:
     print("UI schema check error for api")
     sys.exit(0)
 for uid in uiDef.keys():
-    if W3Const.w3PropBindingApi not in uiDef[uid]:
+    if W3Const.w3PropSinkApi not in uiDef[uid]:
         continue
     func = ""
     if uiDef[uid][W3Const.w3PropType] == W3Const.w3TypeTable:
         func = "W3UpdateTable(" + uid + ", w3PlaceHolder_1, w3PlaceHolder_2)"
     if func == "":
         continue
-    aid = uiDef[uid][W3Const.w3PropBindingApi][W3Const.w3ApiID]
+    aid = uiDef[uid][W3Const.w3PropSinkApi][W3Const.w3ApiID]
     if W3Const.w3ApiListener in apiSchema[aid]:
         apiSchema[aid][W3Const.w3ApiListener].append(func)
     else:

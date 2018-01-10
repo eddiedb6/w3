@@ -87,12 +87,14 @@ w3ApiDataTypeString = "apivaluetypestring"
 w3ApiDataTypeNum = "apivaluetypenum"
 w3ApiDataTypeUID = "apivaluetypeuid"
 w3ApiDataTypeSID = "apivaluetypesid"
+w3ApiDataTypeVar = "apivaluetypevar"
 w3ApiDataTypeCollection = [
     w3ApiDataTypeNone,
     w3ApiDataTypeString,
     w3ApiDataTypeNum,
     w3ApiDataTypeUID,
-    w3ApiDataTypeSID
+    w3ApiDataTypeSID,
+    w3ApiDataTypeVar
 ]
 w3ApiResult = "apiresult"
 w3ApiResultStatus = "apiresultstatus"
@@ -125,7 +127,7 @@ w3PropClass = "propclass"
 w3PropPrototype = "propprototype"
 w3PropCSS = "propcss"
 w3PropBindingVar = "propbindingvar"
-w3PropBindingApi = "propbindingapi"
+w3PropSinkApi = "propsinkapi"
 w3PropTriggerApi = "proptriggerapi"
 # Collect UI properties
 w3PropCollection = [
@@ -141,16 +143,18 @@ w3PropCollection = [
     w3PropPrototype,
     w3PropCSS,
     w3PropBindingVar,
-    w3PropBindingApi,
+    w3PropSinkApi,
     w3PropTriggerApi
 ]
 
 # Define trigger
 w3TriggerApi = "triggerapi"
 
+# Define sinker
+w3SinkRow = "sinkrow"
+w3SinkMatrix = "sinkmatrix"
+
 # Define binding
-w3BindingRow = "bindingeachrow"
-w3BindingMatrix = "bindingmatrix"
 w3BindingVarName = "bindingvarname"
 w3BindingFormat = "bindingformat"
 

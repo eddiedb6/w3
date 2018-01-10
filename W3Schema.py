@@ -225,11 +225,11 @@
             KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingFormat])
         ]
     },
-    W3Const.w3PropBindingApi: {
+    W3Const.w3PropSinkApi: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3BindingRow, W3Const.w3BindingMatrix])
+            KeyIn([W3Const.w3ApiID, W3Const.w3SinkRow, W3Const.w3SinkMatrix])
         ]
     },
     W3Const.w3PropTriggerApi: {
@@ -247,17 +247,17 @@
             KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams, W3Const.w3ApiCall])
         ]
     },
-    W3Const.w3BindingRow: {
+    W3Const.w3SinkRow: {
         SchemaType: SchemaTypeArray,
         SchemaRule: [
             CheckForeachAsType(W3Const.w3ApiData)
         ]
     },
         
-    W3Const.w3BindingMatrix: {
+    W3Const.w3SinkMatrix: {
         SchemaType: SchemaTypeArray,
         SchemaRule: [
-            CheckForeachAsType(W3Const.w3BindingRow)
+            CheckForeachAsType(W3Const.w3SinkRow)
         ]
     },
     W3Const.w3BindingVarName: {
