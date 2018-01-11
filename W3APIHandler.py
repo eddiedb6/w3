@@ -22,10 +22,6 @@ apiSchema["aidPage"] = {
     {
         W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
         W3Const.w3ApiDataValue: "id"
-    },
-    {
-        W3Const.w3ApiDataType: W3Const.w3ApiDataTypeString,
-        W3Const.w3ApiDataValue: "session"
     }]
 }
 

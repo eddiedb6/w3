@@ -44,7 +44,7 @@ w3UIBody = "uibody": w3TypePanel				         |
     1. Trigger API on control event
         a. In w3PropTriggerApi define API array, and each API array item is to define how API parameters are filled
 	b. In w3PropEvent.w3EventXXX define which API will be tiggered in this event by w3PlaceHolder_X ("X" is the API offset in w3PropTriggerApi array)
-	c. When create control event in PHP, above relation ship will be used and insert code into JS automatically
+	c. When create control event in PHP, above relationship will be used and insert code into JS automatically
     2. Sink API result to display by control
         a. Define w3PropSinkApi in control
 	b. Then metadata handler will handle this and insert listener to API define

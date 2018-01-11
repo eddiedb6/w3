@@ -69,19 +69,6 @@ function W3CreateAPIResult($status, $isFullResult) {
     return $result;
 }
 
-function W3GetAPIParamCount($aid) {
-    $apiDef = W3GetAPIDef($aid);
-    if ($apiDef == NULL) {
-        return 0;
-    }
-
-    if (!array_key_exists(w3ApiParams, $apiDef)) {
-        return 0;
-    }
-
-    return sizeof($apiDef[w3ApiParams]);
-}
-
 function W3GetAPIParamArrayFromUI($uid, $index) {
     $paramArray = array ();
 
