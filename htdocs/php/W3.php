@@ -122,6 +122,10 @@ function W3CreateFailedResult($isFullResult = true) {
     return W3CreateAPIResult(w3ApiResultFailed, $isFullResult);
 }
 
+function W3CreateAuthenticationResult($isFullResult = true) {
+    return W3CreateAPIResult(w3ApiResultAuthentication, $isFullResult);
+}
+
 function W3GetAPIDef($aid) {
     global $w3API;
 
@@ -202,6 +206,18 @@ function W3TryGetUIProperty($uid, $property) {
     }
 
     return NULL;
+}
+
+//
+// Session
+//
+
+function W3GetSession() {
+    if (array_key_exists(w3Session, $_SESSION)) {
+        return $_SESSION[w3Session];
+    }
+
+    return "";
 }
 
  ?>

@@ -1,7 +1,14 @@
 <?php
 
 function W3LoadPage() {
-    echo W3CreateUI(w3UIBody);
+    $session = W3GetSession();
+    if ($session != "") {
+        $session = "<script type='text/javascript'> var session=" .
+                 W3MakeString($session, true) .
+                 "; </script>";
+    }
+             
+    echo $session . W3CreateUI(w3UIBody);
 }
 
 function W3SelectPage() {

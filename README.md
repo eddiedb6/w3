@@ -76,6 +76,7 @@ W3GetAPIParamCount		W3GetAPIParamCount
 W3CreateAPI			W3CreateAPI
 				W3CreateSuccessfulResult
 				W3CreateFailedResult
+				W3CreateAuthenticationResult
 W3CallAPI			
 W3CallAPIAsync
 W3CallAPISync

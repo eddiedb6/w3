@@ -22,6 +22,9 @@ w3DirCSS = "css"
 # Default UI
 w3UIBody = "uibody"
 
+# Session Variable
+w3Session = "session"
+
 # W3 element types
 w3ElementType = "elementtype"
 w3TypeApi = "typeapi"

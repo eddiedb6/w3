@@ -154,12 +154,7 @@ function W3TriggerAPIFromUI(uid, index) {
     }
 
     var callback = function(data, status) {
-	W3LogDebug("status: " + status);
-	W3LogDebug("data: " + data);
-	
-	for (var index in listeners) {
-	    W3ExecuteFuncFromString(listeners[index], data, status);
-	}		    
+	W3OnAPICallback(data, status, listeners);
     };
 
     if (apiCallMethod == w3ApiDirect) {
@@ -174,6 +169,31 @@ function W3TriggerAPIFromUI(uid, index) {
 //
 // Sinker Helper
 //
+
+function W3OnAPICallback(data, status, listeners) {
+    W3LogDebug("status: " + status);
+    W3LogDebug("data: " + data);
+
+    var apiResult = eval("(" + data + ")");
+    if (!apiResult.hasOwnProperty(w3ApiResultStatus)) {
+	W3LogError("No result status in API result!");
+	return;
+    }
+
+    var resultStatus = apiResult[w3ApiResultStatus];
+    if (resultStatus == w3ApiResultAuthentication) {
+	W3GotoAuthenticationPage();
+	return;
+    }
+    if (resultStatus != w3ApiResultSuccessful && resultStatus != w3ApiResultFailed) {
+	W3LogError("API result status is not valid!");
+	return;
+    }
+	
+    for (var index in listeners) {
+	W3ExecuteFuncFromString(listeners[index], data, status);
+    }		    
+}
 
 function W3UpdateTable(uidTable, data, status) {
     var apiResult = eval("(" + data + ")")[w3ApiResultStatus];
@@ -513,4 +533,21 @@ function W3ProcessUIValue(uid, value) {
     }
 
     return paramArray;
+}
+
+//
+// Other
+//
+
+function W3GotoAuthenticationPage() {
+    var uiBody = W3GetUIDef(w3UIBody);
+    if (!uiBody || !uiBody.hasOwnProperty(w3PropDefaultAuthenticationPage)) {
+	W3LogWarning("Default authentication page is not defined");
+	return;
+    }
+
+    var loginRequest = W3CreateAPI("aidPage", uiBody[w3PropDefaultAuthenticationPage]);
+    if (loginRequest != "") {
+	W3CallAPI(loginRequest);
+    }
 }
