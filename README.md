@@ -53,3 +53,56 @@ w3UIBody = "uibody": w3TypePanel				         |
     1. Define w3PropBindingVar in control
     2. Then metadata handler will add the control to variable listener list
     3. When W3SetVariable is called, the control will be updated automatically
+
+* W3 API
+
+JS:				PHP:
+
+/*------------------ Logger ------------------*/
+W3LogDebug			W3LogDebug
+W3LogInfo			W3LogInfo
+W3LogWarning			W3LogWarning
+W3LogError			W3LogError
+W3LogFatal			W3LogFatal
+
+/*------------------ Language ------------------*/
+W3GetLanguage			W3GetLanguage
+W3GetStringValue		W3GetStringValue
+
+/*------------------ API ------------------*/
+W3GetAPIDef			W3GetAPIDef
+W3GetAPIParamCount		W3GetAPIParamCount
+				W3GetAPIParamIndex
+W3CreateAPI			W3CreateAPI
+				W3CreateSuccessfulResult
+				W3CreateFailedResult
+W3CallAPI			
+W3CallAPIAsync
+W3CallAPISync
+
+/*------------------ UI ------------------*/
+W3GetUIDef			W3GetUIDef
+W3GetUIValue
+W3TryGetUIProperty		W3TryGetUIProperty
+W3DisplayUI
+W3HideUI
+
+/*------------------ Variable ------------------*/
+W3GetVariable
+W3SetVariable
+
+/*------------------ String ------------------*/
+				W3MakeString
+				W3MakeDateString
+
+/*------------------ Formatter ------------------*/
+W3FormatCurrency
+W3FormatCurrencyColor
+W3FormatDatetime
+
+/*------------------ Graphic ------------------*/
+W3DrawPercentageReport
+
+/*------------------ Other ------------------*/
+W3GoBack
+

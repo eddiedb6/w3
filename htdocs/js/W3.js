@@ -36,6 +36,10 @@ function W3LogFatal(msg) {
 // Language 
 //
 
+function W3GetLanguage() {
+    return w3LanEnglish; // [ED]PENDING: Need to handle language selection
+}
+
 function W3GetStringValue(sid) {
     var language = w3Lan[W3GetLanguage()];
     if (!language.hasOwnProperty(sid)) {
@@ -49,6 +53,28 @@ function W3GetStringValue(sid) {
 //
 // API
 //
+
+function W3GetAPIDef(aid) {
+    if (!w3API.hasOwnProperty(aid)) {
+	W3LogError("No aid defined: " + aid);
+	return null;
+    }
+
+    return w3API[aid];
+}
+
+function W3GetAPIParamCount(aid) {
+    var apiDef = W3GetAPIDef(aid);
+    if (apiDef == null) {
+	return 0;
+    }
+    
+    if (!apiDef.hasOwnProperty(w3ApiParams)) {
+	return 0;
+    }
+	
+    return apiDef[w3ApiParams].length;
+}
 
 function W3CreateAPI() {
     // Variable parameter length function
@@ -110,112 +136,39 @@ function W3CallAPISync(request, callback) {
 }
 
 //
-// Event
-//
-
-function W3OnTabClicked(uid, currentTab, tabSize) {
-    for (i = 1; i <= tabSize; ++i) {
-	var display = i == currentTab ? "block" : "none";
-	W3SetUICSS(uid + "content" + i.toString(), {"display": display});
-
-	var borderStyle = "solid";
-	var borderWidth = "1px";
-	var bgColor = "white";
-	var cssDef = W3TryGetUIProperty(uid, w3PropCSS);
-	if (cssDef != null) {
-	    if (cssDef.hasOwnProperty("border-style")) {
-		borderStyle = cssDef["border-style"];
-	    }
-	    if (cssDef.hasOwnProperty("border-width")) {
-		borderWidth = cssDef["border-width"];
-	    }
-	    if (cssDef.hasOwnProperty("background-color")) {
-		bgColor = cssDef["background-color"];
-	    }
-	}
-
-	var uidHeader = uid + "header" + i.toString();
-	var css = {};
-	if (i == currentTab) {
-	    var style = borderWidth + " " + borderStyle;
-	    var bottomStyle = style + " " + bgColor;
-	    css["border-bottom"] = bottomStyle;
-	    css["border-top"] = style;
-	    css["border-left"] = style;
-	    css["border-right"] = style;
-	} else {
-	    css["border"] = "none";
-	}
-	W3SetUICSS(uidHeader, css);
-    }
-}
-
-function W3TriggerAPIFromUI(uid, index) {
-    var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
-    if (apiTriggers == null) {
-	W3LogError("No API trigger defined for ui: " + uid);
-	return;
-    }
-    if (index < 0 || index >= apiTriggers.length) {
-	W3LogError("The API trigger item index is overflow for uid: " + uid);
-	return "";
-    }
-
-    var apiTrigger = apiTriggers[index];
-    var apiDef = W3GetAPIDef(apiTrigger[w3ApiID]);
-    if (apiDef == null) {
-	return;
-    }
-
-    var request = W3CreateAPIFromUI(uid, index);
-    if (request == "") {
-	W3LogWarning("No API to create from UI:  " + uid);
-	return;
-    }
-
-    var api = apiDef[w3ApiName];
-
-    var listeners = [];
-    if (apiDef.hasOwnProperty(w3ApiListener) &&
-	apiDef[w3ApiListener].length > 0) {
-	for (var index in apiDef[w3ApiListener])
-	{
-	    listeners.push(apiDef[w3ApiListener][index]);
-	}
-    } else {
-	listeners.push("W3OnAPIDefaultListener(w3PlaceHolder_1, w3PlaceHolder_2)");
-    }
-
-    var apiCallMethod = w3ApiAsync;
-    if (apiTrigger.hasOwnProperty(w3ApiCall)) {
-	apiCallMethod = apiTrigger[w3ApiCall]
-    }
-
-    var callback = function(data, status) {
-	W3LogDebug("status: " + status);
-	W3LogDebug("data: " + data);
-	
-	for (var index in listeners) {
-	    W3ExecuteFuncFromString(listeners[index], data, status);
-	}		    
-    };
-
-    if (apiCallMethod == w3ApiDirect) {
-	W3CallAPI(request);
-    } else if (apiCallMethod == w3ApiAsync) {
-	W3CallAPIAsync(request, callback);
-    } else {
-	W3CallAPISync(request, callback);
-    }	
-}
-
-function W3GoBack() {
-    javascript:history.back(-1);
-}
-
-//
 // UI
 //
+
+function W3GetUIDef(uid) {
+    if (!w3UI.hasOwnProperty(uid)) {
+	W3LogError("No uid defined: " + uid);
+	return null;
+    }
+    
+    return w3UI[uid];
+}
+
+function W3GetUIValue(uid) {
+    return $("#" + uid).val();
+}
+
+function W3TryGetUIProperty(uid, property) {
+    var ui = W3GetUIDef(uid);
+    if (ui == null) {
+	return null;
+    }
+
+    if (ui.hasOwnProperty(property)) {
+	return ui[property];
+    }
+
+    if (ui.hasOwnProperty(w3PropPrototype)) {
+	var uidPrototype = ui[w3PropPrototype];
+	return W3TryGetUIProperty(uidPrototype, property);
+    }
+
+    return null;
+}
 
 function W3DisplayUI(uid) {
     $("#" + uid).css("display", "block");
@@ -225,46 +178,10 @@ function W3HideUI(uid) {
     $("#" + uid).css("display", "none");
 }
 
-function W3UpdateTable(uidTable, data, status) {
-    var apiResult = eval("(" + data + ")")[w3ApiResultStatus];
-    if (apiResult != w3ApiResultSuccessful) {
-	W3LogWarning("Update table failed");
-	return;
-    }
-    
-    var tableDef = W3GetUIDef(uidTable);
-    if (tableDef == null)  {
-	return;
-    }
-    
-    if (tableDef[w3PropType] != w3TypeTable) {
-	W3LogError("Sinker is not table when update table by API: " + uidTable)
-	return;
-    }
-
-    var bindingDef = W3TryGetUIProperty(uidTable, w3PropSinkApi);
-    if (bindingDef == null) {
-	W3LogError("There is no API property defined to update table for uid: " + uidTable);
-	return;
-    }
-
-    // Check binding style manually
-    if (bindingDef.hasOwnProperty(w3SinkRow)) {
-	W3UpdateTableByRow(uidTable, data, status);
-    } else if (bindingDef.hasOwnProperty(w3SinkMatrix)) {
-	W3UpdateTableByMatrix(uidTable, data, status);
-    } else {
-	W3LogError("No binding style for " + uidTable);
-    }
-}
-
-function W3GetUIValue(uid) {
-    return $("#" + uid).val();
-}
-
 //
 // Formatter
 // 
+
 // Formatter is one type of processor
 // All processor accept the first param as [value, {key: css}]
 // And return result as [value, {key: css}]
@@ -463,4 +380,12 @@ function W3SetVariable(variable, value) {
 
 function W3GetVariable(variable) {
     return variable[w3VariableValue];
+}
+
+//
+// Other
+//
+
+function W3GoBack() {
+    javascript:history.back(-1);
 }

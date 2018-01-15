@@ -1,63 +1,72 @@
 <?php
 
 #
-# String Helper
+# Request Helper
 #
 
-function W3MakeUIEventString($event, $funcs) {
-    $result = "";
-    
-    $arraySize = sizeof($funcs);
-    if ($arraySize < 1) {
-        return "";
-    } else if ($arraySize == 1) {
-        $result = $funcs[0];
-    } else {
-        $result = "(function() {";
-        for ($i = 0; $i < $arraySize; $i++) {
-            $result .= $funcs[$i] . ";";
-        }
-        $result .= "})()";
-    }
-    
-    return $event . "=" . W3MakeString($result);
+function W3IsEmptyRequest() {
+    return $_SERVER["REQUEST_URI"] == "/";
 }
 
 #
-# Language Helper
+# CSS Helper
+#
+function W3LoadCSS() {
+    $uiPath = w3DirCSS . "/" . w3DirGenerated . "/" . w3FileUICSS;
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $uiPath . "\"></link>";
+
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery-ui.min.css\"></link>";
+}
+    
+#
+# JS Helper
 #
 
-function W3GetLanguage() {
-    return w3LanEnglish; # [ED]PENDING: Handle language selection
+function W3LoadJS() {
+    echo "<script src=\"js/jquery-2.2.0.js\"></script>";
+    echo "<script src=\"js/jquery-ui.min.js\"></script>";
+    echo "<script src=\"js/W3.js\"></script>";
+    echo "<script src=\"js/W3Util.js\"></script>";
+
+    $generatedPath = w3DirJS . "/" . w3DirGenerated;
+    $apiPath = $generatedPath . "/" . w3FileAPIJS;
+    $uiPath = $generatedPath . "/" . w3FileUIJS;
+    $constPath = $generatedPath . "/" . w3FileConstJS;
+    $languagePath = $generatedPath . "/" . w3FileStringJS;
+    echo "<script src=\"" . $apiPath . "\"></script>";
+    echo "<script src=\"" . $uiPath . "\"></script>";
+    echo "<script src=\"" . $constPath . "\"></script>";
+    echo "<script src=\"" . $languagePath . "\"></script>";
+
+    W3LoadUserJS();
 }
 
 #
 # API Helper
 #
 
-function W3CreateAPI($aid, $paramArray) {
+function W3CreateAPIReg($aid) {
     $apiDef = W3GetAPIDef($aid);
     if ($apiDef == NULL) {
         return "";
     }
     
-    $paramCount = sizeof($paramArray);
-    $paramDefCount = W3GetAPIParamCount($aid);
-    $api = $apiDef[w3ApiName];
-    if ($paramDefCount == 0) {
-        return $api;
+    $paramCount = W3GetAPIParamCount($aid);
+    $apiReg = "/^\/" . $apiDef[w3ApiName];
+    if ($paramCount < 1) {
+        return $apiReg . "$/";
     } else {
-        $api .= "?";
+        $apiReg .= "\?";
     }
-    for ($i = 0; $i < $paramDefCount; $i++) {
-        $paramValue = $i < $paramCount ? $paramArray[$i] : '';
-        $api .= $apiDef[w3ApiParams][$i][w3ApiDataValue] . "=" . $paramValue;
-        if ($i != $paramDefCount - 1) {
-            $api .= "&";
+    for ($i = 0; $i < $paramCount; $i++) {
+        $apiReg .= $apiDef[w3ApiParams][$i][w3ApiDataValue] . "=([\w\-\.\,]*)";
+        if ($i != $paramCount - 1) {
+            $apiReg .= "&";
+        } else {
+            $apiReg .= "$/";
         }
     }
-    
-    return $api;
+    return $apiReg;
 }
 
 function W3CreateAPIResult($status, $isFullResult) {
@@ -69,48 +78,8 @@ function W3CreateAPIResult($status, $isFullResult) {
     return $result;
 }
 
-function W3GetAPIParamArrayFromUI($uid, $index) {
-    $paramArray = array ();
-
-    $apiTriggers = W3TryGetUIProperty($uid, w3PropTriggerApi);
-    if ($apiTriggers == NULL) {
-        W3LogWarning("There is no API trigger defined for specifed uid: " + $uid);
-        return $paramArray;
-    }
-    if ($index < 0 || $index >= sizeof($apiTriggers)) {
-        W3LogWarning("The API trigger index is overflow for uid: " + $uid);
-        return $paramArray;
-    }
-
-    $apiTrigger = $apiTriggers[$index];
-    if (!array_key_exists(w3ApiParams, $apiTrigger)) {
-        W3LogWarning("There is no API param property defined for specifed uid: " + $uid);
-        return $paramArray;
-    }
-    
-    $arraySize = sizeof($apiTrigger[w3ApiParams]);
-    if ($arraySize < 1) {
-        return $paramArray;
-    }
-
-    for ($i = 0; $i < $arraySize; $i++) {
-        $paramType = $apiTrigger[w3ApiParams][$i][w3ApiDataType];
-        $paramValue = $apiTrigger[w3ApiParams][$i][w3ApiDataValue];
-        if ($paramType == w3ApiDataTypeSID) {
-            $paramValue = W3GetStringValue($paramValue);
-        } else {
-            // TODO: support other type if needed
-            echo "<other type to be supported>";
-        }
-        
-        array_push($paramArray, $paramValue);
-    }
-   
-    return $paramArray;
-}
-
 #
-# API Handler
+# API Handler Helper
 #
 
 function W3OnRequestPage() {
@@ -121,35 +90,6 @@ function W3OnRequestPage() {
 #
 # UI Helper
 #
-
-function W3GetUIDef($uid) {
-    global $w3UI;
-
-    if (!array_key_exists($uid, $w3UI)) {
-        W3LogError("No uid defined: " . $uid);
-        return NULL;
-    }
-
-    return $w3UI[$uid];
-}
-
-function W3TryGetUIProperty($uid, $property) {
-    $ui = W3GetUIDef($uid);
-    if ($ui == NULL) {
-        return NULL;
-    }
-
-    if (array_key_exists($property, $ui)) {
-	    return $ui[$property];
-    }
-
-    if (array_key_exists(w3PropPrototype, $ui)) {
-        $uidPrototype = $ui[w3PropPrototype];
-        return W3TryGetUIProperty($uidPrototype, $property);
-    }
-
-    return NULL;
-}
 
 function W3GetUIEvent($uid) {
     $eventDict = array();
@@ -198,7 +138,7 @@ function W3GetUIEvent($uid) {
     }
 
     foreach ($eventDict as $event => $funcs) {
-        $events .=  W3MakeUIEventString($event, $funcs) . " ";
+        $events .=  W3CreateUIEventString($event, $funcs) . " ";
     }
 
     return $events;
@@ -586,6 +526,23 @@ function W3CreatePage($uid) {
     return W3CreatePanel($uid);
 }
 
+function W3CreateUI($uid) {
+    global $w3UI;
+    global $w3UICreatorMap;
+
+    if (array_key_exists($uid, $w3UI)) {
+        if (array_key_exists($w3UI[$uid][w3PropType], $w3UICreatorMap)) {
+            return $w3UICreatorMap[$w3UI[$uid][w3PropType]]($uid);
+        } else {
+            W3LogError("UI Type is not defined and cannot be created: " . $w3UI[$uid][w3PropType]);
+        }
+    } else {
+        W3LogError("No UI type defined so cannot be created for uid: " . $uid);
+    }
+    
+    return "";
+}
+
 function W3CreateUIBase($uid, $type, $body, $attr) {
     $uiFunc = W3TryGetUIProperty($uid, w3PropFunc);
     if ($uiFunc != NULL and array_key_exists(w3FuncCreator, $uiFunc)) {
@@ -620,6 +577,25 @@ function W3CreateUIBasePro($uid) {
             }
         }
     }
+}
+
+function W3CreateUIEventString($event, $funcs) {
+    $result = "";
+    
+    $arraySize = sizeof($funcs);
+    if ($arraySize < 1) {
+        return "";
+    } else if ($arraySize == 1) {
+        $result = $funcs[0];
+    } else {
+        $result = "(function() {";
+        for ($i = 0; $i < $arraySize; $i++) {
+            $result .= $funcs[$i] . ";";
+        }
+        $result .= "})()";
+    }
+    
+    return $event . "=" . W3MakeString($result);
 }
 
 ?>
