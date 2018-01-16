@@ -60,6 +60,9 @@ for uid in uiDef.keys():
     if W3Const.w3PropBindingVar not in currentUI:
         continue
     varName = currentUI[W3Const.w3PropBindingVar][W3Const.w3BindingVarName]
+    if varName == W3Const.w3Session:
+        print("Variable name is the same as default variable \"session\"")
+        sys.exit(0)
     varFormat = ""
     if W3Const.w3BindingFormat in currentUI[W3Const.w3PropBindingVar]:
         varFormat = currentUI[W3Const.w3PropBindingVar][W3Const.w3BindingFormat]

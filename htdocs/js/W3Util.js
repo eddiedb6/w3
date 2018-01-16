@@ -12,7 +12,8 @@ function W3GetAPIParamBindingValue(apiInputParam) {
     } else if (paramType == w3ApiDataTypeNum) {
 	return Number(paramValue);
     } else if (paramType == w3ApiDataTypeVar) {
-	return W3GetVariable(paramValue);
+	var sessionVar = eval(paramValue);
+	return W3GetVariable(sessionVar);
     }
 
     W3LogError("Invalid API param data type: " + paramType);
@@ -177,22 +178,26 @@ function W3OnAPICallback(data, status, listeners) {
     var apiResult = eval("(" + data + ")");
     if (!apiResult.hasOwnProperty(w3ApiResultStatus)) {
 	W3LogError("No result status in API result!");
-	return;
+	return false;
     }
 
     var resultStatus = apiResult[w3ApiResultStatus];
     if (resultStatus == w3ApiResultAuthentication) {
 	W3GotoAuthenticationPage();
-	return;
+	return false;
     }
     if (resultStatus != w3ApiResultSuccessful && resultStatus != w3ApiResultFailed) {
 	W3LogError("API result status is not valid!");
-	return;
+	return false;
     }
-	
-    for (var index in listeners) {
-	W3ExecuteFuncFromString(listeners[index], data, status);
-    }		    
+
+    if (listeners) {
+	for (var index in listeners) {
+	    W3ExecuteFuncFromString(listeners[index], data, status);
+	}
+    }
+
+    return true;
 }
 
 function W3UpdateTable(uidTable, data, status) {

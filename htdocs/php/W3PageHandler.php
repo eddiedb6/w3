@@ -2,13 +2,12 @@
 
 function W3LoadPage() {
     $session = W3GetSession();
-    if ($session != "") {
-        $session = "<script type='text/javascript'> var session=" .
-                 W3MakeString($session, true) .
-                 "; </script>";
-    }
+    $js = "<script type='text/javascript'> var " . w3Session . " = {" .
+        W3MakeString(w3VariableValue, true) . ": " . W3MakeString($session, true) . "," .
+        W3MakeString(w3VariableListeners, true) . ": {}" .
+        "}; </script>";
              
-    echo $session . W3CreateUI(w3UIBody);
+    echo $js . W3CreateUI(w3UIBody);
 }
 
 function W3SelectPage() {

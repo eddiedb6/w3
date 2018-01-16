@@ -104,6 +104,7 @@ w3ApiResultStatus = "apiresultstatus"
 w3ApiResultData = "apiresultdata"
 w3ApiResultSuccessful = "apiresultsuccessful"
 w3ApiResultFailed = "apiresultfailed"
+w3ApiResultAuthentication = "apiresultauthentication"
 w3ApiHandler = "apihandler"
 w3ApiListener = "apilistener"
 # API call
@@ -120,6 +121,7 @@ w3ApiCallCollection = [
 # Define "ui" properties
 w3PropDefaultPage = "propdefaultpage"
 w3PropDefaultErrorPage = "propdefaulterrorpage"
+w3PropDefaultAuthenticationPage = "propdefaultauthenticationpage"
 w3PropType = "elementtype" # w3ElementType
 w3PropSubUI = "propsubui"
 w3PropString = "propstring"
@@ -136,6 +138,7 @@ w3PropTriggerApi = "proptriggerapi"
 w3PropCollection = [
     w3PropDefaultPage,
     w3PropDefaultErrorPage,
+    w3PropDefaultAuthenticationPage,
     w3PropType,
     w3PropSubUI,
     w3PropString,

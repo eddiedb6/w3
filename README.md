@@ -51,11 +51,12 @@ w3UIBody = "uibody": w3TypePanel				         |
 
 * Variable Binding
     1. Define w3PropBindingVar in control
-    2. Then metadata handler will add the control to variable listener list
+    2. Then metadata UI handler will add the control to variable listener list
     3. When W3SetVariable is called, the control will be updated automatically
-
+    4. There is default variable "session" and do not bind to it
+    5. The variable could not cross page except "session"
+    
 * W3 API
-
 JS:				PHP:
 
 /*------------------ Logger ------------------*/
@@ -91,6 +92,9 @@ W3HideUI
 /*------------------ Variable ------------------*/
 W3GetVariable
 W3SetVariable
+
+/*------------------ Session ------------------*/
+				W3GetSession
 
 /*------------------ String ------------------*/
 				W3MakeString
