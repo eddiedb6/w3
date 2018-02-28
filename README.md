@@ -88,6 +88,7 @@ W3GetUIValue
 W3TryGetUIProperty		W3TryGetUIProperty
 W3DisplayUI
 W3HideUI
+                                W3CreateUI
 
 /*------------------ Variable ------------------*/
 W3GetVariable

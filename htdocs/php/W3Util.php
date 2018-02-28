@@ -526,23 +526,6 @@ function W3CreatePage($uid) {
     return W3CreatePanel($uid);
 }
 
-function W3CreateUI($uid) {
-    global $w3UI;
-    global $w3UICreatorMap;
-
-    if (array_key_exists($uid, $w3UI)) {
-        if (array_key_exists($w3UI[$uid][w3PropType], $w3UICreatorMap)) {
-            return $w3UICreatorMap[$w3UI[$uid][w3PropType]]($uid);
-        } else {
-            W3LogError("UI Type is not defined and cannot be created: " . $w3UI[$uid][w3PropType]);
-        }
-    } else {
-        W3LogError("No UI type defined so cannot be created for uid: " . $uid);
-    }
-    
-    return "";
-}
-
 function W3CreateUIBase($uid, $type, $body, $attr) {
     $uiFunc = W3TryGetUIProperty($uid, w3PropFunc);
     if ($uiFunc != NULL and array_key_exists(w3FuncCreator, $uiFunc)) {
