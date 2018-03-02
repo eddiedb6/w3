@@ -366,21 +366,21 @@ function W3CreateTable($uid, $uiDef) {
         $body .= "<tr id=" . W3MakeString($uid . "Header", true) . ">";
         $header = 0;
         foreach ($cellsDef[0] as $value) {
-            $uidHeader = $value;
-            $uiHeaderDef = W3GetUIDef($uidHeader);
+            $uiHeader = $value;
+            $uiHeaderDef = W3GetUIDef($uiHeader);
             if ($uiHeaderDef == NULL) {
-                W3LogError("Table header not find: " . $uidHeader);
+                W3LogError("Table header not find: " . $uiHeader);
                 continue;
             }
             if ($uiHeaderDef[w3PropType] == w3TypeTableHeader) {
                 # If it's table header, the real UI is in the head as sub UI
-                $subUI = W3TryGetUIProperty($uidHeader, w3PropSubUI);
+                $subUI = W3TryGetUIProperty($uiHeader, w3PropSubUI);
                 if ($subUI != NULL and sizeof($subUI) > 0) {
-                    $uidHeader = $subUI[0];
+                    $uiHeader = $subUI[0];
                 }
             }
             $body .= "<th id=" . W3MakeString($uid . "Header" . strval($header), true) . ">";
-            $body .= W3CreateUI($uidHeader, NULL);
+            $body .= W3CreateUI($uiHeader, $uiHeader);
             $body .= "</th>";
             $header += 1;
         }
@@ -395,7 +395,7 @@ function W3CreateTable($uid, $uiDef) {
                 $body .= "<td id=" .
                     W3MakeString($uid . "Cell" . strval($i) . strval($j), true) .
                     ">";
-                $body .= W3CreateUI($value, NULL);
+                $body .= W3CreateUI($value, $value);
                 $body .= "</td>";
                 $j += 1;
             }
@@ -467,13 +467,13 @@ function W3CreateTab($uid, $uiDef) {
                             W3MakeString($uid, true) . "," .
                             strval($i) . "," .
                             strval($size) . ")") .
-                        ">" . W3CreateUI($value[0], NULL) . "</li>";
+                        ">" . W3CreateUI($value[0], $value[0]) . "</li>";
 
             $contentDisplay = $i == 1 ? "display:block" : "display:none";
             
             $contentBody .= "<div id=" . W3MakeString($uid . "content" . strval($i)) .
                          " style=" . W3MakeString($contentDisplay, true) . ">" .
-                         W3CreateUI($value[1], NULL) .
+                         W3CreateUI($value[1], $value[1]) .
                          "</div>";
             ++$i;
         }
@@ -494,7 +494,7 @@ function W3CreatePanel($uid, $uiDef) {
     $subUI = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($subUI != NULL) {
         foreach ($subUI as $value) {
-            $body .= W3CreateUI($value, NULL);
+            $body .= W3CreateUI($value, $value);
         }
     }
 

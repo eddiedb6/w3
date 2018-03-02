@@ -179,8 +179,15 @@ function W3GetAPIParamIndex($aid, $paramName) {
 // UI
 //
 
-function W3GetUIDef($uid) {
+function W3GetUIDef($ui) {
     global $w3UI;
+
+    $uid = "null";
+    if (is_array($ui)) {
+        return $ui;
+    } else {
+        $uid = $ui;
+    }
 
     if (!array_key_exists($uid, $w3UI)) {
         W3LogError("No uid defined: " . $uid);
@@ -191,10 +198,7 @@ function W3GetUIDef($uid) {
 }
 
 function W3TryGetUIProperty($ui, $property) {
-    $uiDef = $ui;
-    if (!is_array($ui)) {
-        $uiDef = W3GetUIDef($ui);
-    }
+    $uiDef = W3GetUIDef($ui);
 
     if ($uiDef == NULL) {
         return NULL;
@@ -215,13 +219,10 @@ function W3TryGetUIProperty($ui, $property) {
     return NULL;
 }
 
-function W3CreateUI($uid, $uiDef) {
+function W3CreateUI($uid, $ui) {
     global $w3UICreatorMap;
 
-    if ($uiDef == NULL) {
-        $uiDef = W3GetUIDef($uid);
-    }
-
+    $uiDef = W3GetUIDef($ui);
     if ($uiDef == NULL) {
         W3LogError("No UI defined for uid: " . $uid);        
         return "";
