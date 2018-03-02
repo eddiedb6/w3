@@ -182,7 +182,7 @@ function W3GetAPIParamIndex($aid, $paramName) {
 function W3GetUIDef($ui) {
     global $w3UI;
 
-    $uid = "null";
+    $uid = w3UIDUndefined;
     if (is_array($ui)) {
         return $ui;
     } else {
@@ -226,6 +226,10 @@ function W3CreateUI($uid, $ui) {
     if ($uiDef == NULL) {
         W3LogError("No UI defined for uid: " . $uid);        
         return "";
+    }
+
+    if (is_array($uid)) {
+        $uid = w3UIDUndefined;
     }
 
     if (array_key_exists($uiDef[w3PropType], $w3UICreatorMap)) {

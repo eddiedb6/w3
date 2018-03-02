@@ -172,6 +172,9 @@ w3VariableFormat = "variableformat"
 # Define "ui" attributes
 w3AttrHeadlineLevel = "attrheadlinelevel"
 
+# Define generic uid
+w3UIDUndefined = "uidUndefined"
+
 # Define event
 w3EventClick = "onclick" # It's js event name and DO NOT change it
 w3EventCollection = [
