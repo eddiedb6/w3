@@ -190,36 +190,47 @@ function W3GetUIDef($uid) {
     return $w3UI[$uid];
 }
 
-function W3TryGetUIProperty($uid, $property) {
-    $ui = W3GetUIDef($uid);
-    if ($ui == NULL) {
+function W3TryGetUIProperty($ui, $property) {
+    $uiDef = $ui;
+    if (!is_array($ui)) {
+        $uiDef = W3GetUIDef($ui);
+    }
+
+    if ($uiDef == NULL) {
         return NULL;
     }
-
-    if (array_key_exists($property, $ui)) {
-	    return $ui[$property];
+    
+    if (array_key_exists($property, $uiDef)) {
+	    return $uiDef[$property];
     }
 
-    if (array_key_exists(w3PropPrototype, $ui)) {
-        $uidPrototype = $ui[w3PropPrototype];
-        return W3TryGetUIProperty($uidPrototype, $property);
+    if (array_key_exists(w3PropPrototype, $uiDef)) {
+        $uidPrototype = $uiDef[w3PropPrototype];
+        $uiDefPrototype = W3GetUIDef($uidPrototype);
+        if ($uiDefPrototype != NULL) {
+            return W3TryGetUIProperty($uiDefPrototype, $property);
+        }
     }
 
     return NULL;
 }
 
-function W3CreateUI($uid) {
-    global $w3UI;
+function W3CreateUI($uid, $uiDef) {
     global $w3UICreatorMap;
 
-    if (array_key_exists($uid, $w3UI)) {
-        if (array_key_exists($w3UI[$uid][w3PropType], $w3UICreatorMap)) {
-            return $w3UICreatorMap[$w3UI[$uid][w3PropType]]($uid);
-        } else {
-            W3LogError("UI Type is not defined and cannot be created: " . $w3UI[$uid][w3PropType]);
-        }
+    if ($uiDef == NULL) {
+        $uiDef = W3GetUIDef($uid);
+    }
+
+    if ($uiDef == NULL) {
+        W3LogError("No UI defined for uid: " . $uid);        
+        return "";
+    }
+
+    if (array_key_exists($uiDef[w3PropType], $w3UICreatorMap)) {
+        return $w3UICreatorMap[$uiDef[w3PropType]]($uid, $uiDef);
     } else {
-        W3LogError("No UI type defined so cannot be created for uid: " . $uid);
+        W3LogError("UI Type is not defined and cannot be created: " . $uiDef[w3PropType]);
     }
     
     return "";

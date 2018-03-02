@@ -91,12 +91,12 @@ function W3OnRequestPage() {
 # UI Helper
 #
 
-function W3GetUIEvent($uid) {
+function W3GetUIEvent($uid, $uiDef) {
     $eventDict = array();
     $apiTriggerArray = array();
 
     # First check triggers in UI and wrapper API trigger as event function
-    $apiTriggers = W3TryGetUIProperty($uid, w3PropTriggerApi);
+    $apiTriggers = W3TryGetUIProperty($uiDef, w3PropTriggerApi);
     $triggerArraySize = 0;
     if ($apiTriggers != NULL) {
         $triggerArraySize = sizeof($apiTriggers);
@@ -108,7 +108,7 @@ function W3GetUIEvent($uid) {
 
     # Get event from property
     $events = "";
-    $uiEvents = W3TryGetUIProperty($uid, w3PropEvent);
+    $uiEvents = W3TryGetUIProperty($uiDef, w3PropEvent);
     if ($uiEvents != NULL) {
         foreach ($uiEvents as $key => $value) {
             if (!array_key_exists($key, $eventDict)) {
@@ -144,8 +144,8 @@ function W3GetUIEvent($uid) {
     return $events;
 }
 
-function W3GetUIClass($uid) {
-    $uiClass = W3TryGetUIProperty($uid, w3PropClass);
+function W3GetUIClass($uid, $uiDef) {
+    $uiClass = W3TryGetUIProperty($uiDef, w3PropClass);
     if ($uiClass != NULL) {
         return "class=" . W3MakeString($uiClass, true);
     }
@@ -153,8 +153,8 @@ function W3GetUIClass($uid) {
     return "";
 }
 
-function W3GetUIBody($uid) {
-    $uiString = W3TryGetUIProperty($uid, w3PropString);
+function W3GetUIBody($uid, $uiDef) {
+    $uiString = W3TryGetUIProperty($uiDef, w3PropString);
     if ($uiString != NULL and $uiString != "") {
         return W3GetStringValue($uiString);
     }
@@ -162,8 +162,8 @@ function W3GetUIBody($uid) {
     return "";
 }
 
-function W3GetUIAttr($uid) {
-    $uiAttr = W3TryGetUIProperty($uid, w3PropAttr);
+function W3GetUIAttr($uid, $uiDef) {
+    $uiAttr = W3TryGetUIProperty($uiDef, w3PropAttr);
     if ($uiAttr != NULL) {
         $attr = "";
         foreach ($uiAttr as $key => $value) {
@@ -202,11 +202,11 @@ $w3UICreatorMap = array (
     w3TypePage => "W3CreatePage"
 );
 
-function W3CreateHeadline($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateHeadline($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $level = "1";
-    $uiAttr = W3TryGetUIProperty($uid, w3PropAttr);
+    $uiAttr = W3TryGetUIProperty($uiDef, w3PropAttr);
     if ($uiAttr != NULL) {
         if (array_key_exists(w3AttrHeadlineLevel, $uiAttr)) {
             $level = $uiAttr[w3AttrHeadlineLevel];
@@ -217,143 +217,143 @@ function W3CreateHeadline($uid) {
     $body = "";
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
     
-function W3CreateLine($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateLine($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "hr";
     $body = "";
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
     
-function W3CreateLineBreak($uid) {
+function W3CreateLineBreak($uid, $uiDef) {
     return "<br>";
 }
     
-function W3CreateParagraph($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateParagraph($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "p";
     $body = "";
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateCanvas($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateCanvas($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "canvas";
     $body = "";
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateLink($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateLink($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $href = "javascript: void(0);";
     $type = "a";
     $body = "";
     $attr = "href=" . $href;
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 };
 
-function W3CreateLabel($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateLabel($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "label";
     $body = "";
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 };
 
-function W3CreateCheckbox($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateCheckbox($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "input";
     $body = "";
     $attr = "type='checkbox'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateDatePicker($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateDatePicker($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "input";
     $body = "";
     $attr = "type='text'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateMonthPicker($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateMonthPicker($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "input";
     $body = "";
     $attr = "type='text'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateButton($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateButton($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "button";
     $body = "";
     $attr = "type='button'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateText($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateText($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "input";
     $body = "";
     $attr = "type='text'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreatePassword($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreatePassword($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "input";
     $body = "";
     $attr = "type='password'";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateCombobox($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateCombobox($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "select";
     $attr = "";
     $body = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreateTable($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateTable($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "table";
 
     $body = "";
     $isHeadDefined = false;
     $isRowDefined = false;
-    $cellsDef = W3TryGetUIProperty($uid, w3PropSubUI);
+    $cellsDef = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($cellsDef != NULL) {
         if (sizeof($cellsDef) >= 1 and sizeof($cellsDef[0]) >= 1) {
             $isHeadDefined = true;
@@ -380,7 +380,7 @@ function W3CreateTable($uid) {
                 }
             }
             $body .= "<th id=" . W3MakeString($uid . "Header" . strval($header), true) . ">";
-            $body .= W3CreateUI($uidHeader);
+            $body .= W3CreateUI($uidHeader, NULL);
             $body .= "</th>";
             $header += 1;
         }
@@ -395,7 +395,7 @@ function W3CreateTable($uid) {
                 $body .= "<td id=" .
                     W3MakeString($uid . "Cell" . strval($i) . strval($j), true) .
                     ">";
-                $body .= W3CreateUI($value);
+                $body .= W3CreateUI($value, NULL);
                 $body .= "</td>";
                 $j += 1;
             }
@@ -405,11 +405,11 @@ function W3CreateTable($uid) {
     
     $attr = "";
 
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 };
 
-function W3CreateTab($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreateTab($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     # Tab only support following CSS and their default value is defined here
     # "border-width": "1px",
@@ -422,7 +422,7 @@ function W3CreateTab($uid) {
     $type = "div";
 
     $attr = "";
-    $uiCSS = W3TryGetUIProperty($uid, w3PropCSS);
+    $uiCSS = W3TryGetUIProperty($uiDef, w3PropCSS);
     if ($uiCSS != NULL) {
         $attr .= "style='border-style:none'";
         if (array_key_exists("border-style", $uiCSS)) {
@@ -444,7 +444,7 @@ function W3CreateTab($uid) {
     $headerBody = "<ul id=" . W3MakeString($uid . "header") . ">";
     $contentBody = "<div id=" . W3MakeString($uid . "content") .
                  " style=" . W3MakeString($tabStyle) . ">";
-    $subUI = W3TryGetUIProperty($uid, w3PropSubUI);
+    $subUI = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($subUI != NULL) {
         $i = 1;
         $size = sizeof($subUI);
@@ -467,13 +467,13 @@ function W3CreateTab($uid) {
                             W3MakeString($uid, true) . "," .
                             strval($i) . "," .
                             strval($size) . ")") .
-                        ">" . W3CreateUI($value[0]) . "</li>";
+                        ">" . W3CreateUI($value[0], NULL) . "</li>";
 
             $contentDisplay = $i == 1 ? "display:block" : "display:none";
             
             $contentBody .= "<div id=" . W3MakeString($uid . "content" . strval($i)) .
                          " style=" . W3MakeString($contentDisplay, true) . ">" .
-                         W3CreateUI($value[1]) .
+                         W3CreateUI($value[1], NULL) .
                          "</div>";
             ++$i;
         }
@@ -482,81 +482,77 @@ function W3CreateTab($uid) {
     $contentBody .= "</div>";
     $body = $headerBody . $contentBody;
     
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreatePanel($uid) {
-    W3CreateUIBasePro($uid);
+function W3CreatePanel($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     $type = "div";
 
     $body = "";
-    $subUI = W3TryGetUIProperty($uid, w3PropSubUI);
+    $subUI = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($subUI != NULL) {
         foreach ($subUI as $value) {
-            $body .= W3CreateUI($value);
+            $body .= W3CreateUI($value, NULL);
         }
     }
 
     $attr = "";
     
-    return W3CreateUIBase($uid, $type, $body, $attr);
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
-function W3CreatePage($uid) {
-    global $w3UI;
-    
-    W3CreateUIBasePro($uid);
+function W3CreatePage($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
 
     # No matter what functor defined for page type, it's creator is default to W3SelectPage
     # And here could not use get property functions because it will return a copy
     # Since W3CreateUIBasePro has copy every properties from prototye
     # Here property could be accessed directly
     $pageCreator = "W3SelectPage";
-    if (array_key_exists($uid, $w3UI) and
-        array_key_exists(w3PropFunc, $w3UI[$uid]) and
-        array_key_exists(w3FuncCreator, $w3UI[$uid][w3PropFunc])) {
-        $w3UI[$uid][w3PropFunc][w3FuncCreator] = $pageCreator;
+    if (array_key_exists(w3PropFunc, $uiDef) and
+        array_key_exists(w3FuncCreator, $uiDef[w3PropFunc])) {
+        $uiDef[w3PropFunc][w3FuncCreator] = $pageCreator;
     } else {
-        $w3UI[$uid][w3PropFunc] = array(
+        $uiDef[w3PropFunc] = array(
             w3FuncCreator => $pageCreator
         );
     }
     
-    return W3CreatePanel($uid);
+    return W3CreatePanel($uid, $uiDef);
 }
 
-function W3CreateUIBase($uid, $type, $body, $attr) {
-    $uiFunc = W3TryGetUIProperty($uid, w3PropFunc);
+function W3CreateUIBase($uid, $uiDef, $type, $body, $attr) {
+    $uiFunc = W3TryGetUIProperty($uiDef, w3PropFunc);
     if ($uiFunc != NULL and array_key_exists(w3FuncCreator, $uiFunc)) {
         $body .= $uiFunc[w3FuncCreator]();
     } 
     
     return "<" . $type . " " .
                "id=" . W3MakeString($uid, true) . " " .
-               W3GetUIEvent($uid) . " " .
-               W3GetUIClass($uid) . " " .
-               $attr . " " . W3GetUIAttr($uid) . ">" .
-               trim(W3GetUIBody($uid) . " " . $body) .
+               W3GetUIEvent($uid, $uiDef) . " " .
+               W3GetUIClass($uid, $uiDef) . " " .
+               $attr . " " . W3GetUIAttr($uid, $uiDef) . ">" .
+               trim(W3GetUIBody($uid, $uiDef) . " " . $body) .
                "</" . $type . ">\n";
 }
 
-function W3CreateUIBasePro($uid) {
+function W3CreateUIBasePro($uid, $uiDef) {
     global $w3UI;
-
+    
     # Copy everything from prototype 
-    if (array_key_exists($uid, $w3UI) and 
-        array_key_exists(w3PropPrototype, $w3UI[$uid])) {
+    if (array_key_exists(w3PropPrototype, $uiDef)) {
         # If there is another propotype also in prototype UI, create it first
-        if (array_key_exists($w3UI[$uid][w3PropPrototype], $w3UI) and 
-            array_key_exists(w3PropPrototype, $w3UI[$w3UI[$uid][w3PropPrototype]])) {
-            W3CreateUIBasePro($w3UI[$uid][w3PropPrototype]);
+        if (array_key_exists($uiDef[w3PropPrototype], $w3UI) and 
+            array_key_exists(w3PropPrototype, $w3UI[$uiDef[w3PropPrototype]])) {
+            W3CreateUIBasePro($uiDef[w3PropPrototype], $w3UI[$uiDef[w3PropPrototype]]);
         }
         
-        foreach ($w3UI[$w3UI[$uid][w3PropPrototype]] as $key => $value) {
+        foreach ($w3UI[$uiDef[w3PropPrototype]] as $key => $value) {
             # Do not overwrite property already in current UI
-            if (!array_key_exists($key, $w3UI[$uid])) {
-                    $w3UI[$uid][$key] = $value;
+            if (!array_key_exists($key, $uiDef)) {
+                $uiDef[$key] = $value;
             }
         }
     }
