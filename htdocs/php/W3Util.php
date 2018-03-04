@@ -180,6 +180,14 @@ function W3GetUIAttr($uid, $uiDef) {
 # UI Creator Helper
 #
 
+function W3GenerateUIDChild($uidParent, $uiChild) {
+    if (!is_array($uiChild)) {
+        return $uiChild;
+    }
+
+    return $uidParent . "Child";
+}
+
 $w3UICreatorMap = array (
     w3TypeTable => "W3CreateTable",
     w3TypeLink => "W3CreateLink",
@@ -379,8 +387,10 @@ function W3CreateTable($uid, $uiDef) {
                     $uiHeader = $subUI[0];
                 }
             }
-            $body .= "<th id=" . W3MakeString($uid . "Header" . strval($header), true) . ">";
-            $body .= W3CreateUI($uiHeader, $uiHeader);
+            $uidHeader = $uid . "Header" . strval($header);
+            $uidHeaderChild = W3GenerateUIDChild($uidHeader, $uiHeader);
+            $body .= "<th id=" . W3MakeString($uidHeader, true) . ">";
+            $body .= W3CreateUI($uidHeaderChild, $uiHeader);
             $body .= "</th>";
             $header += 1;
         }
@@ -392,10 +402,10 @@ function W3CreateTable($uid, $uiDef) {
             $body .= "<tr id=" . W3MakeString($uid . "Row" . strval($i), true) . ">";
             $j = 0;
             foreach ($cellsDef[$i] as $value) {
-                $body .= "<td id=" .
-                    W3MakeString($uid . "Cell" . strval($i) . strval($j), true) .
-                    ">";
-                $body .= W3CreateUI($value, $value);
+                $uidCell = $uid . "Cell" . strval($i) . strval($j);
+                $uidCellChild = W3GenerateUIDChild($uidCell, $value);
+                $body .= "<td id=" . W3MakeString($uidCell, true) . ">";
+                $body .= W3CreateUI($uidCellChild, $value);
                 $body .= "</td>";
                 $j += 1;
             }
@@ -441,8 +451,8 @@ function W3CreateTab($uid, $uiDef) {
 
     $headerBorder = $borderWidth . " " . $borderStyle;
 
-    $headerBody = "<ul id=" . W3MakeString($uid . "header") . ">";
-    $contentBody = "<div id=" . W3MakeString($uid . "content") .
+    $headerBody = "<ul id=" . W3MakeString($uid . "Header") . ">";
+    $contentBody = "<div id=" . W3MakeString($uid . "Content") .
                  " style=" . W3MakeString($tabStyle) . ">";
     $subUI = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($subUI != NULL) {
@@ -460,20 +470,24 @@ function W3CreateTab($uid, $uiDef) {
 
             } 
 
+            $uidHeader = $uid . "Header" . strval($i);
+            $uidHeaderChild = W3GenerateUIDChild($uidHeader, $value[0]);
             $headerBody .= "<li" .
                         " style=" . W3MakeString($headerStyle, true) .
-                        " id=" . W3MakeString($uid . "header" . strval($i)) .
+                        " id=" . W3MakeString($uidHeader) .
                         " onclick=" . W3MakeString("W3OnTabClicked(" .
                             W3MakeString($uid, true) . "," .
                             strval($i) . "," .
                             strval($size) . ")") .
-                        ">" . W3CreateUI($value[0], $value[0]) . "</li>";
+                        ">" . W3CreateUI($uidHeaderChild, $value[0]) . "</li>";
 
             $contentDisplay = $i == 1 ? "display:block" : "display:none";
-            
-            $contentBody .= "<div id=" . W3MakeString($uid . "content" . strval($i)) .
+
+            $uidContent = $uid . "Content" . strval($i);
+            $uidContentChild = W3GenerateUIDChild($uidContent, $value[1]);
+            $contentBody .= "<div id=" . W3MakeString($uidContent) .
                          " style=" . W3MakeString($contentDisplay, true) . ">" .
-                         W3CreateUI($value[1], $value[1]) .
+                         W3CreateUI($uidContentChild, $value[1]) .
                          "</div>";
             ++$i;
         }
@@ -493,8 +507,11 @@ function W3CreatePanel($uid, $uiDef) {
     $body = "";
     $subUI = W3TryGetUIProperty($uiDef, w3PropSubUI);
     if ($subUI != NULL) {
+        $index = 0;
         foreach ($subUI as $value) {
-            $body .= W3CreateUI($value, $value);
+            $uidChild = W3GenerateUIDChild($uid . strval($index), $value);
+            $body .= W3CreateUI($uidChild, $value);
+            $index += 1;
         }
     }
 

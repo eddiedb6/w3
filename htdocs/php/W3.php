@@ -219,6 +219,11 @@ function W3TryGetUIProperty($ui, $property) {
     return NULL;
 }
 
+function W3CreateDynamicUI($uid, $ui) {
+    $uiDefJS = "<script>" . "</script>";
+    return $uiDefJS . W3CreateUI($uid, $ui);
+}
+ 
 function W3CreateUI($uid, $ui) {
     global $w3UICreatorMap;
 

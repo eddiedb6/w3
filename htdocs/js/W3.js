@@ -139,7 +139,15 @@ function W3CallAPISync(request, callback) {
 // UI
 //
 
-function W3GetUIDef(uid) {
+function W3GetUIDef(ui) {
+    var uid = w3UIDUndefined;
+    var type = Object.prototype.toString.call(ui);
+    if ( type == "[object String]") {
+	uid = ui;
+    } else {
+	return ui;
+    }
+    
     if (!w3UI.hasOwnProperty(uid)) {
 	W3LogError("No uid defined: " + uid);
 	return null;
@@ -152,18 +160,19 @@ function W3GetUIValue(uid) {
     return $("#" + uid).val();
 }
 
-function W3TryGetUIProperty(uid, property) {
-    var ui = W3GetUIDef(uid);
-    if (ui == null) {
+function W3TryGetUIProperty(ui, property) {
+    var uiDef = W3GetUIDef(ui);
+
+    if (uiDef == null) {
 	return null;
     }
 
-    if (ui.hasOwnProperty(property)) {
-	return ui[property];
+    if (uiDef.hasOwnProperty(property)) {
+	return uiDef[property];
     }
 
-    if (ui.hasOwnProperty(w3PropPrototype)) {
-	var uidPrototype = ui[w3PropPrototype];
+    if (uiDef.hasOwnProperty(w3PropPrototype)) {
+	var uidPrototype = uiDef[w3PropPrototype];
 	return W3TryGetUIProperty(uidPrototype, property);
     }
 
