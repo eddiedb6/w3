@@ -220,8 +220,9 @@ function W3TryGetUIProperty($ui, $property) {
 }
 
 function W3CreateDynamicUI($uid, $ui) {
-    $uiDefJS = "<script>" . "</script>";
-    return $uiDefJS . W3CreateUI($uid, $ui);
+    $uiDefJS = W3PHPVarToJS($ui);
+    $js = "<script>w3UI[" . W3MakeString($uid, true) . "]=" . $uiDefJS . ";</script>";
+    return $js . W3CreateUI($uid, $ui);
 }
  
 function W3CreateUI($uid, $ui) {
@@ -256,6 +257,59 @@ function W3GetSession() {
     }
 
     return "";
+}
+
+//
+// Others
+//
+
+// Return: gettype() + "dict"
+function W3GetPHPVarType($var) {
+    if (is_array($var)) {
+        $keys = array_keys($var);
+        foreach ($keys as $value) {
+            if (gettype($value) == "string") {
+                return "dict";
+            }
+        }
+
+        return "array";
+    }
+
+    return gettype($var);
+}
+
+function W3PHPVarToJS($var) {
+    $varType = W3GetPHPVarType($var);
+    if ($varType == "dict") {
+        return W3PHPVarToJSDict($var);
+    } else if ($varType == "array") {
+        return W3PHPVarToJSArray($var);
+    } else if ($varType == "string") {
+        return W3MakeString($var, true);
+    }
+
+    return strval($var);
+}
+
+function W3PHPVarToJSArray($var) {
+    $values = array();
+    foreach ($var as $value) {
+        array_push($values, W3PHPVarToJS($value));
+    }
+    $js = implode(",", $values);
+
+    return "[" . $js . "]";
+}
+
+function W3PHPVarToJSDict($var) {
+    $values = array();
+    foreach ($var as $key => $value) {
+        array_push($values, W3PHPVarToJS($key) . ":" . W3PHPVarToJS($value));
+    }
+    $js = implode(",", $values);
+
+    return "{" . $js . "}";
 }
 
  ?>

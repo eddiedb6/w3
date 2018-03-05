@@ -97,7 +97,7 @@ function W3OnTabClicked(uid, currentTab, tabSize) {
 	    }
 	}
 
-	var uidHeader = uid + "header" + i.toString();
+	var uidHeader = uid + "Header" + i.toString();
 	var css = {};
 	if (i == currentTab) {
 	    var style = borderWidth + " " + borderStyle;
