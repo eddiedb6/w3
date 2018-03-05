@@ -69,11 +69,16 @@ function W3MakeDateString($year, $month, $day, $isSingleQuot = false) {
 # Language
 #
 
-function W3GetStringValue($sid) {
+function W3GetStringValue($str) {
     global $w3Lan;
     
     $language = $w3Lan[W3GetLanguage()];
+    $sid = $str;
     if (!array_key_exists($sid, $language)) {
+        if (gettype($str) == "string") {
+            return $str;
+        }
+        
         W3LogError("No sid defined: " . $sid);
         return "";
     }

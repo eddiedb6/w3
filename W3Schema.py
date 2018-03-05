@@ -197,6 +197,9 @@
     W3Const.w3PropString: {
         SchemaType: SchemaTypeString
     },
+    W3Const.w3PropID: {
+        SchemaType: SchemaTypeString
+    },
     W3Const.w3PropEvent: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [

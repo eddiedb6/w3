@@ -185,6 +185,11 @@ function W3GenerateUIDChild($uidParent, $uiChild) {
         return $uiChild;
     }
 
+    $uid = W3TryGetUIProperty($uiChild, w3PropID);
+    if ($uid != NULL) {
+        return $uid;
+    }
+
     return $uidParent . "Child";
 }
 

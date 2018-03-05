@@ -123,6 +123,7 @@ w3PropDefaultPage = "propdefaultpage"
 w3PropDefaultErrorPage = "propdefaulterrorpage"
 w3PropDefaultAuthenticationPage = "propdefaultauthenticationpage"
 w3PropType = "elementtype" # w3ElementType
+w3PropID = "propid"
 w3PropSubUI = "propsubui"
 w3PropString = "propstring"
 w3PropEvent = "propevent"
@@ -140,6 +141,7 @@ w3PropCollection = [
     w3PropDefaultErrorPage,
     w3PropDefaultAuthenticationPage,
     w3PropType,
+    w3PropID,
     w3PropSubUI,
     w3PropString,
     w3PropEvent,
