@@ -509,7 +509,7 @@ function W3CreatePanel($uid, $uiDef) {
     if ($subUI != NULL) {
         $index = 0;
         foreach ($subUI as $value) {
-            $uidChild = W3GenerateUIDChild($uid . strval($index), $value);
+            $uidChild = W3GenerateUIDChild($uid . "Child" . strval($index), $value);
             $body .= W3CreateUI($uidChild, $value);
             $index += 1;
         }
