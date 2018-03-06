@@ -79,7 +79,7 @@ function W3CreateAPIFromUI(uid, index) {
 function W3OnTabClicked(uid, currentTab, tabSize) {
     for (i = 1; i <= tabSize; ++i) {
 	var display = i == currentTab ? "block" : "none";
-	W3SetUICSS(uid + "content" + i.toString(), {"display": display});
+	W3SetUICSS(uid + "Content" + i.toString(), {"display": display});
 
 	var borderStyle = "solid";
 	var borderWidth = "1px";
