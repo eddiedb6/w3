@@ -163,17 +163,41 @@ function W3GetUIBody($uid, $uiDef) {
 }
 
 function W3GetUIAttr($uid, $uiDef) {
+    $attr = "";
+
     $uiAttr = W3TryGetUIProperty($uiDef, w3PropAttr);
     if ($uiAttr != NULL) {
-        $attr = "";
         foreach ($uiAttr as $key => $value) {
             $attr = $attr . $key . "=" . $value . " ";
         }
-        
-        return $attr;
     }
 
-    return "";
+    # CSS for static UI will be written to .css file
+    # For dynamic UI, css will be insert in UI html
+    if (W3IsDynamicUI($uiDef)) {
+        $uiCSS = W3TryGetUIProperty($uiDef, w3PropCSS);
+        if ($uiCSS != NULL) {
+            $css = array();
+            foreach ($uiCSS as $key => $value) {
+                array_push($css, $key . ":" . $value);
+            }
+
+            if (sizeof($css) > 0) {
+                $attr = $attr . " style='" . implode(";", $css) . "'";
+            }
+        }
+    }
+
+    return $attr;
+}
+
+function W3IsDynamicUI($uiDef) {
+    $uiID = W3TryGetUIProperty($uiDef, w3PropID);
+    if ($uiID != NULL) {
+        return true;
+    }
+
+    return false;
 }
 
 #
