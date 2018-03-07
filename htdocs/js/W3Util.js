@@ -155,7 +155,9 @@ function W3TriggerAPIFromUI(uid, index) {
     }
 
     var callback = function(data, status) {
-	W3OnAPICallback(data, status, listeners);
+	for (var index in listeners) {
+	    W3ExecuteFuncFromString(listeners[index], data, status);
+	}
     };
 
     if (apiCallMethod == w3ApiDirect) {
@@ -171,7 +173,7 @@ function W3TriggerAPIFromUI(uid, index) {
 // Sinker Helper
 //
 
-function W3OnAPICallback(data, status, listeners) {
+function W3OnAPICallback(data, status) {
     W3LogDebug("status: " + status);
     W3LogDebug("data: " + data);
 
@@ -189,12 +191,6 @@ function W3OnAPICallback(data, status, listeners) {
     if (resultStatus != w3ApiResultSuccessful && resultStatus != w3ApiResultFailed) {
 	W3LogError("API result status is not valid!");
 	return false;
-    }
-
-    if (listeners) {
-	for (var index in listeners) {
-	    W3ExecuteFuncFromString(listeners[index], data, status);
-	}
     }
 
     return true;

@@ -23,7 +23,7 @@ w3DirCSS = "css"
 w3UIBody = "uibody"
 
 # Session Variable
-w3Session = "session"
+w3Session = "w3globalsessionvar"
 
 # W3 element types
 w3ElementType = "elementtype"

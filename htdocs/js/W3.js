@@ -121,17 +121,28 @@ function W3CallAPI(request) {
 
 function W3CallAPIAsync(request, callback) {
     W3LogDebug("Trigger API Async: " + request);
-    $.get(request, callback);
+    var innerCallback = function(data, status) {
+	if (W3OnAPICallback(data, status)) {
+	    callback(data, status);
+	}
+    };
+    $.get(request, innerCallback);
 }
 
 function W3CallAPISync(request, callback) {
     W3LogDebug("Trigger API Sync: " + request);
+    var innerCallback = function(data, status) {
+	if (W3OnAPICallback(data, status)) {
+	    callback(data, status);
+	}
+    };
+
     $.ajax({
 	type: "get",
 	url: request,
 	data: "",
 	async: false,
-	success: callback
+	success: innerCallback
     });
 }
 
