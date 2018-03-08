@@ -40,9 +40,15 @@ function W3GetLanguage() {
     return w3LanEnglish; // [ED]PENDING: Need to handle language selection
 }
 
-function W3GetStringValue(sid) {
+function W3GetStringValue(str) {
     var language = w3Lan[W3GetLanguage()];
+    var sid = str;
     if (!language.hasOwnProperty(sid)) {
+	var type = Object.prototype.toString.call(str);
+	if ( type == "[object String]") {
+	    return str;
+	}
+
 	W3LogError("No sid defined: " + sid);
 	return "";
     }
@@ -400,6 +406,14 @@ function W3SetVariable(variable, value) {
 
 function W3GetVariable(variable) {
     return variable[w3VariableValue];
+}
+
+//
+// Session
+//
+
+function W3GetSession() {
+    return W3GetVariable(eval(w3Session));
 }
 
 //

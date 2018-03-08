@@ -96,7 +96,7 @@ W3GetVariable
 W3SetVariable
 
 /*------------------ Session ------------------*/
-				W3GetSession
+W3GetSession     		W3GetSession
 
 /*------------------ String ------------------*/
 				W3MakeString

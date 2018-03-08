@@ -12,8 +12,8 @@ function W3GetAPIParamBindingValue(apiInputParam) {
     } else if (paramType == w3ApiDataTypeNum) {
 	return Number(paramValue);
     } else if (paramType == w3ApiDataTypeVar) {
-	var sessionVar = eval(paramValue);
-	return W3GetVariable(sessionVar);
+	var varObj = eval(paramValue);
+	return W3GetVariable(varObj);
     }
 
     W3LogError("Invalid API param data type: " + paramType);
@@ -396,7 +396,8 @@ function W3UpdateTableByRow(uidTable, data, status) {
 	    var resultField = apiResultBinding[columnIndex][w3ApiDataValue];
 	    var columnDataType = apiResultBinding[columnIndex][w3ApiDataType];
 
-	    var columnElementHeader = "<td";
+	    var tdID = uidTable + String(rowIndex) + String(columnIndex);
+	    var columnElementHeader = "<td id='" + tdID + "' ";
 	    var columnElementValue = apiResult[rowIndex][resultField];
 	    if (columnDataType == w3ApiDataTypeSID) {
 		columnElementValue = W3GetStringValue(apiResult[rowIndex][resultField]);
