@@ -50,6 +50,7 @@ w3TypeLineBreak = "typelinebreak"
 w3TypeParagraph = "typeparagraph"
 w3TypeCanvas = "typecanvas"
 w3TypePage = "typepage"
+w3TypeTextEditor = "typetexteditor"
 # Collect types
 w3ElementTypeCollection = [
     w3TypeApi,
@@ -74,7 +75,8 @@ w3ElementTypeCollection = [
     w3TypeLineBreak,
     w3TypeParagraph,
     w3TypeCanvas,
-    w3TypePage
+    w3TypePage,
+    w3TypeTextEditor
 ]
 
 # API properties

@@ -174,6 +174,9 @@
     W3Const.w3TypePage: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypeTextEditor: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
 
     # UI Prop
     W3Const.w3PropDefaultPage: {

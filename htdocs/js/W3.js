@@ -177,6 +177,10 @@ function W3GetUIValue(uid) {
     return $("#" + uid).val();
 }
 
+function W3GetUIText(uid) {
+    return $("#" + uid).text();
+}
+
 function W3TryGetUIProperty(ui, property) {
     var uiDef = W3GetUIDef(ui);
 
@@ -209,14 +213,14 @@ function W3HideUI(uid) {
 // 
 
 // Formatter is one type of processor
-// All processor accept the first param as [value, {key: css}]
-// And return result as [value, {key: css}]
+// All processor accept the first param as [value, {key: css}, [row, column]]
+// And return result as [value, {key: css}, [row, column]]
 //
 
 function W3FormatCurrency(paramArray) {
     var currencyNum = paramArray[0];
 
-    return [currencyNum.toFixed(2).toString(), paramArray[1]];
+    return [currencyNum.toFixed(2).toString(), paramArray[1], paramArray[2]];
 }
 
 function W3FormatCurrencyColor(paramArray) {
@@ -244,7 +248,7 @@ function W3FormatCurrencyColor(paramArray) {
 	css["color"] = color;
     }
 
-    return [currencyNum, css];
+    return [currencyNum, css, paramArray[2]];
 }
 
 function W3FormatDatetime(paramArray, format) {
@@ -280,7 +284,7 @@ function W3FormatDatetime(paramArray, format) {
 	resultDatetime += " " + time;
     }
 
-    return [resultDatetime, paramArray[1]];	
+    return [resultDatetime, paramArray[1], paramArray[2]];	
 }
 
 //

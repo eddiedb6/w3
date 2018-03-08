@@ -85,6 +85,7 @@ W3CallAPISync
 /*------------------ UI ------------------*/
 W3GetUIDef			W3GetUIDef
 W3GetUIValue
+W3GetUIText
 W3TryGetUIProperty		W3TryGetUIProperty
 W3DisplayUI
 W3HideUI

@@ -427,7 +427,7 @@ function W3UpdateTableByRow(uidTable, data, status) {
 		    }
 
 		    // Apply header func
-		    var paramArray = [columnElementValue, headerCSS];
+		    var paramArray = [columnElementValue, headerCSS, [rowIndex, columnIndex]];
 		    var formatters = W3TryGetProcessorFunc(uidTableHeader);
 		    if (formatters != null) {
 			for (var formatterIndex in formatters) {

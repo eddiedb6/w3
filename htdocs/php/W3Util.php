@@ -23,11 +23,15 @@ function W3LoadCSS() {
 #
 
 function W3LoadJS() {
+    # jquery
     echo "<script src=\"js/jquery-2.2.0.js\"></script>";
+    # jquery ui control
     echo "<script src=\"js/jquery-ui.min.js\"></script>";
+    # w3
     echo "<script src=\"js/W3.js\"></script>";
     echo "<script src=\"js/W3Util.js\"></script>";
 
+    # user
     $generatedPath = w3DirJS . "/" . w3DirGenerated;
     $apiPath = $generatedPath . "/" . w3FileAPIJS;
     $uiPath = $generatedPath . "/" . w3FileUIJS;
@@ -236,7 +240,8 @@ $w3UICreatorMap = array (
     w3TypeLineBreak => "W3CreateLineBreak",
     w3TypeParagraph => "W3CreateParagraph",
     w3TypeCanvas => "W3CreateCanvas",
-    w3TypePage => "W3CreatePage"
+    w3TypePage => "W3CreatePage",
+    w3TypeTextEditor => "W3CreateTextEditor"
 );
 
 function W3CreateHeadline($uid, $uiDef) {
@@ -567,6 +572,19 @@ function W3CreatePage($uid, $uiDef) {
     }
     
     return W3CreatePanel($uid, $uiDef);
+}
+
+function W3CreateTextEditor($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
+
+    $type = "textarea";
+    $attr = "";
+    $body = "";
+
+    $id = W3GetUIID($uid, $uiDef);
+    $js = "<script type=\"text/javascript\">\$(function(){\$('#" . $id . "').wysiwyg();});</script>";
+
+    return $js . W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
 function W3CreateUIBase($uid, $uiDef, $type, $body, $attr) {
