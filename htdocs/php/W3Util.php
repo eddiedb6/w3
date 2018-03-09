@@ -30,6 +30,10 @@ function W3LoadJS() {
     # w3
     echo "<script src=\"js/W3.js\"></script>";
     echo "<script src=\"js/W3Util.js\"></script>";
+    # mooeditable
+    echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"js/mooeditable/Assets/MooEditable/MooEditable.css\">";
+    echo "<script type=\"text/javascript\" src=\"js/mooeditable/Assets/mootools.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"js/mooeditable/Source/MooEditable/MooEditable.js\"></script>";
 
     # user
     $generatedPath = w3DirJS . "/" . w3DirGenerated;
@@ -581,8 +585,7 @@ function W3CreateTextEditor($uid, $uiDef) {
     $attr = "";
     $body = "";
 
-    $id = W3GetUIID($uid, $uiDef);
-    $js = "<script type=\"text/javascript\">\$(function(){\$('#" . $id . "').wysiwyg();});</script>";
+    $js = "<script type=\"text/javascript\">window.addEvent('domready',function(){\$('" . $uid . "').mooEditable();});</script>";
 
     return $js . W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
