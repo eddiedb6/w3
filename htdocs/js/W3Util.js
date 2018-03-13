@@ -456,6 +456,32 @@ function W3UpdateTableByRow(uidTable, data, status) {
 }
 
 //
+// UI Binding Helper
+//
+
+function W3UpdateBindingUIDisplay(uid, bindingDef, value) {
+    var uiDef = W3GetUIDef(uid);
+    if (uiDef[w3PropType] == w3TypeText || uiDef[w3PropType] == w3TypeLabel) {
+	var varStr = value.toString();
+	var format = "";
+	if (bindingDef.hasOwnProperty(w3BindingFormat)) {
+	    format = bindingDef[w3BindingFormat);
+	}
+	if (format != "") {
+	    if (format[0] == "F") {
+		var fixNum = parseInt(format.substring(1));
+		varStr = value.toFixed(fixNum).toString();
+	    } else {
+		W3LogWarning("Variable format is not supported yet: " + format);
+	    }
+	}
+	W3SetUIText(uid, varStr);
+    } else {
+	W3LogWarning("UI type is not supported for variable binding: " + uiDef[w3PropType]);
+    }
+}
+
+//
 // Canvas Helper
 //
 

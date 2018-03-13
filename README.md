@@ -50,11 +50,11 @@ w3UIBody = "uibody": w3TypePanel				         |
 	b. Then metadata handler will handle this and insert listener to API define
 
 * Variable Binding
-    1. Define w3PropBindingVar in control
+    1. Define w3PropBindingVar in control with different bingding type
     2. Then metadata UI handler will add the control to variable listener list
-    3. When W3SetVariable is called, the control will be updated automatically
-    4. There is default variable "session" and do not bind to it
-    5. The variable could not cross page except "session"
+    3. When W3SetVariable is called, the control will be updated automatically base on binding type
+    4. There is default variable "w3Session" and do not bind to it
+    5. The variable could not cross page except "w3Session"
     
 * W3 API
 JS:				PHP:

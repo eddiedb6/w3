@@ -390,20 +390,27 @@ function W3SetVariable(variable, value) {
 
     for (var uidListener in variable[w3VariableListeners]) {
 	var uiDef = W3GetUIDef(uidListener);
-	if (uiDef[w3PropType] == w3TypeText || uiDef[w3PropType] == w3TypeLabel) {
-	    var varStr = value.toString();
-	    var format = variable[w3VariableListeners][uidListener];
-	    if (format != "") {
-		if (format[0] == "F") {
-		    var fixNum = parseInt(format.substring(1));
-		    varStr = value.toFixed(fixNum).toString();
-		} else {
-		    W3LogWarning("Variable format is not supported yet: " + format);
-		}
-	    }
-	    W3SetUIText(uidListener, varStr);
+	if (uiDef == null) {
+	    W3LogError("Could not get UI def from variable binding: " + uidListener);
+	    continue;
+	}
+
+	var bindingDef = W3TryGetUIProperty(uiDef, w3BindingVar);
+	if (bindingDef == null) {
+	    W3LogError("Could not get binding from UI: " + uidListener);
+	    continue;
+	}
+
+	var bindingType = null;
+	if (bindingDef.hasOwnProperty(w3BindingType)) {
+	    bindingType = bindingDef[w3BindingType];
 	} else {
-	    W3LogWarning("UI type is not supported for variable binding: " + uiDef[w3PropType]);
+	    W3LogError("Could not get binding type from UI: " + uidListener);
+	    continue;
+	}
+
+	if (bindingType == w3BindingUIDisplay) {
+	    W3UpdateBindingUIDisplay(uidListener, bindingDef, value);
 	}
     }
 }

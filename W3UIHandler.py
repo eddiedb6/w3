@@ -63,10 +63,7 @@ for uid in uiDef.keys():
     if varName == W3Const.w3Session:
         print("Variable name is the same as default variable \"session\"")
         sys.exit(0)
-    varFormat = ""
-    if W3Const.w3BindingFormat in currentUI[W3Const.w3PropBindingVar]:
-        varFormat = currentUI[W3Const.w3PropBindingVar][W3Const.w3BindingFormat]
-    listenerInfo = "\"" + uid + "\": \"" + varFormat + "\""
+    listenerInfo = "\"" + uid + "\""
     if varName in varList:
         if uid not in varList[varName]:
             varList[varName].append(listenerInfo)
@@ -78,10 +75,10 @@ for uid in uiDef.keys():
 for var in varList:
     uiJS.write("var " + var + " = {\n")
     uiJS.write("    \"" + W3Const.w3VariableValue + "\": 0,\n")
-    uiJS.write("    \"" + W3Const.w3VariableListeners + "\": {")
+    uiJS.write("    \"" + W3Const.w3VariableListeners + "\": [")
     if len(varList[var]) > 0:
         uiJS.write(",".join(varList[var]))
-    uiJS.write("}\n};\n")
+    uiJS.write("]\n};\n")
 # Init date picker for JS
 uiJS.write(W3Util.W3InitDatePicker(uiDef))
 uiJS.close()

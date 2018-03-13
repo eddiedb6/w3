@@ -166,7 +166,13 @@ w3SinkMatrix = "sinkmatrix"
 
 # Define binding
 w3BindingVarName = "bindingvarname"
+w3BindingType = "bindingtype"
 w3BindingFormat = "bindingformat"
+
+w3BindingUIDisplay = "bindinguidisplay"
+w3BindingTypeCollection = [
+    w3BindingUIDisplay
+]
 
 # Define variable
 w3VariableValue = "variablevalue"

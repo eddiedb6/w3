@@ -230,8 +230,8 @@
     W3Const.w3PropBindingVar: {
         SchemaType: SchemaTypeDict,
         SchemaRule: [
-            HasKey(W3Const.w3BindingVarName),
-            KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingFormat])
+            HasKey(W3Const.w3BindingVarName, W3Const.w3BindingType),
+            KeyIn([W3Const.w3BindingVarName, W3Const.w3BindingType, W3Const.w3BindingFormat])
         ]
     },
     W3Const.w3PropSinkApi: {
@@ -271,6 +271,12 @@
     },
     W3Const.w3BindingVarName: {
         SchemaType: SchemaTypeString
+    },
+    W3Const.w3BindingType: {
+        SchemaType: SchemaTypeString,
+        SchemaRule: [
+            KeyIn(W3Const.w3BindingTypeCollection)
+        ]
     },
     W3Const.w3BindingFormat: {
         SchemaType: SchemaTypeString
