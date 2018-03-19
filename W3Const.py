@@ -181,6 +181,7 @@ w3VariableFormat = "variableformat"
 
 # Define "ui" attributes
 w3AttrHeadlineLevel = "attrheadlinelevel"
+w3AttrDisabled = "disabled"
 
 # Define generic uid
 w3UIDUndefined = "uidUndefined"

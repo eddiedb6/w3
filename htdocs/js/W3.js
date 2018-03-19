@@ -181,6 +181,22 @@ function W3GetUIText(uid) {
     return $("#" + uid).text();
 }
 
+function W3SetUIText(uid, text) {
+    var uiDef = W3GetUIDef(uid);
+    if (uiDef == null) {
+	return;
+    }
+
+    var uiType = uiDef[w3PropType];
+    if (uiType == w3TypeTextEditor) {
+	$("#" + uid).jqteVal(text);
+    } else if (uiType == w3TypeText) {
+	$("#" + uid).val(text);
+    } else {
+	$("#" + uid).text(text);
+    }
+}
+
 function W3TryGetUIProperty(ui, property) {
     var uiDef = W3GetUIDef(ui);
 
@@ -206,6 +222,14 @@ function W3DisplayUI(uid) {
 
 function W3HideUI(uid) {
     $("#" + uid).css("display", "none");
+}
+
+function W3DisableUI(uid) {
+    $("#" + uid).attr("disabled", true);
+}
+
+function W3EnableUI(uid) {
+    $("#" + uid).attr("disabled", false);
 }
 
 //
@@ -388,14 +412,15 @@ function W3DrawPercentageReport(uid, percentage, text, padding) {
 function W3SetVariable(variable, value) {
     variable[w3VariableValue] = value;
 
-    for (var uidListener in variable[w3VariableListeners]) {
+    for (var index in variable[w3VariableListeners]) {
+	var uidListener = variable[w3VariableListeners][index];
 	var uiDef = W3GetUIDef(uidListener);
 	if (uiDef == null) {
 	    W3LogError("Could not get UI def from variable binding: " + uidListener);
 	    continue;
 	}
 
-	var bindingDef = W3TryGetUIProperty(uiDef, w3BindingVar);
+	var bindingDef = W3TryGetUIProperty(uiDef, w3PropBindingVar);
 	if (bindingDef == null) {
 	    W3LogError("Could not get binding from UI: " + uidListener);
 	    continue;
@@ -411,6 +436,9 @@ function W3SetVariable(variable, value) {
 
 	if (bindingType == w3BindingUIDisplay) {
 	    W3UpdateBindingUIDisplay(uidListener, bindingDef, value);
+	} else {
+	    W3LogError("Binding type is not defined: " + bindingType);
+	    continue;
 	}
     }
 }

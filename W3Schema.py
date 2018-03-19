@@ -275,7 +275,7 @@
     W3Const.w3BindingType: {
         SchemaType: SchemaTypeString,
         SchemaRule: [
-            KeyIn(W3Const.w3BindingTypeCollection)
+            ValueIn(W3Const.w3BindingTypeCollection)
         ]
     },
     W3Const.w3BindingFormat: {

@@ -14,6 +14,8 @@ function W3GetAPIParamBindingValue(apiInputParam) {
     } else if (paramType == w3ApiDataTypeVar) {
 	var varObj = eval(paramValue);
 	return W3GetVariable(varObj);
+    } else if (paramType == w3ApiDataTypeNone) {
+	return "";
     }
 
     W3LogError("Invalid API param data type: " + paramType);
@@ -237,10 +239,6 @@ function W3OnAPIDefaultListener(data, status) {
 // UI Helper
 //
 
-function W3SetUIText(uid, text) {
-    $("#" + uid).text(text);    
-}
-
 function W3SetUICSS(uid, css) {
     for (var key in css) {
 	$("#" + uid).css(key, css[key]);
@@ -401,6 +399,8 @@ function W3UpdateTableByRow(uidTable, data, status) {
 	    var columnElementValue = apiResult[rowIndex][resultField];
 	    if (columnDataType == w3ApiDataTypeSID) {
 		columnElementValue = W3GetStringValue(apiResult[rowIndex][resultField]);
+	    } else if (columnDataType == w3ApiDataTypeNone) {
+		columnElementValue = "";
 	    }
 
 	    if (isThereTableHeader) {
@@ -465,7 +465,7 @@ function W3UpdateBindingUIDisplay(uid, bindingDef, value) {
 	var varStr = value.toString();
 	var format = "";
 	if (bindingDef.hasOwnProperty(w3BindingFormat)) {
-	    format = bindingDef[w3BindingFormat);
+	    format = bindingDef[w3BindingFormat];
 	}
 	if (format != "") {
 	    if (format[0] == "F") {
