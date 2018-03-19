@@ -396,7 +396,10 @@ function W3UpdateTableByRow(uidTable, data, status) {
 
 	    var tdID = uidTable + String(rowIndex) + String(columnIndex);
 	    var columnElementHeader = "<td id='" + tdID + "' ";
-	    var columnElementValue = apiResult[rowIndex][resultField];
+	    var columnElementValue = "";
+	    if (resultField != "") {
+		columnElementValue = apiResult[rowIndex][resultField];
+	    }
 	    if (columnDataType == w3ApiDataTypeSID) {
 		columnElementValue = W3GetStringValue(apiResult[rowIndex][resultField]);
 	    } else if (columnDataType == w3ApiDataTypeNone) {

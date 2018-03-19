@@ -58,7 +58,7 @@ function W3CreateAPIReg($aid) {
     if ($apiDef == NULL) {
         return "";
     }
-    
+
     $paramCount = W3GetAPIParamCount($aid);
     $apiReg = "/^\/" . $apiDef[w3ApiName];
     if ($paramCount < 1) {
@@ -67,7 +67,7 @@ function W3CreateAPIReg($aid) {
         $apiReg .= "\?";
     }
     for ($i = 0; $i < $paramCount; $i++) {
-        $apiReg .= $apiDef[w3ApiParams][$i][w3ApiDataValue] . "=([\w\-\.\,]*)";
+        $apiReg .= $apiDef[w3ApiParams][$i][w3ApiDataValue] . "=([\w\-\.\,=%:;\(\)\/]*)";
         if ($i != $paramCount - 1) {
             $apiReg .= "&";
         } else {
