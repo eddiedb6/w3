@@ -180,15 +180,15 @@ function W3GetUIValue(uid) {
 function W3GetUIText(uid) {
     var text = "";
     var uiDef = W3GetUIDef(uid);
-    if (uiDef == null) {
-	return text;
-    }
-
-    var uiType = uiDef[w3PropType];
-    if (uiType == w3TypeTextEditor) {
-	text = $("#" + uid).jqteVal();
-    } else if (uiType == w3TypePanel) {
-	text = $("#" + uid).html();
+    if (uiDef != null) {
+	var uiType = uiDef[w3PropType];
+	if (uiType == w3TypeTextEditor) {
+	    text = $("#" + uid).jqteVal();
+	} else if (uiType == w3TypePanel) {
+	    text = $("#" + uid).html();
+	} else {
+	    text = $("#" + uid).text();
+	}
     } else {
 	text = $("#" + uid).text();
     }
