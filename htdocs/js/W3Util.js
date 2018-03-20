@@ -6,7 +6,7 @@ function W3GetAPIParamBindingValue(apiInputParam) {
     var paramType = apiInputParam[w3ApiDataType];
     var paramValue = apiInputParam[w3ApiDataValue];
     if (paramType == w3ApiDataTypeUID) {
-	return W3GetUIValue(paramValue);
+	return W3GetUIText(paramValue);
     } else if (paramType == w3ApiDataTypeString) {
 	return paramValue;
     } else if (paramType == w3ApiDataTypeNum) {

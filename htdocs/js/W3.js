@@ -173,19 +173,22 @@ function W3GetUIDef(ui) {
     return w3UI[uid];
 }
 
-function W3GetUIValue(uid) {
-    return $("#" + uid).val();
-}
-
 function W3GetUIText(uid) {
     var text = "";
     var uiDef = W3GetUIDef(uid);
     if (uiDef != null) {
 	var uiType = uiDef[w3PropType];
 	if (uiType == w3TypeTextEditor) {
-	    text = $("#" + uid).jqteVal();
+	    text = $("#" + uid).val();
+	    // Convert html char
+	    text = text.replace(/&/g, "::;;");
+	    text = text.replace(/#/g, ";;::");
+	    // Convert URI char
+	    text = encodeURI(text);
 	} else if (uiType == w3TypePanel) {
 	    text = $("#" + uid).html();
+	} else if (uiType == w3TypeText || uiType == w3TypePassword || uiType == w3TypeCombobox) {
+	    text = $("#" + uid).val();
 	} else {
 	    text = $("#" + uid).text();
 	}
@@ -204,10 +207,14 @@ function W3SetUIText(uid, text) {
 
     var uiType = uiDef[w3PropType];
     if (uiType == w3TypeTextEditor) {
+	text = text.replace(/::;;/g, "&");
+	text = text.replace(/;;::/g, "#");
 	$("#" + uid).jqteVal(text);
     } else if (uiType == w3TypeText) {
 	$("#" + uid).val(text);
     } else if (uiType == w3TypePanel) {
+	text = text.replace(/::;;/g, "&");
+	text = text.replace(/;;::/g, "#");
 	$("#" + uid).html(text);
     } else {
 	$("#" + uid).text(text);
