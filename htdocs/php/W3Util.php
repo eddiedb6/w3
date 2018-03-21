@@ -239,6 +239,7 @@ $w3UICreatorMap = array (
     w3TypeTab => "W3CreateTab",
     w3TypePanel => "W3CreatePanel",
     w3TypeCanvasPanel => "W3CreatePanel",
+    w3TypeDisplayPanel => "W3CreatePanel",
     w3TypeHeadline => "W3CreateHeadline",
     w3TypeLine => "W3CreateLine",
     w3TypeLineBreak => "W3CreateLineBreak",

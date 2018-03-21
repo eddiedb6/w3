@@ -44,6 +44,7 @@ w3TypeCombobox = "typecombobox"
 w3TypeTab = "typetab"
 w3TypePanel = "typepanel"
 w3TypeCanvasPanel = "typecanvaspanel"
+w3TypeDisplayPanel = "typedisplaypanel"
 w3TypeHeadline = "typeheadline"
 w3TypeLine = "typeline"
 w3TypeLineBreak = "typelinebreak"
@@ -70,6 +71,7 @@ w3ElementTypeCollection = [
     w3TypeTab,
     w3TypePanel,
     w3TypeCanvasPanel,
+    w3TypeDisplayPanel,
     w3TypeHeadline,
     w3TypeLine,
     w3TypeLineBreak,

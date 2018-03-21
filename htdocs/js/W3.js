@@ -166,7 +166,7 @@ function W3GetUIDef(ui) {
     }
     
     if (!w3UI.hasOwnProperty(uid)) {
-	W3LogError("No uid defined: " + uid);
+	W3LogWarning("No uid defined: " + uid);
 	return null;
     }
     
@@ -179,15 +179,16 @@ function W3GetUIText(uid) {
     if (uiDef != null) {
 	var uiType = uiDef[w3PropType];
 	if (uiType == w3TypeTextEditor) {
-	    text = $("#" + uid).val();
-	    // Convert html char
-	    text = text.replace(/&/g, "::;;");
-	    text = text.replace(/#/g, ";;::");
-	    // Convert URI char
-	    text = encodeURI(text);
+	    text = W3Encode($("#" + uid).val());
+	} else if (uiType == w3TypeDisplayPanel) {
+	    text = W3Encode($("#" + uid).html());
 	} else if (uiType == w3TypePanel) {
 	    text = $("#" + uid).html();
-	} else if (uiType == w3TypeText || uiType == w3TypePassword || uiType == w3TypeCombobox) {
+	} else if (uiType == w3TypeText ||
+		   uiType == w3TypePassword ||
+		   uiType == w3TypeCombobox ||
+		   uiType == w3TypeDatePicker ||
+		   uiType == w3TypeMonthPicker) {
 	    text = $("#" + uid).val();
 	} else {
 	    text = $("#" + uid).text();
@@ -207,14 +208,14 @@ function W3SetUIText(uid, text) {
 
     var uiType = uiDef[w3PropType];
     if (uiType == w3TypeTextEditor) {
-	text = text.replace(/::;;/g, "&");
-	text = text.replace(/;;::/g, "#");
+	text = W3Decode(text);
 	$("#" + uid).jqteVal(text);
     } else if (uiType == w3TypeText) {
 	$("#" + uid).val(text);
+    } else if (uiType == w3TypeDisplayPanel) {
+	text = W3Decode(text);
+	$("#" + uid).html(text);
     } else if (uiType == w3TypePanel) {
-	text = text.replace(/::;;/g, "&");
-	text = text.replace(/;;::/g, "#");
 	$("#" + uid).html(text);
     } else {
 	$("#" + uid).text(text);
@@ -477,6 +478,32 @@ function W3GetVariable(variable) {
 
 function W3GetSession() {
     return W3GetVariable(eval(w3Session));
+}
+
+//
+// Code
+//
+
+function W3Encode(text) {
+    // Convert html char
+    text = text.replace(/&/g, "::;;");
+    text = text.replace(/#/g, ";;::");
+
+    // Convert URI char
+    text = encodeURI(text);
+    
+    return text;
+}
+
+function W3Decode(text) {
+    // Convert URI char
+    text = decodeURI(text);
+    
+    // Convert html char
+    text = text.replace(/::;;/g, "&");
+    text = text.replace(/;;::/g, "#");
+
+    return text;
 }
 
 //

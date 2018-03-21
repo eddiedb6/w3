@@ -539,7 +539,7 @@ function W3ExecuteFuncFromString(func) {
 	    // Replace place holder here
 	    var funcParamIndex = parseInt(regResult[1], 10);
 	    if (funcParamIndex > args.length) {
-		W3LogError("Function actual paramter number is less than " + regResult[i]);
+		W3LogError("Function actual parameter number is less than " + regResult[i]);
 		return null;
 	    }
 

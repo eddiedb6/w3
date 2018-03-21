@@ -113,6 +113,10 @@ W3FormatDatetime
 /*------------------ Graphic ------------------*/
 W3DrawPercentageReport
 
+/*------------------ Code ------------------*/
+W3Encode
+W3Decode
+
 /*------------------ Other ------------------*/
 W3GoBack
 
