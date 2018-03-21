@@ -152,6 +152,16 @@ function W3CallAPISync(request, callback) {
     });
 }
 
+function W3PostAPIAsync(request, callback) {
+    W3LogDebug("Post API Async: " + request);
+    var innerCallback = function(data, status) {
+	if (W3OnAPICallback(data, status)) {
+	    callback(data, status);
+	}
+    };
+    $.post(request, innerCallback);
+}
+
 //
 // UI
 //
@@ -512,4 +522,8 @@ function W3Decode(text) {
 
 function W3GoBack() {
     javascript:history.back(-1);
+}
+
+function W3Debug() {
+    alert("Debug done");
 }
