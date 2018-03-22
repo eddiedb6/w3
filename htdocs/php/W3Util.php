@@ -66,6 +66,7 @@ function W3CreateAPIReg($aid) {
     } else {
         $apiReg .= "\?";
     }
+    
     for ($i = 0; $i < $paramCount; $i++) {
         $apiReg .= $apiDef[w3ApiParams][$i][w3ApiDataValue] . "=([\w\`\~\!\@\#\$%\^\*\(\)\-=\+\[\{\]\}\|\\\\:;\'\"\<,\>\.\/\?]*)";
         if ($i != $paramCount - 1) {
@@ -74,13 +75,76 @@ function W3CreateAPIReg($aid) {
             $apiReg .= "$/";
         }
     }
+    
     return $apiReg;
+}
+
+function W3CreateAPIPostReg($aid) {
+    $apiDef = W3GetAPIDef($aid);
+    if ($apiDef == NULL) {
+        return "";
+    }
+
+    $postCount = W3GetAPIPostCount($aid);
+    $postReg = "/";
+    if ($postCount < 1) {
+        return $postReg . "/";
+    } 
+
+    for ($i = 0; $i < $postCount; $i++) {
+        $postReg .= $apiDef[w3ApiPost][$i][w3ApiDataValue] . "=([\w\`\~\!\@\#\$%\^\*\(\)\-=\+\[\{\]\}\|\\\\:;\'\"\<,\>\.\/\?]*)";
+        if ($i != $postCount - 1) {
+            $postReg .= "&";
+        } else {
+            $postReg .= "/";
+        }
+    }
+    
+    return $postReg;
 }
 
 function W3CreateAPIResult($status, $isFullResult) {
     $result = W3MakeString(w3ApiResultStatus) . ":" . W3MakeString($status);
     if ($isFullResult) {
         $result = "{" . $result . "}";
+    }
+
+    return $result;
+}
+
+function W3GetAPIArgCount($aid, $argType) {
+    $apiDef = W3GetAPIDef($aid);
+    if ($apiDef == NULL) {
+        return 0;
+    }
+
+    if (!array_key_exists($argType, $apiDef)) {
+        return 0;
+    }
+
+    return sizeof($apiDef[$argType]);
+}
+
+function W3GetAPIArgIndex($aid, $argName, $argType) {
+    $result = -1;
+    
+    $apiDef = W3GetAPIDef($aid);
+    if ($apiDef == NULL) {
+        return $result;
+    }
+
+    if (!array_key_exists($argType, $apiDef)) {
+        return $result;
+    }
+
+    $index = 0;
+    foreach ($apiDef[$argType] as $value) {
+        $argNameDef = $value[w3ApiDataValue];
+        if ($argNameDef == $argName) {
+            $result = $index;
+            break;
+        }
+        $index += 1;
     }
 
     return $result;

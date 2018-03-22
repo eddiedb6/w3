@@ -29,7 +29,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiName, W3Const.w3ApiHandler),
-            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiResult, W3Const.w3ApiHandler, W3Const.w3ApiListener]) 
+            KeyIn([W3Const.w3ElementType, W3Const.w3ApiName, W3Const.w3ApiParams, W3Const.w3ApiPost, W3Const.w3ApiResult, W3Const.w3ApiHandler, W3Const.w3ApiListener]) 
         ]
     },
     W3Const.w3ApiID: {
@@ -55,6 +55,12 @@
         SchemaType: SchemaTypeString
     },
     W3Const.w3ApiParams: {
+        SchemaType: SchemaTypeArray,
+        SchemaRule: [
+            CheckForeachAsType(W3Const.w3ApiData)
+        ]
+    },
+    W3Const.w3ApiPost: {
         SchemaType: SchemaTypeArray,
         SchemaRule: [
             CheckForeachAsType(W3Const.w3ApiData)
@@ -256,7 +262,7 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             HasKey(W3Const.w3ApiID),
-            KeyIn([W3Const.w3ApiID, W3Const.w3ApiParams, W3Const.w3ApiCall])
+            KeyIn([W3Const.w3ApiID, W3Const.w3ApiPost, W3Const.w3ApiParams, W3Const.w3ApiCall])
         ]
     },
     W3Const.w3SinkRow: {

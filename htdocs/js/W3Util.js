@@ -2,7 +2,7 @@
 // API Helper
 //
 
-function W3GetAPIParamBindingValue(apiInputParam) {
+function W3GetAPIInputBindingValue(apiInputParam) {
     var paramType = apiInputParam[w3ApiDataType];
     var paramValue = apiInputParam[w3ApiDataValue];
     if (paramType == w3ApiDataTypeUID) {
@@ -23,18 +23,18 @@ function W3GetAPIParamBindingValue(apiInputParam) {
     return "";
 }
 
-function W3CreateAPIFromUI(uid, index) {
+function W3CreateAPIFromUI(uid, triggerIndex) {
     var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
     if (apiTriggers == null) {
 	W3LogError("There is no API trigger defined to create API for uid: " + uid);
 	return "";
     }
-    if (index < 0 || index >= apiTriggers.length) {
+    if (triggerIndex < 0 || triggerIndex >= apiTriggers.length) {
 	W3LogError("The API trigger index is overflow for uid: " + uid);
 	return "";
     }
 
-    var apiTrigger = apiTriggers[index];
+    var apiTrigger = apiTriggers[triggerIndex];
     var aid = apiTrigger[w3ApiID];
     var apiDef = W3GetAPIDef(aid);
     if (apiDef == null) {
@@ -60,8 +60,7 @@ function W3CreateAPIFromUI(uid, index) {
     
     for (var i = 0; i < len; ++i) {
 	if (i < inputParamLen) {
-	    var paramValueUI = apiTrigger[w3ApiParams][i][w3ApiDataValue];
-	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=" + W3GetAPIParamBindingValue(apiTrigger[w3ApiParams][i]);
+	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=" + W3GetAPIInputBindingValue(apiTrigger[w3ApiParams][i]);
 	} else {
 	    api += apiDef[w3ApiParams][i][w3ApiDataValue] + "=";
 	}
@@ -72,6 +71,69 @@ function W3CreateAPIFromUI(uid, index) {
     }
     
     return api;
+}
+
+function W3CreatePostFromUI(uid, triggerIndex) {
+    var post = "";
+    
+    var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
+    if (apiTriggers == null) {
+	W3LogError("There is no API trigger defined to create Post for uid: " + uid);
+	return post;
+    }
+    if (triggerIndex < 0 || triggerIndex >= apiTriggers.length) {
+	W3LogError("The Post trigger index is overflow for uid: " + uid);
+	return post;
+    }
+
+    var apiTrigger = apiTriggers[triggerIndex];
+    var aid = apiTrigger[w3ApiID];
+    var apiDef = W3GetAPIDef(aid);
+    if (apiDef == null) {
+	W3LogError("No api def get for post create on aid: " + aid);
+	return post;
+    }
+
+    var len = W3GetAPIPostCount(aid);
+    if (len < 1) {
+	return post;
+    }
+
+    var inputPostLen = 0;
+    if (apiTrigger.hasOwnProperty(w3ApiPost)) {
+	inputPostLen = apiTrigger[w3ApiPost].length;
+    }
+
+    if (len != inputPostLen) {
+	W3LogWarning("The post binding does not match exactly to api def: " + uid);
+    }
+    
+    for (var i = 0; i < len; ++i) {
+	if (i < inputPostLen) {
+	    post += apiDef[w3ApiPost][i][w3ApiDataValue] + "=" + W3GetAPIInputBindingValue(apiTrigger[w3ApiPost][i]);
+	} else {
+	    post += apiDef[w3ApiPost][i][w3ApiDataValue] + "=";
+	}
+
+	if (i != len - 1) {
+	    post += "&";
+	}
+    }
+    
+    return post;
+}
+
+function W3GetAPIArgCount(aid, argType) {
+    var apiDef = W3GetAPIDef(aid);
+    if (apiDef == null) {
+	return 0;
+    }
+    
+    if (!apiDef.hasOwnProperty(argType)) {
+	return 0;
+    }
+	
+    return apiDef[argType].length;
 }
 
 //
@@ -115,24 +177,30 @@ function W3OnTabClicked(uid, currentTab, tabSize) {
     }
 }
 
-function W3TriggerAPIFromUI(uid, index) {
+function W3TriggerAPIFromUI(uid, triggerIndex) {
     var apiTriggers = W3TryGetUIProperty(uid, w3PropTriggerApi);
     if (apiTriggers == null) {
 	W3LogError("No API trigger defined for ui: " + uid);
 	return;
     }
-    if (index < 0 || index >= apiTriggers.length) {
+    if (triggerIndex < 0 || triggerIndex >= apiTriggers.length) {
 	W3LogError("The API trigger item index is overflow for uid: " + uid);
 	return "";
     }
 
-    var apiTrigger = apiTriggers[index];
+    var apiTrigger = apiTriggers[triggerIndex];
     var apiDef = W3GetAPIDef(apiTrigger[w3ApiID]);
     if (apiDef == null) {
 	return;
     }
 
-    var request = W3CreateAPIFromUI(uid, index);
+    var isPostRequired = false;
+    var post = W3CreatePostFromUI(uid, triggerIndex);
+    if (post != "") {
+	isPostRequired = true;
+    }
+    
+    var request = W3CreateAPIFromUI(uid, triggerIndex);
     if (request == "") {
 	W3LogWarning("No API to create from UI:  " + uid);
 	return;
@@ -165,7 +233,11 @@ function W3TriggerAPIFromUI(uid, index) {
     if (apiCallMethod == w3ApiDirect) {
 	W3CallAPI(request);
     } else if (apiCallMethod == w3ApiAsync) {
-	W3CallAPIAsync(request, callback);
+	if (isPostRequired) {
+	    W3PostAPIAsync(request, post, callback);
+	} else {
+	    W3CallAPIAsync(request, callback);
+	}
     } else {
 	W3CallAPISync(request, callback);
     }	

@@ -85,6 +85,7 @@ w3ElementTypeCollection = [
 w3ApiID = "apiid"
 w3ApiName = "apiname"
 w3ApiParams = "apiparams"
+w3ApiPost = "apipost"
 w3ApiData = "apidata"
 w3ApiDataType = "apidatatype"
 w3ApiDataValue = "apidatavalue"

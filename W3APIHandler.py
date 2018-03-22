@@ -52,6 +52,9 @@ for aid in apiSchema.keys():
     apiDef.write("function W3IsRequest_" + apiSchema[aid][W3Const.w3ApiName] + "($request, &$parameters = NULL) {\n")
     apiDef.write("    return preg_match(W3CreateAPIReg(\"" + aid + "\"), $request, $parameters);\n")
     apiDef.write("}\n\n")
+    apiDef.write("function W3IsPost_" + apiSchema[aid][W3Const.w3ApiName] + "($post, &$parameters = NULL) {\n")
+    apiDef.write("    return preg_match(W3CreateAPIPostReg(\"" + aid + "\"), $post, $parameters);\n")
+    apiDef.write("}\n\n")
 
 # API server handler for each
 apiDef.write("function W3APIHandleRequest() {\n")

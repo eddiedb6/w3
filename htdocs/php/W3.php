@@ -143,41 +143,35 @@ function W3GetAPIDef($aid) {
 }
 
 function W3GetAPIParamCount($aid) {
-    $apiDef = W3GetAPIDef($aid);
-    if ($apiDef == NULL) {
-        return 0;
-    }
+    return W3GetAPIArgCount($aid, w3ApiParams);
+}
 
-    if (!array_key_exists(w3ApiParams, $apiDef)) {
-        return 0;
-    }
-
-    return sizeof($apiDef[w3ApiParams]);
+function W3GetAPIPostCount($aid) {
+    return W3GetAPIArgCount($aid, w3ApiPost);
 }
 
 function W3GetAPIParamIndex($aid, $paramName) {
-    $result = -1;
-    
+    return W3GetAPIArgIndex($aid, $paramName, w3ApiParams);
+}
+
+function W3GetAPIPostIndex($aid, $postName) {
+    return W3GetAPIArgIndex($aid, $postName, w3ApiPost);
+}
+
+function W3GetAPIPostParams($aid, &$postParams) {
     $apiDef = W3GetAPIDef($aid);
     if ($apiDef == NULL) {
-        return $result;
+        return false;
     }
 
-    if (!array_key_exists(w3ApiParams, $apiDef)) {
-        return $result;
+    $data = file_get_contents("php://input");
+    $apiName = $apiDef[w3ApiName];
+    $postCheckFunc = "W3IsPost_" . $apiName;
+    if ($postCheckFunc($data, $postParams)) {
+        return true;
     }
-
-    $index = 0;
-    foreach ($apiDef[w3ApiParams] as $value) {
-        $paramNameDef = $value[w3ApiDataValue];
-        if ($paramNameDef == $paramName) {
-            $result = $index;
-            break;
-        }
-        $index += 1;
-    }
-
-    return $result;
+    
+    return false;
 }
 
 //

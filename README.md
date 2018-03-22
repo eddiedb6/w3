@@ -73,13 +73,17 @@ W3GetStringValue		W3GetStringValue
 /*------------------ API ------------------*/
 W3GetAPIDef			W3GetAPIDef
 W3GetAPIParamCount		W3GetAPIParamCount
+W3GetAPIPostCount		W3GetAPIPostCount
 				W3GetAPIParamIndex
+				W3GetAPIPostIndex
+				W3GetAPIPostParams
 W3CreateAPI			W3CreateAPI
 				W3CreateSuccessfulResult
 				W3CreateFailedResult
 				W3CreateAuthenticationResult
 W3CallAPI			
 W3CallAPIAsync
+W3PostAPIAsync
 W3CallAPISync
 
 /*------------------ UI ------------------*/

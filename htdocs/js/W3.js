@@ -70,16 +70,11 @@ function W3GetAPIDef(aid) {
 }
 
 function W3GetAPIParamCount(aid) {
-    var apiDef = W3GetAPIDef(aid);
-    if (apiDef == null) {
-	return 0;
-    }
-    
-    if (!apiDef.hasOwnProperty(w3ApiParams)) {
-	return 0;
-    }
-	
-    return apiDef[w3ApiParams].length;
+    return W3GetAPIArgCount(aid, w3ApiParams);
+}
+
+function W3GetAPIPostCount(aid) {
+    return W3GetAPIArgCount(aid, w3ApiPost);
 }
 
 function W3CreateAPI() {
@@ -135,6 +130,17 @@ function W3CallAPIAsync(request, callback) {
     $.get(request, innerCallback);
 }
 
+function W3PostAPIAsync(request, data, callback) {
+    W3LogDebug("Trigger Post API Async: " + request);
+    var innerCallback = function(data, status) {
+	if (W3OnAPICallback(data, status)) {
+	    callback(data, status);
+	}
+    };
+
+    $.post(request, data, innerCallback, "text");
+}
+
 function W3CallAPISync(request, callback) {
     W3LogDebug("Trigger API Sync: " + request);
     var innerCallback = function(data, status) {
@@ -150,16 +156,6 @@ function W3CallAPISync(request, callback) {
 	async: false,
 	success: innerCallback
     });
-}
-
-function W3PostAPIAsync(request, callback) {
-    W3LogDebug("Post API Async: " + request);
-    var innerCallback = function(data, status) {
-	if (W3OnAPICallback(data, status)) {
-	    callback(data, status);
-	}
-    };
-    $.post(request, innerCallback);
 }
 
 //
