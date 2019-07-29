@@ -169,7 +169,7 @@
 
         function _initMonth()
         {
-            _setMonth(_currentMonth, _currentYear);        
+            _setMonth(_currentYear, _currentMonth);
         }
 
         function _appendMonthBody()
@@ -271,14 +271,14 @@
                                                              "</div>");
         }
 
-        function _setMonth(month, year)
+        function _setMonth(year, month)
         {
             _setData(MONTH_DATA, month);
             _setData(YEAR_DATA, year);
 
             _cleanMonth();
             
-            var dayNumbersInMonth = _getDaysOfMonth(month, year);        
+            var dayNumbersInMonth = _getDaysOfMonth(year, month);
             for (var dayIter = 1; dayIter <= dayNumbersInMonth; ++dayIter) {
                 _createDayInMonth(year, month, dayIter);
             }
@@ -309,7 +309,7 @@
             $(document.body).on("click", _getClassID(MONTH_RESET_CLASS), function (event) {
                 _hideEventList();
                 _updateMonthViewButton();
-                _setMonth(_currentMonth, _currentYear);
+                _setMonth(_currentYear, _currentMonth);
                 event.preventDefault();
                 event.stopPropagation();
             });
@@ -370,7 +370,7 @@
             var year = _getData(YEAR_DATA);
             var newMonth = month === 12 ? 1 : month + 1;
             var newYear = month === 12 ? year + 1 : year;
-            _setMonth(newMonth, newYear);
+            _setMonth(newYear, newMonth);
         }
 
         function _setPreviousMonth()
@@ -379,7 +379,7 @@
             var year = _getData(YEAR_DATA);
             var newMonth = month === 1 ? 12 : month - 1;
             var newYear = month === 1 ? year - 1 : year;
-            _setMonth(newMonth, newYear);
+            _setMonth(newYear, newMonth);
         }
 
         function _updateMonthViewButton()
