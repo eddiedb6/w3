@@ -16,7 +16,8 @@ function W3LoadCSS() {
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"" . $uiPath . "\"></link>";
 
     echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"css/jquery-ui.min.css\"></link>";
-    echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"css/jquery-te-1.4.0.css\">";
+    echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"css/jquery-te-1.4.0.css\"></link>";
+    echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"css/calendar.css\"></link>";
 }
     
 #
@@ -30,6 +31,8 @@ function W3LoadJS() {
     echo "<script src=\"js/jquery-ui.min.js\"></script>";
     # jquery te
     echo "<script type=\"text/javascript\" src=\"js/jquery-te-1.4.0.min.js\" charset=\"utf-8\"></script>";
+    # calendar
+    echo "<script type=\"text/javascript\" src=\"js/calendar.js\"></script>";
 
     # w3
     echo "<script src=\"js/W3.js\"></script>";
@@ -310,7 +313,8 @@ $w3UICreatorMap = array (
     w3TypeParagraph => "W3CreateParagraph",
     w3TypeCanvas => "W3CreateCanvas",
     w3TypePage => "W3CreatePage",
-    w3TypeTextEditor => "W3CreateTextEditor"
+    w3TypeTextEditor => "W3CreateTextEditor",
+    w3TypeCalendar => "W3CreateCalendar"
 );
 
 function W3CreateHeadline($uid, $uiDef) {
@@ -598,6 +602,16 @@ function W3CreateTab($uid, $uiDef) {
     $headerBody .= "</ul>";
     $contentBody .= "</div>";
     $body = $headerBody . $contentBody;
+    
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
+}
+
+function W3CreateCalendar($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
+
+    $type = "div";
+    $body = "";
+    $attr = "";
     
     return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }

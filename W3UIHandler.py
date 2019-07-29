@@ -79,8 +79,8 @@ for var in varList:
     if len(varList[var]) > 0:
         uiJS.write(",".join(varList[var]))
     uiJS.write("]\n};\n")
-# Init date picker for JS
-uiJS.write(W3Util.W3InitDatePicker(uiDef))
+# Init JS UI, e.g. date picker or calendar
+uiJS.write(W3Util.W3InitJSUI(uiDef))
 uiJS.close()
 
 # Clone W3 const and remove collections

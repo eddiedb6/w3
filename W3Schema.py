@@ -141,6 +141,9 @@
     W3Const.w3TypeDatePicker: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypeCalendar: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
     W3Const.w3TypeMonthPicker: {
         SchemaInherit: W3Const.w3TypeButton
     },

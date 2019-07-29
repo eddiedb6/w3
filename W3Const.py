@@ -52,6 +52,7 @@ w3TypeParagraph = "typeparagraph"
 w3TypeCanvas = "typecanvas"
 w3TypePage = "typepage"
 w3TypeTextEditor = "typetexteditor"
+w3TypeCalendar = "typecalendar"
 # Collect types
 w3ElementTypeCollection = [
     w3TypeApi,
@@ -78,7 +79,8 @@ w3ElementTypeCollection = [
     w3TypeParagraph,
     w3TypeCanvas,
     w3TypePage,
-    w3TypeTextEditor
+    w3TypeTextEditor,
+    w3TypeCalendar
 ]
 
 # API properties
