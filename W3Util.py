@@ -141,7 +141,7 @@ def W3ConvertToDatePickerFormat(w3Format):
     w3Format = w3Format.replace("DD", "dd", 1)
     return w3Format
     
-def W3InitDatePicker(ui):
+def W3InitJSUI(ui):
     js = "\n$(document).ready(function() {\n"
     for key in ui.keys():
         if W3Const.w3PropType in ui[key]:
@@ -149,6 +149,8 @@ def W3InitDatePicker(ui):
                 js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3DateFormat) + "'});\n"
             elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeMonthPicker):
                 js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3MonthFormat) + "'});\n"
+            elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeCalendar):
+                js = js + "\t$(\"#" + key + "\").calendar();\n"
 
     js = js + "});"
     return js
