@@ -1,7 +1,10 @@
 (function($) {
     "use strict";
 
-    function Impl()
+    var _eventUpdater_ = undefined;
+    var _eventUpdaterWrapper_ = undefined;
+    
+    function CalendarImpl()
     {
         var currentDate = new Date();
         
@@ -170,6 +173,7 @@
         function _initMonth()
         {
             _setMonth(_currentYear, _currentMonth);
+            _eventUpdaterWrapper_ = _updateEvent;
         }
 
         function _appendMonthBody()
@@ -271,6 +275,82 @@
                                                              "</div>");
         }
 
+        function _createEventDetailTable(event)
+        {
+            var repeatNumber = Number(event["repeatmonth"]);
+            var repeatStr = (repeatNumber > 1) ? ("Every " + repeatNumber + " Months") : ((repeatNumber == 0) ? "No" : "Every 1 Month");
+            var eventTable = "<HR>" +
+                "<table>" +
+                "<tr><td style=\"float:right\">Name:</td><td>" + event["name"] + "</td></tr>" +
+                "<tr><td style=\"float:right\">Start Date:</td><td>" + event["datetime"].split(" ")[0] + "</td></tr>" +
+                "<tr><td style=\"float:right\">Repeat:</td><td>" + repeatStr + "</td></tr>" +
+                "<tr><td style=\"float:right\">Note:</td><td>" + event["note"] + "</td></tr>" +
+                "</table>";
+            
+            return eventTable;
+        }
+
+        function _updateSingleDayEventUI(dateNumber, events)
+        {
+            var dayGridEvents = "<ul>";
+            var dayDetailEvents = "<div>";
+            
+            for (var iter in events) {
+                dayGridEvents += "<li><a>" + events[iter]["name"] + "</a></li>";
+                dayDetailEvents += "<div>" + _createEventDetailTable(events[iter]) + "</div>";
+            }
+            dayGridEvents += "</ul>";
+            dayDetailEvents += "</div>";
+            
+            var dayGridElement = $(_parent +
+                                   ' .' + MONTH_DAY_EVENT_CLASS + '[data-number="' + dateNumber + '"]' +
+                                   ' .' + MONTH_DAY_INDICATOR_WRAP_CLASS);
+            dayGridElement.append(dayGridEvents);
+
+            var dayDetailElement = $(_parent + ' .' + MONTH_EVENT_LIST_ITEM_CLASS + '[data-number="' + dateNumber + '"]');
+            dayDetailElement.append(dayDetailEvents);
+
+            // Remove "No Events" CSS
+            var dayDetailCSSElement = $(_parent + ' .' + MONTH_EVENT_LIST_ITEM_CLASS + '[data-number="' + dateNumber + '"]:after');
+            dayDetailCSSElement.css("content", "");
+        }
+
+        function _updateCalendarEventUI(events)
+        {
+            var eventsDateMap = {};
+            for (var iter in events) {
+                // "datetime":"2019-05-01 00:00:00" and change to number to remove 0 in date string
+                var dateNumber = Number(events[iter]["datetime"].split(" ")[0].split("-")[2]); 
+
+                if (dateNumber in eventsDateMap) {
+                    eventsDateMap[dateNumber].push(events[iter]);
+                } else {
+                    eventsDateMap[dateNumber] = [events[iter]];
+                }
+            }
+
+            for (var key in eventsDateMap) {
+                _updateSingleDayEventUI(key, eventsDateMap[key]);
+            }
+        }
+
+        function _updateEvent(year, month)
+        {
+            if (_eventUpdater_ == undefined) {
+                return;
+            }
+
+            if (year == undefined) {
+                year = _currentYear;
+            }
+
+            if (month == undefined) {
+                month = _currentMonth;
+            }
+
+            _eventUpdater_(year, month, _updateCalendarEventUI);
+        }
+
         function _setMonth(year, month)
         {
             _setData(MONTH_DATA, month);
@@ -286,6 +366,8 @@
             _createMonthHeader(year, month);
             _fillBlankDays(year, month);
             _groupDaysIntoWeeks();
+
+            _updateEvent(year, month);
         }
 
         ///////// Handlers /////////
@@ -366,7 +448,7 @@
 
         function _setNextMonth()
         {
-            var    month = _getData(MONTH_DATA);
+            var month = _getData(MONTH_DATA);
             var year = _getData(YEAR_DATA);
             var newMonth = month === 12 ? 1 : month + 1;
             var newYear = month === 12 ? year + 1 : year;
@@ -375,7 +457,7 @@
 
         function _setPreviousMonth()
         {
-            var    month = _getData(MONTH_DATA);
+            var month = _getData(MONTH_DATA);
             var year = _getData(YEAR_DATA);
             var newMonth = month === 1 ? 12 : month - 1;
             var newYear = month === 1 ? year - 1 : year;
@@ -390,9 +472,19 @@
                 $(_getClassID(CALENDAR_HEADER_TITLE_CLASS)).prepend(_getClassHref(MONTH_VIEW_BUTTON_CLASS));
             }
         }
-    };
-    
+    }
+
+    function CalendarEventImpl(updater)
+    {
+        _eventUpdater_ = updater;
+
+        if (_eventUpdaterWrapper_ != undefined) {
+            _eventUpdaterWrapper_();
+        }
+    }
+
     $.fn.extend({
-        calendar: Impl
+        calendar: CalendarImpl,
+        calendarEvent: CalendarEventImpl
     });
 } (jQuery));

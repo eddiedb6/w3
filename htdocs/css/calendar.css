@@ -238,8 +238,6 @@
 
 .month-day-indicator-wrap {
     position: relative;
-    text-align: center;
-    line-height: 0;
     max-width: 1.5em;
     margin: 0 auto;
     padding-top: 1.2em;
@@ -293,7 +291,7 @@
 }
 
 .month-event-list-item:after {
-    content: 'No Events';
+    content: '';
 }
 
 .calendar-event-list .month-day-today .calendar-event-list-date {
