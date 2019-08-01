@@ -142,15 +142,34 @@ def W3ConvertToDatePickerFormat(w3Format):
     return w3Format
     
 def W3InitJSUI(ui):
-    js = "\n$(document).ready(function() {\n"
+    js = "\n"
+    js = js + "$(document).ready(function() {\n"
+    js = js + "    function FormatDatePicker(uid, format) {\n"
+    js = js + "        if (document.getElementById(uid) == null) {\n"
+    js = js + "            return;\n"
+    js = js + "        }\n"
+    js = js + "        var element = $(\"#\" + uid);\n"
+    js = js + "        if (element != undefined) {\n"
+    js = js + "            element.datepicker({dateFormat:format});\n"
+    js = js + "        }\n"
+    js = js + "    }\n"
+    js = js + "    function InitCalendar(uid) {\n"
+    js = js + "        if (document.getElementById(uid) == null) {\n"
+    js = js + "            return;\n"
+    js = js + "        }\n"
+    js = js + "        var element = $(\"#\" + uid);\n"
+    js = js + "        if (element != undefined) {\n"
+    js = js + "            element.calendar();\n"
+    js = js + "        }\n"
+    js = js + "    }\n"
+
     for key in ui.keys():
         if W3Const.w3PropType in ui[key]:
             if (ui[key][W3Const.w3PropType] == W3Const.w3TypeDatePicker):
-                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3DateFormat) + "'});\n"
+                js = js + "    FormatDatePicker(\"" + key + "\", \"" + W3ConvertToDatePickerFormat(W3Const.w3DateFormat) + "\");\n"
             elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeMonthPicker):
-                js = js + "\t$(\"#" + key + "\").datepicker({dateFormat:'" + W3ConvertToDatePickerFormat(W3Const.w3MonthFormat) + "'});\n"
+                js = js + "    FormatDatePicker(\"" + key + "\", \"" + W3ConvertToDatePickerFormat(W3Const.w3MonthFormat) + "\");\n"
             elif (ui[key][W3Const.w3PropType] == W3Const.w3TypeCalendar):
-                js = js + "\t$(\"#" + key + "\").calendar();\n"
-
+                js = js + "    InitCalendar(\"" + key + "\");\n"
     js = js + "});"
     return js
