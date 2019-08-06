@@ -193,6 +193,7 @@ w3VariableFormat = "variableformat"
 w3AttrHeadlineLevel = "attrheadlinelevel"
 w3AttrDisabled = "disabled"
 w3AttrMapLocation = "attrmaplocation"
+w3AttrMapHandler = "attrmaphandler"
 w3AttrMapKey = "attrmapkey"
 
 # Define generic uid

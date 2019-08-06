@@ -579,7 +579,8 @@ function W3CreateCanvas(uid) {
 
 function W3ExecuteFuncFromString(func) {
     var args = Array.prototype.slice.call(arguments, 1);
-    
+
+    // func = "FUNC_NAME(ARG1, ARG2)"
     var index = func.indexOf("(");
     if (index < 0) {
 	W3LogError("Function name not found: " + func);

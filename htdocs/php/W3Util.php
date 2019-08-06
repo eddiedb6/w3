@@ -637,7 +637,12 @@ function W3CreateMSMap($uid, $uiDef) {
     $initJSStr = "<script type='text/javascript'>" .
                      "function loadMap" . $uid . "() {" .
                      "    var map = new Microsoft.Maps.Map(document.getElementById('" . $uid . "')," .
-                                                           "{ center: new Microsoft.Maps.Location(" . $initLocation . ") });" .
+                     "                                     { center: new Microsoft.Maps.Location(" . $initLocation . ") });" .
+                     "    var propMap = W3TryGetUIProperty(\"" . $uid . "\", " . "\"" . w3PropMap . "\");" .
+                     "    if ((propMap != null) && propMap.hasOwnProperty(\"" . w3AttrMapHandler . "\")) {" .
+                     "        var handler = propMap[\"" . w3AttrMapHandler . "\"];" .
+                     "        W3ExecuteFuncFromString(handler, map);" .
+                     "    }" .
                      "}" .
                  "</script>" .
                  "<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=" . $msKey . "&callback=loadMap" . $uid . "' async defer></script>";
