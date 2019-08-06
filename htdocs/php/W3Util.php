@@ -314,7 +314,8 @@ $w3UICreatorMap = array (
     w3TypeCanvas => "W3CreateCanvas",
     w3TypePage => "W3CreatePage",
     w3TypeTextEditor => "W3CreateTextEditor",
-    w3TypeCalendar => "W3CreateCalendar"
+    w3TypeCalendar => "W3CreateCalendar",
+    w3TypeMap => "W3CreateMap"
 );
 
 function W3CreateHeadline($uid, $uiDef) {
@@ -616,6 +617,38 @@ function W3CreateCalendar($uid, $uiDef) {
     return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
 }
 
+function W3CreateMSMap($uid, $uiDef) {
+    W3CreateUIBasePro($uid, $uiDef);
+
+    # Beijing
+    $initLocation = "39.918794, 116.398568";
+    $msKey = "";
+
+    $mapProp = W3TryGetUIProperty($uiDef, w3PropMap);
+    if ($mapProp != NULL) {
+        if (array_key_exists(w3AttrMapLocation, $mapProp)) {
+            $initLocation = $mapProp[w3AttrMapLocation];
+        }
+        if (array_key_exists(w3AttrMapKey, $mapProp)) {
+            $msKey = $mapProp[w3AttrMapKey];
+        }
+    }
+
+    $initJSStr = "<script type='text/javascript'>" .
+                     "function loadMap" . $uid . "() {" .
+                     "    var map = new Microsoft.Maps.Map(document.getElementById('" . $uid . "')," .
+                                                           "{ center: new Microsoft.Maps.Location(" . $initLocation . ") });" .
+                     "}" .
+                 "</script>" .
+                 "<script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=" . $msKey . "&callback=loadMap" . $uid . "' async defer></script>";
+
+    $type = "div";
+    $body = "";
+    $attr = "";
+
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr) . $initJSStr;
+}
+
 function W3CreatePanel($uid, $uiDef) {
     W3CreateUIBasePro($uid, $uiDef);
 
@@ -635,6 +668,10 @@ function W3CreatePanel($uid, $uiDef) {
     $attr = "";
     
     return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
+}
+
+function W3CreateMap($uid, $uiDef) {
+    return W3CreateMSMap($uid, $uiDef);
 }
 
 function W3CreatePage($uid, $uiDef) {

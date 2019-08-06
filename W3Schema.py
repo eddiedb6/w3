@@ -144,6 +144,9 @@
     W3Const.w3TypeCalendar: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypeMap: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
     W3Const.w3TypeMonthPicker: {
         SchemaInherit: W3Const.w3TypeButton
     },
@@ -225,6 +228,12 @@
         SchemaType: SchemaTypeDict,
         SchemaRule: [
             KeyIn(W3Const.w3FuncCollection)
+        ]
+    },
+    W3Const.w3PropMap: {
+        SchemaType: SchemaTypeDict,
+        SchemaRule: [
+            IgnoreChildSchema()
         ]
     },
     W3Const.w3PropClass: {

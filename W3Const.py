@@ -53,6 +53,7 @@ w3TypeCanvas = "typecanvas"
 w3TypePage = "typepage"
 w3TypeTextEditor = "typetexteditor"
 w3TypeCalendar = "typecalendar"
+w3TypeMap = "typemap"
 # Collect types
 w3ElementTypeCollection = [
     w3TypeApi,
@@ -80,7 +81,8 @@ w3ElementTypeCollection = [
     w3TypeCanvas,
     w3TypePage,
     w3TypeTextEditor,
-    w3TypeCalendar
+    w3TypeCalendar,
+    w3TypeMap
 ]
 
 # API properties
@@ -135,6 +137,7 @@ w3PropSubUI = "propsubui"
 w3PropString = "propstring"
 w3PropEvent = "propevent"
 w3PropFunc = "propfunc"
+w3PropMap = "propmap"
 w3PropAttr = "propattr"
 w3PropClass = "propclass"
 w3PropPrototype = "propprototype"
@@ -142,6 +145,7 @@ w3PropCSS = "propcss"
 w3PropBindingVar = "propbindingvar"
 w3PropSinkApi = "propsinkapi"
 w3PropTriggerApi = "proptriggerapi"
+
 # Collect UI properties
 w3PropCollection = [
     w3PropDefaultPage,
@@ -152,6 +156,7 @@ w3PropCollection = [
     w3PropSubUI,
     w3PropString,
     w3PropEvent,
+    w3PropMap,
     w3PropFunc,
     w3PropAttr,
     w3PropClass,
@@ -187,6 +192,8 @@ w3VariableFormat = "variableformat"
 # Define "ui" attributes
 w3AttrHeadlineLevel = "attrheadlinelevel"
 w3AttrDisabled = "disabled"
+w3AttrMapLocation = "attrmaplocation"
+w3AttrMapKey = "attrmapkey"
 
 # Define generic uid
 w3UIDUndefined = "uidUndefined"
