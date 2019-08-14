@@ -94,6 +94,7 @@ w3ApiPost = "apipost"
 w3ApiData = "apidata"
 w3ApiDataType = "apidatatype"
 w3ApiDataValue = "apidatavalue"
+w3ApiDataNull = "apidatanull"
 # API data types
 w3ApiDataTypeNone = "apivaluetypenone"
 w3ApiDataTypeString = "apivaluetypestring"
