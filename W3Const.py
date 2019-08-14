@@ -24,6 +24,7 @@ w3UIBody = "uibody"
 
 # Session Variable
 w3Session = "w3globalsessionvar"
+w3SessionKey = "session"
 
 # W3 element types
 w3ElementType = "elementtype"
