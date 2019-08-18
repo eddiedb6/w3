@@ -476,7 +476,9 @@ function W3UpdateTableByRow(uidTable, data, status) {
 		columnElementValue = W3GetStringValue(apiResult[rowIndex][resultField]);
 	    } else if (columnDataType == w3ApiDataTypeNone) {
 		columnElementValue = "";
-	    }
+	    } else if (columnDataType == w3ApiDataTypeFunc) {
+                columnElementValue = W3ExecuteFuncFromString(resultField, uidTable, rowIndex);
+            }
 
 	    if (isThereTableHeader) {
 		var cellsDef = W3TryGetUIProperty(uidTable, w3PropSubUI);

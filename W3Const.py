@@ -102,13 +102,15 @@ w3ApiDataTypeNum = "apivaluetypenum"
 w3ApiDataTypeUID = "apivaluetypeuid"
 w3ApiDataTypeSID = "apivaluetypesid"
 w3ApiDataTypeVar = "apivaluetypevar"
+w3ApiDataTypeFunc = "apivaluetypefunc"
 w3ApiDataTypeCollection = [
     w3ApiDataTypeNone,
     w3ApiDataTypeString,
     w3ApiDataTypeNum,
     w3ApiDataTypeUID,
     w3ApiDataTypeSID,
-    w3ApiDataTypeVar
+    w3ApiDataTypeVar,
+    w3ApiDataTypeFunc
 ]
 w3ApiResult = "apiresult"
 w3ApiResultStatus = "apiresultstatus"
