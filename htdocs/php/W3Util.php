@@ -620,8 +620,8 @@ function W3CreateCalendar($uid, $uiDef) {
 function W3CreateMSMap($uid, $uiDef) {
     W3CreateUIBasePro($uid, $uiDef);
 
-    $beijing = "39.918794, 116.398568";
-    $shanghai = "31.230369567871094, 121.47370147705078";
+    $beijing = array("39.918794", "116.398568");
+    $shanghai = array("31.230369567871094", "121.47370147705078");
     $initLocation = $shanghai;
 
     $msKey = "";
@@ -639,7 +639,7 @@ function W3CreateMSMap($uid, $uiDef) {
     $initJSStr = "<script type='text/javascript'>" .
                      "function loadMap" . $uid . "() {" .
                      "    var map = new Microsoft.Maps.Map(document.getElementById('" . $uid . "')," .
-                     "                                     { center: new Microsoft.Maps.Location(" . $initLocation . ") });" .
+                     "                                     { center: new Microsoft.Maps.Location(" . $initLocation[0] . "," . $initLocation[1] . ") });" .
                      "    var propMap = W3TryGetUIProperty(\"" . $uid . "\", " . "\"" . w3PropMap . "\");" .
                      "    if ((propMap != null) && propMap.hasOwnProperty(\"" . w3AttrMapHandler . "\")) {" .
                      "        var handler = propMap[\"" . w3AttrMapHandler . "\"];" .

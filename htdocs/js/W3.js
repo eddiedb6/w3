@@ -216,7 +216,8 @@ function W3SetUIText(uid, text) {
     if (uiType == w3TypeTextEditor) {
 	text = W3Decode(text);
 	$("#" + uid).jqteVal(text);
-    } else if (uiType == w3TypeText) {
+    } else if ((uiType == w3TypeText) ||
+               (uiType == w3TypeDatePicker)) {
 	$("#" + uid).val(text);
     } else if (uiType == w3TypeDisplayPanel) {
 	text = W3Decode(text);
