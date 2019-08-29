@@ -19,7 +19,7 @@ function W3LoadCSS() {
     echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"css/jquery-te-1.4.0.css\"></link>";
     echo "<link type=\"text/css\" rel=\"stylesheet\" href=\"css/calendar.css\"></link>";
 }
-    
+
 #
 # JS Helper
 #
@@ -32,7 +32,10 @@ function W3LoadJS() {
     # jquery te
     echo "<script type=\"text/javascript\" src=\"js/jquery-te-1.4.0.min.js\" charset=\"utf-8\"></script>";
     # calendar
-    echo "<script type=\"text/javascript\" src=\"js/calendar.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"js/W3Calendar.js\"></script>";
+    # pdf
+    echo "<script type=\"text/javascript\" src=\"pdf/build/pdf.js\"></script>";
+    echo "<script type=\"text/javascript\" src=\"js/W3PDF.js\"></script>";
 
     # w3
     echo "<script src=\"js/W3.js\"></script>";
@@ -312,8 +315,10 @@ $w3UICreatorMap = array (
     w3TypeLineBreak => "W3CreateLineBreak",
     w3TypeParagraph => "W3CreateParagraph",
     w3TypeCanvas => "W3CreateCanvas",
+    w3TypePDFCanvas => "W3CreatePDFCanvas",
     w3TypePage => "W3CreatePage",
     w3TypeTextEditor => "W3CreateTextEditor",
+    w3TypePlainTextEditor => "W3CreatePlainTextEditor",
     w3TypeCalendar => "W3CreateCalendar",
     w3TypeMap => "W3CreateMap"
 );
@@ -368,6 +373,11 @@ function W3CreateCanvas($uid, $uiDef) {
     $attr = "";
 
     return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
+}
+
+function W3CreatePDFCanvas($uid, $uiDef) {
+    $js = "<script type=\"text/javascript\">\$('#" . $uid . "').W3PDF();</script>";
+    return W3CreateCanvas($uid, $uiDef) . $js;
 }
 
 function W3CreateLink($uid, $uiDef) {
@@ -701,16 +711,20 @@ function W3CreatePage($uid, $uiDef) {
     return W3CreatePanel($uid, $uiDef);
 }
 
-function W3CreateTextEditor($uid, $uiDef) {
+function W3CreatePlainTextEditor($uid, $uiDef) {
     W3CreateUIBasePro($uid, $uiDef);
 
     $type = "textarea";
     $attr = "";
     $body = "";
 
+    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr);
+}
+
+function W3CreateTextEditor($uid, $uiDef) {
     $js = "<script type=\"text/javascript\">\$('#" . $uid . "').jqte();</script>";
 
-    return W3CreateUIBase($uid, $uiDef, $type, $body, $attr) . $js;
+    return W3CreatePlainTextEditor($uid, $uiDef) . $js;
 }
 
 function W3CreateUIBase($uid, $uiDef, $type, $body, $attr) {

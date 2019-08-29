@@ -51,8 +51,10 @@ w3TypeLine = "typeline"
 w3TypeLineBreak = "typelinebreak"
 w3TypeParagraph = "typeparagraph"
 w3TypeCanvas = "typecanvas"
+w3TypePDFCanvas = "typepdfcanvas"
 w3TypePage = "typepage"
 w3TypeTextEditor = "typetexteditor"
+w3TypePlainTextEditor = "typeplaintexteditor"
 w3TypeCalendar = "typecalendar"
 w3TypeMap = "typemap"
 # Collect types
@@ -80,8 +82,10 @@ w3ElementTypeCollection = [
     w3TypeLineBreak,
     w3TypeParagraph,
     w3TypeCanvas,
+    w3TypePDFCanvas,
     w3TypePage,
     w3TypeTextEditor,
+    w3TypePlainTextEditor,
     w3TypeCalendar,
     w3TypeMap
 ]
@@ -205,8 +209,10 @@ w3UIDUndefined = "uidUndefined"
 
 # Define event
 w3EventClick = "onclick" # It's js event name and DO NOT change it
+w3EventChange = "onchange"
 w3EventCollection = [
-    w3EventClick
+    w3EventClick,
+    w3EventChange
 ]
 
 # Define function

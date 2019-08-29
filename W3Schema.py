@@ -186,10 +186,16 @@
     W3Const.w3TypeCanvas: {
         SchemaInherit: W3Const.w3TypeButton
     },
+    W3Const.w3TypePDFCanvas: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
     W3Const.w3TypePage: {
         SchemaInherit: W3Const.w3TypeButton
     },
     W3Const.w3TypeTextEditor: {
+        SchemaInherit: W3Const.w3TypeButton
+    },
+    W3Const.w3TypePlainTextEditor: {
         SchemaInherit: W3Const.w3TypeButton
     },
 
@@ -305,6 +311,9 @@
 
     # Event
     W3Const.w3EventClick: {
+        SchemaType: SchemaTypeArray
+    },
+    W3Const.w3EventChange: {
         SchemaType: SchemaTypeArray
     },
 

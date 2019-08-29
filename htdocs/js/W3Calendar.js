@@ -484,7 +484,7 @@
     }
 
     $.fn.extend({
-        calendar: CalendarImpl,
-        calendarEvent: CalendarEventImpl
+        W3Calendar: CalendarImpl,
+        W3CalendarEvent: CalendarEventImpl
     });
 } (jQuery));

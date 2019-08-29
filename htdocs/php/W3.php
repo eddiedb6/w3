@@ -259,6 +259,28 @@ function W3GetSession() {
 }
 
 //
+// Code
+//
+
+function W3Decode($text) {
+    $result = iconv("utf-8", "gb2312", urldecode($text));
+
+    $result = str_replace("::;;", "&", $result);
+    $result = str_replace(";;::", "#", $result);
+
+    return $result;
+}
+
+function W3Encode($text) {
+    $text = str_replace("&", "::;;", $text);
+    $text = str_replace("#", ";;::", $text);
+
+    $result = urlencode(iconv("gb2312", "UTF-8", $text));
+
+    return $result;
+}
+
+//
 // Others
 //
 

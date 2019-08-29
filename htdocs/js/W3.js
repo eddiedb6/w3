@@ -184,17 +184,19 @@ function W3GetUIText(uid) {
     var uiDef = W3GetUIDef(uid);
     if (uiDef != null) {
 	var uiType = uiDef[w3PropType];
-	if (uiType == w3TypeTextEditor) {
+	if ((uiType == w3TypeTextEditor) ||
+            (uiType == w3TypePlainTextEditor) ||
+            (uiType == w3TypePDFCanvas)) {
 	    text = W3Encode($("#" + uid).val());
 	} else if (uiType == w3TypeDisplayPanel) {
 	    text = W3Encode($("#" + uid).html());
 	} else if (uiType == w3TypePanel) {
 	    text = $("#" + uid).html();
-	} else if (uiType == w3TypeText ||
-		   uiType == w3TypePassword ||
-		   uiType == w3TypeCombobox ||
-		   uiType == w3TypeDatePicker ||
-		   uiType == w3TypeMonthPicker) {
+	} else if ((uiType == w3TypeText) ||
+		   (uiType == w3TypePassword) ||
+		   (uiType == w3TypeCombobox) ||
+		   (uiType == w3TypeDatePicker) ||
+		   (uiType == w3TypeMonthPicker)) {
 	    text = $("#" + uid).val();
 	} else {
 	    text = $("#" + uid).text();
@@ -216,6 +218,10 @@ function W3SetUIText(uid, text) {
     if (uiType == w3TypeTextEditor) {
 	text = W3Decode(text);
 	$("#" + uid).jqteVal(text);
+    } else if ((uiType == w3TypePlainTextEditor) ||
+               (uiType == w3TypePDFCanvas)) {
+	text = W3Decode(text);
+        $("#" + uid).val(text);
     } else if ((uiType == w3TypeText) ||
                (uiType == w3TypeDatePicker)) {
 	$("#" + uid).val(text);

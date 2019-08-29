@@ -159,7 +159,7 @@ def W3InitJSUI(ui):
     js = js + "        }\n"
     js = js + "        var element = $(\"#\" + uid);\n"
     js = js + "        if (element != undefined) {\n"
-    js = js + "            element.calendar();\n"
+    js = js + "            element.W3Calendar();\n"
     js = js + "        }\n"
     js = js + "    }\n"
 

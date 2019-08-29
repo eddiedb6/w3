@@ -1,3 +1,6 @@
 [submodule "schema"]
 	path = schema
 	url = https://github.com/eddiedb6/schema.git
+[submodule "htdocs/pdf"]
+	path = htdocs/pdf
+	url = https://github.com/mozilla/pdf.js.git
