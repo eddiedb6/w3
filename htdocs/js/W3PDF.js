@@ -1,6 +1,7 @@
 (function($) {
     "use strict";
 
+    var _isInit = false;
     var _baseID = null;
     var _pdf = null;
     var _pageNum = 1;
@@ -8,6 +9,7 @@
     var _context = null;
     var _pageRendering = false;
     var _pageNumPending = null;
+    var _scale = 1.5;
     
     function onPrevPage() {
         if (_pageNum <= 1) {
@@ -54,7 +56,7 @@
         _pdf.getPage(num).then(function(page) {
             W3LogDebug("Page rendering: " + num);
             
-            var scale = 1.0;
+            var scale = _scale;
             var viewport = page.getViewport({scale: scale});
 
             _canvas.height = viewport.height;
@@ -92,13 +94,14 @@
         }
 
         thisHtml =
-            "<div id='" + _baseID + "WrapperPanel'>" +
-            " <canvas id='" + _baseID + "Canvas'></canvas>" +
+            "<div align='center' id='" + _baseID + "WrapperPanel'>" +
+            " <canvas id='" + _baseID + "Canvas' style='display:none'></canvas>" +
+            " <textarea id='" + _baseID + "Log' rows='32' cols='80' style='display:none' disabled='disabled'></textarea>" +
             " <table><tbody><tr>" +
             "  <td><button id='" + _baseID + "Pre' onclick='' type='button' disabled='disabled'>&lt;</button></td>" +
-            "  <td><label id='" + _baseID + "Num'>0</label></td>" +
-            "  <td><label> of </label></td>" +
-            "  <td><label id='" + _baseID + "TotalNum'>0</label></td>" +
+            "  <td><label style='padding-left:5px' id='" + _baseID + "Num'>0</label></td>" +
+            "  <td><label> / </label></td>" +
+            "  <td><label style='padding-right:5px' id='" + _baseID + "TotalNum'>0</label></td>" +
             "  <td><button id='" + _baseID + "Next' onclick='' type='button' disabled='disabled'>&gt;</button></td>" +
             " </tr></tbody></table>" +
             " <textarea id='" + _baseID + "' style='display:none'></textarea>" +
@@ -118,10 +121,42 @@
         } else {
             W3LogWarning("PDF previous button is not found");
         }
+
+        _isInit = true;
     }
 
-    function CreatePDFImpl(noteID)
+    function Validate(errorLog)
     {
+        return errorLog == "";
+    }
+
+    function DisplayErrorLog(errorLog)
+    {
+        var errorLogDecode = W3Decode(errorLog);
+        $("#" + _baseID + "Log").val(errorLogDecode);
+
+        W3DisplayUI(_baseID + "Log");
+        W3HideUI(_baseID + "Canvas");
+
+        $("#" + _baseID + "TotalNum").text(0);
+        $("#" + _baseID + "Num").text(0);
+        $("#" + _baseID + "Pre").attr("disabled", true);
+        $("#" + _baseID + "Next").attr("disabled", true);
+    }
+
+    function DisplayPDFImpl(noteID, errorLog)
+    {
+        if (!_isInit) {
+            W3LogError("Init PDF UI first!");
+        }
+
+        if (!Validate(errorLog)) {
+            DisplayErrorLog(errorLog);
+            return;
+        }
+
+        W3DisplayUI(_baseID + "Canvas");
+
         var url = "tmp/" + noteID + ".pdf";
         var canvasID = _baseID + "Canvas";
         _canvas = document.getElementById(canvasID);
@@ -141,7 +176,10 @@
                 W3LogDebug('PDF loaded');
 
                 _pdf = pdf;
+
                 $("#" + _baseID + "TotalNum").text(_pdf.numPages);
+                _pageNum = 1;
+                
                 renderPage(_pageNum);
             },
             function (reason) {
@@ -149,9 +187,9 @@
             }
         );
     }
-    
+
     $.fn.extend({
-        W3CreatePDF: CreatePDFImpl,
+        W3DisplayPDF: DisplayPDFImpl,
         W3PDF: InitPDFUIImpl
     });
     

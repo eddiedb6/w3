@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm *.pdf *.log *.tex *.aux -rf
+rm tmp/*.pdf tmp/*.log tmp/*.tex tmp/*.aux -rf
