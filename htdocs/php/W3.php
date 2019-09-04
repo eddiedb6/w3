@@ -263,19 +263,29 @@ function W3GetSession() {
 //
 
 function W3Decode($text) {
-    $result = iconv("utf-8", "gb2312", urldecode($text));
+    // + will lost, why?
+    $result = str_replace("+", ":;:;", $text);
+
+    $result = urldecode($result);
 
     $result = str_replace("::;;", "&", $result);
     $result = str_replace(";;::", "#", $result);
+
+    $result = str_replace(":;:;", "+", $result);
 
     return $result;
 }
 
 function W3Encode($text) {
+    // + will lost, why?
+    $text = str_replace("+", ":;:;", $text);
+
     $text = str_replace("&", "::;;", $text);
     $text = str_replace("#", ";;::", $text);
 
-    $result = urlencode(iconv("gb2312", "UTF-8", $text));
+    $result = urlencode($text);
+
+    $result = str_replace(":;:;", "+", $result);
 
     return $result;
 }
