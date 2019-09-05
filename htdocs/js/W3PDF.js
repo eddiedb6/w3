@@ -132,7 +132,7 @@
 
     function DisplayErrorLog(errorLog)
     {
-        var errorLogDecode = W3Decode(errorLog);
+        var errorLogDecode = W3DecodePHP(errorLog);
         $("#" + _baseID + "Log").val(errorLogDecode);
 
         W3DisplayUI(_baseID + "Log");

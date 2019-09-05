@@ -511,8 +511,20 @@ function W3Encode(text) {
 function W3Decode(text) {
     // Convert URI char
     text = decodeURI(text);
-    
+
     // Convert html char
+    text = text.replace(/::;;/g, "&");
+    text = text.replace(/;;::/g, "#");
+
+    return text;
+}
+
+// Decode string which encode by PHP
+function W3DecodePHP(text) {
+    text = text.replace(/\+/g, "%20");
+
+    text = decodeURIComponent(text);
+
     text = text.replace(/::;;/g, "&");
     text = text.replace(/;;::/g, "#");
 
