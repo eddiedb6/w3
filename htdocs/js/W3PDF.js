@@ -95,7 +95,7 @@
 
         thisHtml =
             "<div align='center' id='" + _baseID + "WrapperPanel'>" +
-            " <canvas id='" + _baseID + "Canvas' style='display:none'></canvas>" +
+            " <canvas id='" + _baseID + "Canvas' style='display:none; border:1px dashed'></canvas>" +
             " <textarea id='" + _baseID + "Log' rows='32' cols='80' style='display:none' disabled='disabled'></textarea>" +
             " <table><tbody><tr>" +
             "  <td><button id='" + _baseID + "Pre' onclick='' type='button' disabled='disabled'>&lt;</button></td>" +
