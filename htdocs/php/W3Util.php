@@ -36,7 +36,6 @@ function W3LoadJS() {
     # pdf
     echo "<script type=\"text/javascript\" src=\"pdf/build/pdf.js\"></script>";
     echo "<script type=\"text/javascript\" src=\"js/W3PDF.js\"></script>";
-
     # w3
     echo "<script src=\"js/W3.js\"></script>";
     echo "<script src=\"js/W3Util.js\"></script>";
